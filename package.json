@@ -1,6 +1,8 @@
 {
-  "name": "astro-starlight-try",
+  "name": "salmanthoriq95.github.io",
   "type": "module",
+  "author": "Salman Thoriq Al Farisyi",
+  "description": "This is my personal blog",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",

@@ -1,0 +1,143 @@
+---
+import {
+  defaultLocale,
+  getLocalizedPath,
+  type Locale,
+} from "../i18n";
+import { ui } from "../i18n/ui";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const copy = ui[locale];
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const links = copy.navigation.links.map((link) => ({
+  ...link,
+  href: getLocalizedPath(locale, link.path),
+}));
+
+const isCurrentPage = (href: string) => {
+  const normalizedHref = href.replace(/\/+$/, "") || "/";
+  return currentPath === normalizedHref || currentPath.startsWith(`${normalizedHref}/`);
+};
+---
+
+<header class="site-header">
+  <a
+    class="brand"
+    href={getLocalizedPath(locale)}
+    aria-label={copy.navigation.homeLabel}
+  >
+    <span class="brand-name">Salman </span><span class="brand-accent">.T</span>
+  </a>
+
+  <nav aria-label={copy.navigation.label}>
+    <ul>
+      {links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            aria-current={isCurrentPage(link.href) ? "page" : undefined}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+</header>
+
+<style>
+  .site-header {
+    display: grid;
+    align-items: center;
+    gap: clamp(0.75rem, 4vw, 2rem);
+    padding: 1.1rem var(--page-pad);
+    border-bottom: 1px solid var(--line);
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .brand {
+    width: fit-content;
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.055em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .brand-accent {
+    /* color: #ff4c2e; */
+    color: var(--accent);;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: clamp(0.7rem, 3.5vw, 2rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav {
+    min-width: 0;
+  }
+
+  nav a {
+    position: relative;
+    display: block;
+    font-size: clamp(0.82rem, 2.8vw, 0.82rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  nav a::after {
+    position: absolute;
+    right: 0;
+    bottom: -0.2rem;
+    left: 0;
+    height: 1px;
+    background: currentColor;
+    content: "";
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--motion-duration) var(--motion-ease);
+  }
+
+  nav a:hover::after,
+  nav a:focus-visible::after,
+  nav a[aria-current="page"]::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  @media (min-width: 48rem) {
+    .site-header {
+      align-items: center;
+      padding-top: 1.4rem;
+      padding-right: max(var(--page-pad), calc((100vw - 52rem) / 2));
+      padding-bottom: 1.4rem;
+      padding-left: max(var(--page-pad), calc((100vw - 52rem) / 2));
+      grid-template-columns: auto 1fr;
+    }
+
+    .brand {
+      font-size: 0.9rem;
+    }
+
+    ul {
+      justify-content: flex-end;
+      gap: 2rem;
+    }
+
+    nav a {
+      font-size: 0.82rem;
+    }
+  }
+</style>

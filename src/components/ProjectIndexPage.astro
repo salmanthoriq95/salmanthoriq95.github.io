@@ -1,0 +1,521 @@
+---
+import { projects, projectPageContent } from "../data/projects";
+import { defaultLocale, getLocalizedPath, type Locale } from "../i18n";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Footer from "./Footer.astro";
+import Header from "./Header.astro";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const copy = projectPageContent[locale];
+const featuredProjects = projects.filter((project) => project.featured);
+const archivedProjects = projects.filter((project) => !project.featured);
+const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug}`);
+---
+
+<BaseLayout locale={locale} title={copy.meta.title} description={copy.meta.description}>
+  <Header locale={locale} />
+
+  <main>
+    <section class="projects-hero" aria-labelledby="projects-title">
+      <p class="eyebrow"><span></span>{copy.hero.label}</p>
+
+      <div class="hero-grid">
+        <h1 id="projects-title">
+          <em>{copy.hero.emphasis}</em>
+          <span>{copy.hero.title}</span>
+        </h1>
+        <p>{copy.hero.intro}</p>
+      </div>
+
+      <div class="project-count">
+        <strong>{String(projects.length).padStart(2, "0")}</strong>
+        <span>{copy.hero.count}</span>
+      </div>
+    </section>
+
+    <section class="featured" aria-labelledby="featured-title">
+      <header class="section-heading">
+        <div>
+          <p class="eyebrow"><span></span>{copy.featured.label}</p>
+          <h2 id="featured-title">{copy.featured.title}</h2>
+        </div>
+        <p>{copy.featured.intro}</p>
+      </header>
+
+      <div class="featured-grid">
+        {featuredProjects.map((project, index) => {
+          const content = project.content[locale];
+          const projectNumber = projects.indexOf(project) + 1;
+
+          return (
+            <a
+              class:list={["featured-card", { "featured-card--lead": index === 0 }]}
+              href={projectPath(project.slug)}
+            >
+              <div class="card-topline">
+                <span>{String(projectNumber).padStart(2, "0")}.</span>
+                <span>{project.company}</span>
+              </div>
+              <div class="card-copy">
+                <h3>{content.title}</h3>
+                <p>{content.summary[0]}</p>
+              </div>
+              <div class="card-footer">
+                <ul aria-label={project.stackKind === "tools" ? copy.labels.tools : copy.labels.technologies}>
+                  {project.stack.slice(0, 4).map((item) => <li>{item}</li>)}
+                </ul>
+                <span class="arrow" aria-hidden="true">↗</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="archive" aria-labelledby="archive-title">
+      <header class="section-heading">
+        <div>
+          <p class="eyebrow"><span></span>{copy.archive.label}</p>
+          <h2 id="archive-title">{copy.archive.title}</h2>
+        </div>
+        <p>{copy.archive.intro}</p>
+      </header>
+
+      <div class="archive-list">
+        {archivedProjects.map((project) => {
+          const content = project.content[locale];
+          const projectNumber = projects.indexOf(project) + 1;
+
+          return (
+            <a href={projectPath(project.slug)} class="archive-row">
+              <span class="archive-number">{String(projectNumber).padStart(2, "0")}.</span>
+              <div class="archive-title">
+                <h3>{content.title}</h3>
+                <p>{project.company}</p>
+              </div>
+              <p class="archive-type">{content.type}</p>
+              <ul aria-label={project.stackKind === "tools" ? copy.labels.tools : copy.labels.technologies}>
+                {project.stack.slice(0, 3).map((item) => <li>{item}</li>)}
+              </ul>
+              <span class="archive-arrow" aria-hidden="true">↗</span>
+            </a>
+          );
+        })}
+      </div>
+
+      <p class="privacy-note">{copy.labels.privacy}</p>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+</BaseLayout>
+
+<style>
+  .projects-hero,
+  .section-heading,
+  .featured-grid,
+  .archive-list,
+  .privacy-note {
+    width: 100%;
+    max-width: 52rem;
+    margin-inline: auto;
+  }
+
+  .projects-hero {
+    display: grid;
+    min-height: min(44rem, calc(100svh - 4.25rem));
+    padding: 3.5rem var(--page-pad) 2rem;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow > span {
+    width: 1rem;
+    height: 2px;
+    flex: 0 0 auto;
+    background: var(--accent);
+  }
+
+  .hero-grid {
+    display: grid;
+    align-self: center;
+    gap: 1.75rem;
+  }
+
+  h1 {
+    display: grid;
+    margin: 0;
+    font-size: clamp(3.3rem, 16vw, 7rem);
+    font-weight: 800;
+    line-height: 0.82;
+    letter-spacing: -0.085em;
+  }
+
+  h1 em {
+    color: var(--accent);
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+  }
+
+  .hero-grid > p {
+    max-width: 28rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .project-count {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .project-count strong {
+    font-size: 1.1rem;
+  }
+
+  .project-count span {
+    color: var(--muted);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .featured,
+  .archive {
+    padding: 5rem var(--page-pad);
+  }
+
+  .featured {
+    background: #fff;
+  }
+
+  .archive {
+    background: var(--paper);
+  }
+
+  .section-heading {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 2.75rem;
+  }
+
+  h2 {
+    max-width: 37rem;
+    margin: 0.75rem 0 0;
+    font-size: clamp(2.55rem, 12vw, 5.6rem);
+    line-height: 0.9;
+    letter-spacing: -0.07em;
+  }
+
+  .section-heading > p {
+    max-width: 26rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.55;
+  }
+
+  .featured-grid {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .featured-card {
+    position: relative;
+    display: grid;
+    min-height: 22rem;
+    padding: 1.25rem;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--electric);
+    color: var(--ink);
+    grid-template-rows: auto 1fr auto;
+    transition:
+      transform var(--motion-duration) var(--motion-ease),
+      border-radius var(--motion-duration) var(--motion-ease);
+  }
+
+  .featured-card:nth-child(3) {
+    background: var(--accent);
+  }
+
+  .featured-card--lead {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .featured-card::before {
+    position: absolute;
+    right: -5rem;
+    bottom: -6rem;
+    width: 15rem;
+    height: 15rem;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    content: "";
+    opacity: 0.18;
+    transition: transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .featured-card:hover,
+  .featured-card:focus-visible {
+    border-radius: 2.25rem;
+    transform: translateY(-0.3rem);
+  }
+
+  .featured-card:hover::before,
+  .featured-card:focus-visible::before {
+    transform: scale(1.15);
+  }
+
+  .featured-card:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  .card-topline,
+  .card-footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .card-topline {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .featured-card--lead .card-topline span:first-child {
+    color: var(--accent);
+  }
+
+  .card-copy {
+    position: relative;
+    z-index: 1;
+    align-self: center;
+  }
+
+  .card-copy h3 {
+    max-width: 35rem;
+    margin: 0;
+    font-size: clamp(2rem, 8vw, 4.25rem);
+    line-height: 0.92;
+    letter-spacing: -0.06em;
+  }
+
+  .card-copy p {
+    max-width: 27rem;
+    margin: 1rem 0 0;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    opacity: 0.72;
+  }
+
+  .card-footer ul,
+  .archive-row ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card-footer li {
+    padding: 0.32rem 0.55rem;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: 0.58rem;
+    opacity: 0.68;
+  }
+
+  .arrow,
+  .archive-arrow {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .featured-card:not(.featured-card--lead) .arrow {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .archive-list {
+    border-top: 1px solid var(--line);
+  }
+
+  .archive-row {
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: 9rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--line);
+    grid-template-columns: 2.7rem minmax(0, 1fr) 2rem;
+    gap: 0.75rem;
+    transition: padding var(--motion-duration) var(--motion-ease);
+  }
+
+  .archive-row:hover,
+  .archive-row:focus-visible {
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+  }
+
+  .archive-row:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  .archive-number {
+    align-self: start;
+    color: var(--accent);
+    font-size: 0.66rem;
+    font-weight: 800;
+  }
+
+  .archive-title h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  .archive-title p,
+  .archive-type {
+    margin: 0.35rem 0 0;
+    color: var(--muted);
+    font-size: 0.68rem;
+  }
+
+  .archive-type,
+  .archive-row ul {
+    display: none;
+  }
+
+  .archive-arrow {
+    grid-column: 3;
+    grid-row: 1;
+    border: 1px solid var(--line);
+  }
+
+  .privacy-note {
+    margin-top: 2rem;
+    color: var(--muted);
+    font-size: 0.68rem;
+    line-height: 1.55;
+  }
+
+  @media (min-width: 48rem) {
+    .projects-hero {
+      min-height: min(47rem, calc(100vh - 4.8rem));
+      padding: 4.5rem 0 2.5rem;
+    }
+
+    .hero-grid {
+      align-items: end;
+      grid-template-columns: minmax(0, 1.55fr) minmax(15rem, 0.65fr);
+      gap: 3rem;
+    }
+
+    h1 {
+      font-size: clamp(5rem, 8vw, 7rem);
+    }
+
+    .featured,
+    .archive {
+      padding-top: 7rem;
+      padding-bottom: 7rem;
+    }
+
+    .section-heading {
+      align-items: end;
+      margin-bottom: 3.5rem;
+      grid-template-columns: minmax(0, 1.35fr) minmax(14rem, 0.65fr);
+      gap: 3rem;
+    }
+
+    .featured-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .featured-card--lead {
+      min-height: 28rem;
+      grid-column: 1 / -1;
+    }
+
+    .featured-card:not(.featured-card--lead) {
+      min-height: 24rem;
+    }
+
+    .featured-card:not(.featured-card--lead) .card-copy h3 {
+      font-size: 2.5rem;
+    }
+
+    .archive-row {
+      min-height: 7.5rem;
+      grid-template-columns: 3.5rem minmax(12rem, 1.2fr) minmax(10rem, 0.8fr) minmax(12rem, 1fr) 2rem;
+      gap: 1rem;
+    }
+
+    .archive-title h3 {
+      font-size: 1.4rem;
+    }
+
+    .archive-type,
+    .archive-row ul {
+      display: flex;
+    }
+
+    .archive-type {
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .archive-row li {
+      color: var(--muted);
+      font-size: 0.6rem;
+    }
+
+    .archive-row li:not(:last-child)::after {
+      margin-left: 0.35rem;
+      content: "·";
+    }
+
+    .archive-arrow {
+      grid-column: 5;
+    }
+
+  }
+</style>

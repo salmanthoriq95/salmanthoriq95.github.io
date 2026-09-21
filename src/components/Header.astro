@@ -12,6 +12,7 @@ interface Props {
 
 const { locale = defaultLocale } = Astro.props;
 const copy = ui[locale];
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const links = copy.navigation.links.map((link) => ({
   ...link,
   href: getLocalizedPath(locale, link.path),
@@ -30,7 +31,14 @@ const links = copy.navigation.links.map((link) => ({
   <nav aria-label={copy.navigation.label}>
     <ul>
       {links.map((link) => (
-        <li><a href={link.href}>{link.label}</a></li>
+        <li>
+          <a
+            href={link.href}
+            aria-current={(link.href.replace(/\/+$/, "") || "/") === currentPath ? "page" : undefined}
+          >
+            {link.label}
+          </a>
+        </li>
       ))}
     </ul>
   </nav>
@@ -98,7 +106,8 @@ const links = copy.navigation.links.map((link) => ({
   }
 
   nav a:hover::after,
-  nav a:focus-visible::after {
+  nav a:focus-visible::after,
+  nav a[aria-current="page"]::after {
     transform: scaleX(1);
     transform-origin: left;
   }

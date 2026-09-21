@@ -18,7 +18,7 @@ export const ui = {
     },
     home: {
       praIdentity: "Saya,",
-      identity: "Aku Salman Thoriq Al Farisyi",
+      identity: "Salman Thoriq Al Farisyi",
       intro:
         "Arsip pribadi tentang pengalaman, proyek, dan berbagai hal yang saya pelajari ketika membangun untuk web.",
       scroll: "Jelajahi",
@@ -27,6 +27,13 @@ export const ui = {
       headingRest: "ruang saya",
       sectionIntro:
         "Tiga bagian dari perjalanan yang sama: tempat saya bertumbuh, hal yang saya buat, dan pelajaran yang saya temukan.",
+      experiencePreview: {
+        title: "Tempat yang membentuk saya",
+        intro:
+          "Linimasa ini diambil langsung dari arsip pengalaman saya dan akan terus bertambah bersama perjalanan berikutnya.",
+        cta: "Baca pengalaman lengkap",
+        ariaLabel: "Perjalanan kerja Salman Thoriq",
+      },
       sections: [
         {
           number: "01.",
@@ -93,6 +100,13 @@ export const ui = {
       headingRest: "my space",
       sectionIntro:
         "Three parts of the same ongoing story: where I have been, what I have made, and what I have learned.",
+      experiencePreview: {
+        title: "Places that shaped me",
+        intro:
+          "This timeline comes directly from my experience archive and will keep growing with each chapter ahead.",
+        cta: "Read the full experience",
+        ariaLabel: "Salman Thoriq's work journey",
+      },
       sections: [
         {
           number: "01.",

@@ -34,6 +34,13 @@ export const ui = {
         cta: "Baca pengalaman lengkap",
         ariaLabel: "Perjalanan kerja Salman Thoriq",
       },
+      projectPreview: {
+        title: "Yang saya bangun dan perbaiki",
+        intro:
+          "Produk dan sistem yang pernah saya bangun dari awal, kembangkan, pelihara, atau bantu pahami sebagai bagian dari existing system.",
+        cta: "Jelajahi semua proyek",
+        ariaLabel: "Proyek Salman Thoriq",
+      },
       sections: [
         {
           number: "01.",
@@ -106,6 +113,13 @@ export const ui = {
           "This timeline comes directly from my experience archive and will keep growing with each chapter ahead.",
         cta: "Read the full experience",
         ariaLabel: "Salman Thoriq's work journey",
+      },
+      projectPreview: {
+        title: "What I built and improved",
+        intro:
+          "Products and systems I have built from scratch, developed, maintained, or helped understand as part of an existing system.",
+        cta: "Explore all projects",
+        ariaLabel: "Projects by Salman Thoriq",
       },
       sections: [
         {

@@ -2,6 +2,7 @@
 import { defaultLocale, getLocalizedPath, type Locale } from "../i18n";
 import { ui } from "../i18n/ui";
 import { experienceContent, getExperienceId } from "../data/experience";
+import { projects } from "../data/projects";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Footer from "./Footer.astro";
 import Header from "./Header.astro";
@@ -14,6 +15,7 @@ const { locale = defaultLocale } = Astro.props;
 const copy = ui[locale];
 const experiences = experienceContent[locale].entries;
 const experienceHref = getLocalizedPath(locale, "/experience");
+const projectsHref = getLocalizedPath(locale, "/projects");
 const sections = copy.home.sections.map((section) => ({
   ...section,
   href: getLocalizedPath(locale, section.path),
@@ -70,10 +72,10 @@ const sections = copy.home.sections.map((section) => ({
               <span class="title">{section.title}</span>
               <span class="toggle" aria-hidden="true"></span>
             </summary>
-            <div class:list={["panel", { "panel--experience": index === 0 }]}>
+            <div class="panel">
               {index === 0 ? (
                 <>
-                  <div class="experience-panel-copy">
+                  <div class="carousel-panel-copy">
                     <h3>{copy.home.experiencePreview.title}</h3>
                     <p>{copy.home.experiencePreview.intro}</p>
                   </div>
@@ -85,7 +87,7 @@ const sections = copy.home.sections.map((section) => ({
 
                   <div
                     class="experience-carousel"
-                    data-experience-carousel
+                    data-auto-carousel
                     role="region"
                     aria-label={copy.home.experiencePreview.ariaLabel}
                     tabindex="0"
@@ -108,6 +110,51 @@ const sections = copy.home.sections.map((section) => ({
                             <span class="experience-card-arrow" aria-hidden="true">↗</span>
                           </a>
                         ))}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : index === 1 ? (
+                <>
+                  <div class="carousel-panel-copy">
+                    <h3>{copy.home.projectPreview.title}</h3>
+                    <p>{copy.home.projectPreview.intro}</p>
+                  </div>
+
+                  <a class="panel-cta" href={projectsHref}>
+                    {copy.home.projectPreview.cta}
+                    <span aria-hidden="true">↗</span>
+                  </a>
+
+                  <div
+                    class="experience-carousel"
+                    data-auto-carousel
+                    role="region"
+                    aria-label={copy.home.projectPreview.ariaLabel}
+                    tabindex="0"
+                  >
+                    <div class="experience-track">
+                      <div class="experience-set">
+                        {projects.map((project, projectIndex) => {
+                          const projectContent = project.content[locale];
+
+                          return (
+                            <a
+                              class="experience-card"
+                              href={getLocalizedPath(locale, `/projects/${project.slug}`)}
+                            >
+                              <span class="experience-card-index">
+                                {String(projectIndex + 1).padStart(2, "0")}.
+                              </span>
+                              <div>
+                                <h4>{projectContent.title}</h4>
+                                <p>{project.company}</p>
+                              </div>
+                              <p class="experience-card-period">{projectContent.type}</p>
+                              <span class="experience-card-arrow" aria-hidden="true">↗</span>
+                            </a>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -352,19 +399,19 @@ const sections = copy.home.sections.map((section) => ({
   }
 
   .panel > p,
-  .experience-panel-copy p {
+  .carousel-panel-copy p {
     max-width: 27rem;
     margin: 0;
     color: #bdbdbd;
     font-size: 0.76rem;
   }
 
-  .experience-panel-copy {
+  .carousel-panel-copy {
     display: grid;
     gap: 0.65rem;
   }
 
-  .experience-panel-copy h3 {
+  .carousel-panel-copy h3 {
     max-width: 30rem;
     margin: 0;
     font-size: clamp(1.75rem, 8vw, 3.25rem);
@@ -372,7 +419,7 @@ const sections = copy.home.sections.map((section) => ({
     letter-spacing: -0.055em;
   }
 
-  .experience-panel-copy p {
+  .carousel-panel-copy p {
     line-height: 1.55;
   }
 
@@ -665,7 +712,7 @@ const sections = copy.home.sections.map((section) => ({
     window.setTimeout(tick, 1800);
   }
 
-  document.querySelectorAll<HTMLElement>("[data-experience-carousel]").forEach((carousel) => {
+  document.querySelectorAll<HTMLElement>("[data-auto-carousel]").forEach((carousel) => {
     if (carousel.dataset.carouselReady === "true") return;
     carousel.dataset.carouselReady = "true";
 
@@ -693,8 +740,12 @@ const sections = copy.home.sections.map((section) => ({
     const animate = (currentTime: number) => {
       const delta = Math.min(currentTime - previousTime, 64);
       previousTime = currentTime;
+      const isVisible = carousel.clientWidth > 0 && carousel.getClientRects().length > 0;
 
-      if (
+      if (!isVisible) {
+        autoScrollPosition = 0;
+        carousel.scrollLeft = 0;
+      } else if (
         !reduceMotion.matches &&
         !isHovering &&
         !isInteracting &&

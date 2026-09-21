@@ -11,12 +11,14 @@ interface Props {
   title?: string;
   description?: string;
   locale?: Locale;
+  noindex?: boolean;
 }
 
 const {
   title = "Salman Thoriq — Personal Portfolio",
   description = "Experience, selected projects, and writing by Salman Thoriq.",
   locale = defaultLocale,
+  noindex = false,
 } = Astro.props;
 
 const canonicalURL = Astro.site
@@ -31,6 +33,9 @@ const localeURLs = supportedLocales.map((supportedLocale) => ({
 const defaultURL = Astro.site
   ? new URL(getLocalizedPath(defaultLocale, Astro.url.pathname), Astro.site)
   : getLocalizedPath(defaultLocale, Astro.url.pathname);
+const sitemapURL = Astro.site
+  ? new URL("sitemap-index.xml", Astro.site)
+  : "/sitemap-index.xml";
 ---
 
 <!doctype html>
@@ -40,6 +45,7 @@ const defaultURL = Astro.site
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="author" content="Salman Thoriq Al Farisyi" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content="#f2f2ef" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
@@ -52,7 +58,8 @@ const defaultURL = Astro.site
       <link rel="alternate" hreflang={alternateLocale} href={url} />
     ))}
     <link rel="alternate" hreflang="x-default" href={defaultURL} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href={sitemapURL} />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
     <title>{title}</title>
   </head>
   <body>

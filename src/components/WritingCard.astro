@@ -1,0 +1,145 @@
+---
+import { ui } from "../i18n/ui";
+import { type Locale } from "../i18n";
+import {
+  formatWritingDate,
+  getWritingPath,
+  type WritingEntry,
+} from "../lib/writing";
+import TopicTrail from "./TopicTrail.astro";
+
+interface Props {
+  entry: WritingEntry;
+  locale: Locale;
+}
+
+const { entry, locale } = Astro.props;
+const copy = ui[locale].writing;
+const languageLabel = copy.filters[entry.data.language];
+---
+
+<article class="writing-card" data-writing-entry data-language={entry.data.language}>
+  <div class="card-accent" aria-hidden="true">*</div>
+
+  <div class="card-main">
+    <div class="card-meta">
+      <time datetime={entry.data.publishedAt.toISOString()}>
+        {formatWritingDate(entry.data.publishedAt, locale)}
+      </time>
+      <span>{languageLabel}</span>
+    </div>
+
+    <h3>
+      <a href={getWritingPath(entry, locale)}>{entry.data.title}</a>
+    </h3>
+    <p>{entry.data.description}</p>
+    <TopicTrail entry={entry} locale={locale} />
+  </div>
+
+  <a
+    class="card-arrow"
+    href={getWritingPath(entry, locale)}
+    aria-label={`${entry.data.title}`}
+  >
+    <span aria-hidden="true">↗</span>
+  </a>
+</article>
+
+<style>
+  .writing-card {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--line);
+    grid-template-columns: 2.5rem minmax(0, 1fr) 2rem;
+    transition:
+      opacity var(--motion-duration) var(--motion-ease),
+      transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .writing-card[hidden] {
+    display: none;
+  }
+
+  .card-accent {
+    align-self: start;
+    color: var(--accent);
+    font-size: clamp(1.6rem, 5vw, 2.1rem);
+    font-weight: 800;
+    line-height: 0.8;
+  }
+
+  .card-main {
+    min-width: 0;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem 0.85rem;
+    color: var(--muted);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    max-width: 37rem;
+    margin: 0.85rem 0 0;
+    font-size: clamp(1.55rem, 7vw, 2.8rem);
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+  }
+
+  h3 a {
+    transition: color var(--motion-duration) var(--motion-ease);
+  }
+
+  h3 a:hover,
+  h3 a:focus-visible {
+    color: var(--accent);
+  }
+
+  p {
+    max-width: 35rem;
+    margin: 0.75rem 0 1rem;
+    color: var(--muted);
+    font-size: 0.76rem;
+    line-height: 1.6;
+  }
+
+  .card-arrow {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.8rem;
+    transition:
+      background-color var(--motion-duration) var(--motion-ease),
+      transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .card-arrow:hover,
+  .card-arrow:focus-visible {
+    background: var(--accent);
+    transform: rotate(8deg);
+  }
+
+  @media (min-width: 48rem) {
+    .writing-card {
+      gap: 1.5rem;
+      padding: 1.75rem 0;
+      grid-template-columns: 3rem minmax(0, 1fr) 2.5rem;
+    }
+
+    .card-arrow {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+</style>

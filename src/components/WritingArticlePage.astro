@@ -1,0 +1,487 @@
+---
+import { render } from "astro:content";
+import { defaultLocale, getLocalizedPath, type Locale } from "../i18n";
+import { ui } from "../i18n/ui";
+import {
+  formatWritingDate,
+  getPublishedWriting,
+  getTopicLabel,
+  getTopicPath,
+  getTopicSegments,
+  getTranslation,
+  getWritingPath,
+  isEntryInTopic,
+  type WritingEntry,
+} from "../lib/writing";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Footer from "./Footer.astro";
+import Header from "./Header.astro";
+import WritingCard from "./WritingCard.astro";
+
+interface Props {
+  locale?: Locale;
+  entry: WritingEntry;
+}
+
+const { locale = defaultLocale, entry } = Astro.props;
+const copy = ui[locale].writing;
+const { Content, headings } = await render(entry);
+const entries = await getPublishedWriting();
+const topics = getTopicSegments(entry);
+const translation = getTranslation(entry, entries);
+const translationLocale = translation?.data.language;
+let related: WritingEntry[] = [];
+
+for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) {
+  const parent = topics.slice(0, depth);
+  related = entries
+    .filter((candidate) => candidate.id !== entry.id && isEntryInTopic(candidate, parent))
+    .slice(0, 3);
+}
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${entry.data.title} — Salman Thoriq`}
+  description={entry.data.description}
+>
+  <Header locale={locale} />
+
+  <main>
+    <article>
+      <header class="article-hero">
+        <nav class="article-breadcrumb" aria-label={copy.article.topics}>
+          <span class="breadcrumb-line" aria-hidden="true"></span>
+          <a href={getLocalizedPath(locale, "/writing")}>{copy.article.back}</a>
+          {topics.map((topic, index) => (
+            <>
+              <span class="breadcrumb-separator" aria-hidden="true">/</span>
+              <a href={getTopicPath(topics.slice(0, index + 1), locale)}>
+                {getTopicLabel(topic, locale)}
+              </a>
+            </>
+          ))}
+        </nav>
+
+        <div class="article-heading">
+          <div>
+            <h1>{entry.data.title}<span aria-hidden="true">.</span></h1>
+          </div>
+          <p>{entry.data.description}</p>
+        </div>
+
+        <dl class="article-meta">
+          <div>
+            <dt>{copy.article.published}</dt>
+            <dd>
+              <time datetime={entry.data.publishedAt.toISOString()}>
+                {formatWritingDate(entry.data.publishedAt, locale)}
+              </time>
+            </dd>
+          </div>
+          {
+            entry.data.updatedAt && (
+              <div>
+                <dt>{copy.article.updated}</dt>
+                <dd>
+                  <time datetime={entry.data.updatedAt.toISOString()}>
+                    {formatWritingDate(entry.data.updatedAt, locale)}
+                  </time>
+                </dd>
+              </div>
+            )
+          }
+          <div>
+            <dt>{copy.article.language}</dt>
+            <dd>{copy.filters[entry.data.language]}</dd>
+          </div>
+          {
+            topics.length > 0 && (
+              <div class="meta-topics">
+                <dt>{copy.article.topics}</dt>
+                <dd>
+                  {topics.map((topic, index) => (
+                    <a href={getTopicPath(topics.slice(0, index + 1), locale)}>
+                      {getTopicLabel(topic, locale)}
+                    </a>
+                  ))}
+                </dd>
+              </div>
+            )
+          }
+        </dl>
+
+        {
+          translation && translationLocale && (
+            <a
+              class="translation-link"
+              href={getWritingPath(translation, translationLocale)}
+              hreflang={translationLocale}
+            >
+              {copy.article.readIn} {copy.article[translationLocale]} ↗
+            </a>
+          )
+        }
+      </header>
+
+      <div class="article-layout">
+        {
+          headings.length > 0 && (
+            <aside class="table-of-contents">
+              <p>{copy.article.contents}</p>
+              <nav aria-label={copy.article.contents}>
+                <ol>
+                  {headings.filter((heading) => heading.depth <= 3).map((heading) => (
+                    <li class:list={[`depth-${heading.depth}`]}>
+                      <a href={`#${heading.slug}`}>{heading.text}</a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            </aside>
+          )
+        }
+
+        <div class="article-content">
+          <Content />
+        </div>
+      </div>
+    </article>
+
+    {
+      related.length > 0 && (
+        <section class="related" aria-labelledby="related-title">
+          <p class="eyebrow"><span></span>{copy.article.relatedLabel}</p>
+          <h2 id="related-title">{copy.article.relatedTitle}</h2>
+          <div>
+            {related.map((candidate) => (
+              <WritingCard entry={candidate} locale={locale} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </main>
+
+  <Footer locale={locale} />
+</BaseLayout>
+
+<style>
+  .article-hero,
+  .article-layout,
+  .related {
+    width: 100%;
+    max-width: 52rem;
+    margin-inline: auto;
+  }
+
+  .article-hero {
+    padding: 2rem var(--page-pad) 3rem;
+  }
+
+  .article-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--muted);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .breadcrumb-line {
+    width: 1rem;
+    height: 2px;
+    flex: 0 0 auto;
+    background: var(--accent);
+  }
+
+  .article-breadcrumb a {
+    transition: color var(--motion-duration) var(--motion-ease);
+  }
+
+  .article-breadcrumb a:hover,
+  .article-breadcrumb a:focus-visible {
+    color: var(--accent);
+  }
+
+  .breadcrumb-separator {
+    color: var(--accent);
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow > span {
+    width: 1rem;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .article-heading {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 5rem;
+  }
+
+  h1 {
+    max-width: 48rem;
+    margin: 1rem 0 0;
+    overflow-wrap: anywhere;
+    font-size: clamp(3rem, 14vw, 6.5rem);
+    line-height: 0.84;
+    letter-spacing: -0.08em;
+  }
+
+  h1 span {
+    color: var(--accent);
+  }
+
+  .article-heading > p {
+    max-width: 29rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
+  .article-meta {
+    display: grid;
+    gap: 1.25rem;
+    margin: 4rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+
+  dt {
+    margin-bottom: 0.35rem;
+    color: var(--muted);
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 0.72rem;
+  }
+
+  .meta-topics dd {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .meta-topics a {
+    padding-bottom: 0.12rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .translation-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 800;
+    transition:
+      background-color var(--motion-duration) var(--motion-ease),
+      transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .translation-link:hover,
+  .translation-link:focus-visible {
+    background: var(--ink);
+    transform: translateY(-0.15rem);
+  }
+
+  .article-layout {
+    display: grid;
+    gap: 3rem;
+    max-width: none;
+    padding: 5rem max(var(--page-pad), calc((100vw - 52rem) / 2));
+    background: #fff;
+  }
+
+  .table-of-contents {
+    height: fit-content;
+    padding: 1rem;
+    border-radius: var(--radius);
+    background: var(--paper);
+  }
+
+  .table-of-contents > p {
+    margin: 0 0 0.8rem;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .table-of-contents ol {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .table-of-contents li {
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+
+  .table-of-contents .depth-3 {
+    padding-left: 0.75rem;
+  }
+
+  .table-of-contents a:hover,
+  .table-of-contents a:focus-visible {
+    color: var(--accent);
+  }
+
+  .article-content {
+    min-width: 0;
+    max-width: 42rem;
+  }
+
+  .article-content :global(> :first-child) {
+    margin-top: 0;
+  }
+
+  .article-content :global(h2),
+  .article-content :global(h3) {
+    scroll-margin-top: 2rem;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+
+  .article-content :global(h2) {
+    margin: 3.5rem 0 1rem;
+    font-size: clamp(2rem, 8vw, 3.3rem);
+  }
+
+  .article-content :global(h3) {
+    margin: 2.5rem 0 0.8rem;
+    font-size: clamp(1.4rem, 6vw, 2rem);
+  }
+
+  .article-content :global(p),
+  .article-content :global(li) {
+    color: #30302e;
+    font-size: clamp(0.98rem, 2vw, 1.08rem);
+    line-height: 1.8;
+  }
+
+  .article-content :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.18rem;
+  }
+
+  .article-content :global(blockquote) {
+    margin: 2rem 0;
+    padding: 0.35rem 0 0.35rem 1.25rem;
+    border-left: 3px solid var(--accent);
+  }
+
+  .article-content :global(blockquote p) {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.25rem;
+    font-style: italic;
+  }
+
+  .article-content :global(pre) {
+    max-width: 100%;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    overflow-x: auto;
+    border-radius: var(--radius);
+    background: var(--ink) !important;
+    font-size: 0.78rem;
+    line-height: 1.65;
+  }
+
+  .article-content :global(:not(pre) > code) {
+    padding: 0.15rem 0.35rem;
+    border-radius: 0.3rem;
+    background: var(--paper-deep);
+    font-size: 0.9em;
+  }
+
+  .article-content :global(img) {
+    width: 100%;
+    height: auto;
+    margin: 2rem 0;
+    border-radius: var(--radius);
+  }
+
+  .article-content :global(hr) {
+    margin: 3rem 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .article-content :global(table) {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+  }
+
+  .article-content :global(th),
+  .article-content :global(td) {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+
+  .related {
+    max-width: none;
+    padding: 5rem max(var(--page-pad), calc((100vw - 52rem) / 2));
+    background: var(--paper);
+  }
+
+  .related h2 {
+    max-width: 40rem;
+    margin: 0.75rem 0 2.5rem;
+    font-size: clamp(2.5rem, 11vw, 5rem);
+    line-height: 0.9;
+    letter-spacing: -0.07em;
+  }
+
+  @media (min-width: 48rem) {
+    .article-heading {
+      align-items: end;
+      grid-template-columns: minmax(0, 1.5fr) minmax(14rem, 0.75fr);
+    }
+
+    .article-meta {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .article-layout:has(.table-of-contents) {
+      grid-template-columns: 12rem minmax(0, 1fr);
+    }
+
+    .table-of-contents {
+      position: sticky;
+      top: 1.5rem;
+    }
+  }
+</style>

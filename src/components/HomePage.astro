@@ -3,9 +3,15 @@ import { defaultLocale, getLocalizedPath, type Locale } from "../i18n";
 import { ui } from "../i18n/ui";
 import { experienceContent, getExperienceId } from "../data/experience";
 import { projects } from "../data/projects";
+import {
+  formatWritingDate,
+  getPublishedWriting,
+  getWritingPath,
+} from "../lib/writing";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Footer from "./Footer.astro";
 import Header from "./Header.astro";
+import HeroScrollCue from "./HeroScrollCue.astro";
 
 interface Props {
   locale?: Locale;
@@ -16,6 +22,8 @@ const copy = ui[locale];
 const experiences = experienceContent[locale].entries;
 const experienceHref = getLocalizedPath(locale, "/experience");
 const projectsHref = getLocalizedPath(locale, "/projects");
+const writingHref = getLocalizedPath(locale, "/writing");
+const writingEntries = (await getPublishedWriting()).slice(0, 8);
 const sections = copy.home.sections.map((section) => ({
   ...section,
   href: getLocalizedPath(locale, section.path),
@@ -47,10 +55,7 @@ const sections = copy.home.sections.map((section) => ({
         {copy.home.intro}
       </p>
 
-      <a class="scroll-cue" href="#explore">
-        {copy.home.scroll}
-        <span aria-hidden="true">↓</span>
-      </a>
+      <HeroScrollCue href="#explore" label={copy.home.scroll} />
     </section>
 
     <section id="explore" class="explore" aria-labelledby="explore-title">
@@ -68,7 +73,6 @@ const sections = copy.home.sections.map((section) => ({
         {sections.map((section, index) => (
           <details open={index === 0} data-smooth-details>
             <summary>
-              <span class="number">{section.number}</span>
               <span class="title">{section.title}</span>
               <span class="toggle" aria-hidden="true"></span>
             </summary>
@@ -94,14 +98,11 @@ const sections = copy.home.sections.map((section) => ({
                   >
                     <div class="experience-track">
                       <div class="experience-set">
-                        {experiences.map((experience, experienceIndex) => (
+                        {experiences.map((experience) => (
                           <a
                             class="experience-card"
                             href={`${experienceHref}#${getExperienceId(experience.company)}`}
                           >
-                            <span class="experience-card-index">
-                              {String(experienceIndex + 1).padStart(2, "0")}.
-                            </span>
                             <div>
                               <h4>{experience.company}</h4>
                               <p>{experience.role}</p>
@@ -135,7 +136,7 @@ const sections = copy.home.sections.map((section) => ({
                   >
                     <div class="experience-track">
                       <div class="experience-set">
-                        {projects.map((project, projectIndex) => {
+                        {projects.map((project) => {
                           const projectContent = project.content[locale];
 
                           return (
@@ -143,9 +144,6 @@ const sections = copy.home.sections.map((section) => ({
                               class="experience-card"
                               href={getLocalizedPath(locale, `/projects/${project.slug}`)}
                             >
-                              <span class="experience-card-index">
-                                {String(projectIndex + 1).padStart(2, "0")}.
-                              </span>
                               <div>
                                 <h4>{projectContent.title}</h4>
                                 <p>{project.company}</p>
@@ -161,14 +159,50 @@ const sections = copy.home.sections.map((section) => ({
                 </>
               ) : (
                 <>
-                  <p>{section.description}</p>
-                  <a class="panel-cta" href={section.href}>
-                    {section.cta}
+                  <div class="carousel-panel-copy">
+                    <h3>{copy.home.writingPreview.title}</h3>
+                    <p>{copy.home.writingPreview.intro}</p>
+                  </div>
+
+                  <a class="panel-cta" href={writingHref}>
+                    {copy.home.writingPreview.cta}
                     <span aria-hidden="true">↗</span>
                   </a>
-                  <div class="panel-art" aria-hidden="true">
-                    <span>{section.number.slice(0, 2)}</span>
-                  </div>
+
+                  {writingEntries.length > 0 ? (
+                    <div
+                      class="experience-carousel"
+                      data-auto-carousel
+                      role="region"
+                      aria-label={copy.home.writingPreview.ariaLabel}
+                      tabindex="0"
+                    >
+                      <div class="experience-track">
+                        <div class="experience-set">
+                          {writingEntries.map((entry) => (
+                            <a
+                              class="experience-card"
+                              href={getWritingPath(entry, locale)}
+                            >
+                              <div>
+                                <h4>{entry.data.title}</h4>
+                                <p>{copy.writing.filters[entry.data.language]}</p>
+                              </div>
+                              <p class="experience-card-period">
+                                {formatWritingDate(entry.data.publishedAt, locale)}
+                              </p>
+                              <span class="experience-card-arrow" aria-hidden="true">↗</span>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="panel-art panel-art--empty">
+                      <span aria-hidden="true">03</span>
+                      <p>{copy.home.writingPreview.empty}</p>
+                    </div>
+                  )}
                 </>
               )}
             </div>
@@ -224,23 +258,6 @@ const sections = copy.home.sections.map((section) => ({
     margin: 0 0 3.5rem;
     font-size: 0.9rem;
     line-height: 1.4;
-  }
-
-  .scroll-cue {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 0.8rem;
-    border-top: 1px solid var(--line);
-    font-size: 0.69rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .scroll-cue span {
-    color: var(--accent);
-    font-size: 1rem;
   }
 
   .explore {
@@ -319,7 +336,7 @@ const sections = copy.home.sections.map((section) => ({
     padding: 0.9rem 1rem;
     cursor: pointer;
     list-style: none;
-    grid-template-columns: 2.7rem 1fr 2rem;
+    grid-template-columns: 1fr 2rem;
   }
 
   summary::-webkit-details-marker {
@@ -329,11 +346,6 @@ const sections = copy.home.sections.map((section) => ({
   summary:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: -4px;
-  }
-
-  .number {
-    font-size: 0.72rem;
-    font-weight: 800;
   }
 
   .title {
@@ -385,7 +397,7 @@ const sections = copy.home.sections.map((section) => ({
     display: grid;
     min-width: 0;
     gap: 1.25rem;
-    padding: 0.25rem 1rem 1rem 3.7rem;
+    padding: 0.25rem 1rem 1rem;
     opacity: 0;
     transform: translateY(-0.5rem);
     transition:
@@ -470,6 +482,18 @@ const sections = copy.home.sections.map((section) => ({
     letter-spacing: -0.1em;
   }
 
+  .panel-art--empty {
+    align-content: center;
+    gap: 0.5rem;
+  }
+
+  .panel-art--empty p {
+    margin: 0;
+    color: var(--ink);
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
   .experience-carousel {
     width: 100%;
     padding: 0.25rem 0;
@@ -517,7 +541,7 @@ const sections = copy.home.sections.map((section) => ({
     border-radius: var(--radius);
     background: #191919;
     color: #fff;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: 1fr auto;
     scroll-snap-align: start;
     transition:
       background-color var(--motion-duration) var(--motion-ease),
@@ -550,12 +574,6 @@ const sections = copy.home.sections.map((section) => ({
   .experience-card:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: -4px;
-  }
-
-  .experience-card-index {
-    color: var(--accent);
-    font-size: 0.66rem;
-    font-weight: 800;
   }
 
   .experience-card > div {
@@ -629,10 +647,6 @@ const sections = copy.home.sections.map((section) => ({
       transform: translateY(5vh);
     }
 
-    .scroll-cue {
-      grid-column: 1 / -1;
-    }
-
     .explore {
       padding-top: 7rem;
       padding-bottom: 7rem;
@@ -652,7 +666,7 @@ const sections = copy.home.sections.map((section) => ({
       min-height: 5rem;
       padding-right: 1.4rem;
       padding-left: 1.4rem;
-      grid-template-columns: 5rem 1fr 2rem;
+      grid-template-columns: 1fr 2rem;
     }
 
     .title {
@@ -661,7 +675,7 @@ const sections = copy.home.sections.map((section) => ({
 
     .panel {
       grid-template-columns: 1fr;
-      padding: 0.5rem 1.4rem 1.4rem 6.4rem;
+      padding: 0.5rem 1.4rem 1.4rem;
     }
 
     .panel-art {
@@ -715,6 +729,7 @@ const sections = copy.home.sections.map((section) => ({
   document.querySelectorAll<HTMLElement>("[data-auto-carousel]").forEach((carousel) => {
     if (carousel.dataset.carouselReady === "true") return;
     carousel.dataset.carouselReady = "true";
+    const containingDetails = carousel.closest<HTMLDetailsElement>("details");
 
     let isHovering = false;
     let isInteracting = false;
@@ -740,7 +755,10 @@ const sections = copy.home.sections.map((section) => ({
     const animate = (currentTime: number) => {
       const delta = Math.min(currentTime - previousTime, 64);
       previousTime = currentTime;
-      const isVisible = carousel.clientWidth > 0 && carousel.getClientRects().length > 0;
+      const isVisible =
+        (!containingDetails || containingDetails.open) &&
+        carousel.clientWidth > 0 &&
+        carousel.getClientRects().length > 0;
 
       if (!isVisible) {
         autoScrollPosition = 0;

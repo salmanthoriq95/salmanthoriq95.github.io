@@ -1,0 +1,279 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  locale="id"
+  title="Halaman tidak ditemukan — Salman Thoriq"
+  description="Halaman yang kamu cari tidak tersedia."
+  noindex
+>
+  <Header locale="id" />
+
+  <main class="not-found">
+    <section class="error-content" aria-labelledby="error-title">
+      <div class="error-number" aria-label="404">
+        <span data-error-number aria-hidden="true">404</span><em aria-hidden="true">.</em>
+      </div>
+
+      <div class="message-grid">
+        <h1
+          id="error-title"
+          data-copy
+          data-id="Halaman ini tidak ditemukan."
+          data-en="This page could not be found."
+        >
+          Halaman ini tidak ditemukan.
+        </h1>
+
+        <div class="message-copy">
+          <p
+            data-copy
+            data-id="Mungkin alamatnya berubah, tautannya sudah tidak berlaku, atau halaman ini memang belum saya buat."
+            data-en="The address may have changed, the link may be outdated, or I may not have built this page yet."
+          >
+            Mungkin alamatnya berubah, tautannya sudah tidak berlaku, atau halaman ini memang belum saya buat.
+          </p>
+          <a class="home-button" href="/" data-home-link>
+            <span
+              data-copy
+              data-id="Kembali ke halaman utama"
+              data-en="Return to the homepage"
+            >Kembali ke halaman utama</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer locale="id" />
+</BaseLayout>
+
+<style>
+  .not-found {
+    background: var(--paper);
+  }
+
+  .error-content {
+    display: grid;
+    width: 100%;
+    max-width: 52rem;
+    min-height: min(44rem, calc(100svh - 4.25rem));
+    margin-inline: auto;
+    padding: 4rem var(--page-pad);
+    place-content: center;
+  }
+
+  .error-number {
+    display: flex;
+    align-items: baseline;
+    justify-self: center;
+    font-size: clamp(7rem, 36vw, 15rem);
+    font-variant-numeric: tabular-nums;
+    font-weight: 900;
+    line-height: 0.7;
+    letter-spacing: -0.11em;
+  }
+
+  .error-number span {
+    display: inline-block;
+    min-width: 2.7ch;
+    text-align: right;
+  }
+
+  .error-number em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .message-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 5rem;
+  }
+
+  h1 {
+    max-width: 31rem;
+    margin: 0;
+    font-size: clamp(2.4rem, 12vw, 5rem);
+    line-height: 0.92;
+    letter-spacing: -0.07em;
+  }
+
+  .message-copy {
+    display: grid;
+    align-content: end;
+    gap: 1.5rem;
+  }
+
+  .message-copy p {
+    max-width: 25rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .home-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: fit-content;
+    min-width: 13rem;
+    padding: 0.65rem 0.7rem 0.65rem 1rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.67rem;
+    font-weight: 800;
+    transition:
+      background-color var(--motion-duration) var(--motion-ease),
+      transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .home-button:hover,
+  .home-button:focus-visible {
+    background: var(--night);
+    transform: translateX(0.2rem);
+  }
+
+  .home-button > span:last-child {
+    margin-left: 1rem;
+  }
+
+  @media (min-width: 48rem) {
+    .error-content {
+      padding-block: 6rem;
+    }
+
+    .error-number {
+      font-size: clamp(11rem, 18vw, 15rem);
+    }
+
+    .message-grid {
+      align-items: end;
+      grid-template-columns: minmax(0, 1.3fr) minmax(15rem, 0.7fr);
+      gap: 3rem;
+    }
+  }
+</style>
+
+<script>
+  const isEnglish = window.location.pathname === "/en" || window.location.pathname.startsWith("/en/");
+  const locale = isEnglish ? "en" : "id";
+  const homePath = isEnglish ? "/en/" : "/";
+
+  document.documentElement.lang = locale;
+  document.title = isEnglish
+    ? "Page not found — Salman Thoriq"
+    : "Halaman tidak ditemukan — Salman Thoriq";
+
+  document.querySelectorAll<HTMLElement>("[data-copy]").forEach((element) => {
+    element.textContent = locale === "en"
+      ? element.dataset.en ?? ""
+      : element.dataset.id ?? "";
+  });
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-home-link]").forEach((link) => {
+    link.href = homePath;
+  });
+
+  const headerBrand = document.querySelector<HTMLAnchorElement>(".site-header .brand");
+  if (headerBrand) {
+    headerBrand.href = homePath;
+    headerBrand.ariaLabel = isEnglish
+      ? "Salman Thoriq, homepage"
+      : "Salman Thoriq, halaman utama";
+  }
+
+  const navigation = isEnglish
+    ? [
+        ["Experience", "/en/experience"],
+        ["Projects", "/en/projects"],
+        ["Writing", "/en/writing"],
+      ]
+    : [
+        ["Pengalaman", "/experience"],
+        ["Proyek", "/projects"],
+        ["Tulisan", "/writing"],
+      ];
+
+  document.querySelectorAll<HTMLAnchorElement>(".site-header nav a").forEach((link, index) => {
+    const item = navigation[index];
+    if (!item) return;
+    link.textContent = item[0];
+    link.href = item[1];
+  });
+
+  const footerLabels = document.querySelectorAll<HTMLElement>(".site-footer .label");
+  const localizedFooterLabels = isEnglish
+    ? ["Based in", "Contact", "Elsewhere", "Language"]
+    : ["Berdomisili di", "Kontak", "Temukan saya", "Bahasa"];
+
+  footerLabels.forEach((label, index) => {
+    label.textContent = localizedFooterLabels[index] ?? label.textContent;
+  });
+
+  const languageName = document.querySelector<HTMLElement>(".language-picker summary span:first-child");
+  if (languageName) languageName.textContent = isEnglish ? "English" : "Indonesia";
+
+  const contactWord = document.querySelector<HTMLAnchorElement>(".site-footer .contact-word");
+  if (contactWord) {
+    contactWord.textContent = isEnglish ? "Contact" : "Hubungi";
+    contactWord.ariaLabel = isEnglish
+      ? "Email Salman Thoriq"
+      : "Kirim email kepada Salman Thoriq";
+  }
+
+  const copyright = document.querySelector<HTMLElement>(".site-footer .copyright");
+  if (copyright) {
+    copyright.textContent = `© ${new Date().getFullYear()} Salman Thoriq · ${
+      isEnglish ? "Personal archive" : "Arsip pribadi"
+    }`;
+  }
+
+  const currentPath = window.location.pathname.replace(/^\/en(?=\/|$)/, "") || "/";
+  const languageLinks = document.querySelectorAll<HTMLAnchorElement>(".language-options a");
+  const localizedPaths = [
+    currentPath,
+    currentPath === "/" ? "/en/" : `/en${currentPath}`,
+  ];
+  const languageNames = ["Indonesia", "English"];
+
+  languageLinks.forEach((link, index) => {
+    link.href = localizedPaths[index] ?? link.href;
+    link.textContent = languageNames[index] ?? link.textContent;
+    link.toggleAttribute("aria-current", index === (isEnglish ? 1 : 0));
+  });
+
+  const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+  if (description) {
+    description.content = isEnglish
+      ? "The page you are looking for is not available."
+      : "Halaman yang kamu cari tidak tersedia.";
+  }
+
+  const number = document.querySelector<HTMLElement>("[data-error-number]");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (number && !reduceMotion) {
+    const finalNumber = "404";
+    const duration = 1000;
+    const interval = 70;
+    const startedAt = performance.now();
+
+    const scramble = window.setInterval(() => {
+      number.textContent = Array.from({ length: finalNumber.length }, () =>
+        Math.floor(Math.random() * 10),
+      ).join("");
+
+      if (performance.now() - startedAt >= duration) {
+        window.clearInterval(scramble);
+        number.textContent = finalNumber;
+      }
+    }, interval);
+  }
+</script>

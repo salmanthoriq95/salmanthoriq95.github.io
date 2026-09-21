@@ -1,0 +1,134 @@
+export const ui = {
+  id: {
+    meta: {
+      title: "Salman Thoriq — Portofolio Pribadi",
+      description: "Pengalaman, proyek pilihan, dan tulisan Salman Thoriq.",
+    },
+    navigation: {
+      label: "Navigasi utama",
+      homeLabel: "Salman Thoriq, halaman utama",
+      links: [
+        { label: "Pengalaman", path: "/experience" },
+        { label: "Proyek", path: "/projects" },
+        { label: "Tulisan", path: "/writing" },
+      ],
+    },
+    language: {
+      label: "Pilih bahasa",
+    },
+    home: {
+      praIdentity: "Saya,",
+      identity: "Aku Salman Thoriq Al Farisyi",
+      intro:
+        "Arsip pribadi tentang pengalaman, proyek, dan berbagai hal yang saya pelajari ketika membangun untuk web.",
+      scroll: "Jelajahi",
+      kicker: "Mulai di sini",
+      headingEmphasis: "Jelajahi",
+      headingRest: "ruang saya",
+      sectionIntro:
+        "Tiga bagian dari perjalanan yang sama: tempat saya bertumbuh, hal yang saya buat, dan pelajaran yang saya temukan.",
+      sections: [
+        {
+          number: "01.",
+          title: "Pengalaman",
+          description:
+            "Linimasa singkat tentang peran, tanggung jawab, dan pelajaran yang membentuk cara saya bekerja.",
+          path: "/experience",
+          cta: "Lihat perjalanan saya",
+        },
+        {
+          number: "02.",
+          title: "Proyek",
+          description:
+            "Pilihan hal yang pernah saya rancang, bangun, atau eksplorasi beserta pemikiran di baliknya.",
+          path: "/projects",
+          cta: "Lihat proyek",
+        },
+        {
+          number: "03.",
+          title: "Tulisan",
+          description:
+            "Catatan tentang teknologi, pemecahan masalah, dan hal-hal yang sedang saya pelajari.",
+          path: "/writing",
+          cta: "Baca catatan saya",
+        },
+      ],
+    },
+    footer: {
+      basedIn: "Berdomisili di",
+      contact: "Kontak",
+      elsewhere: "Temukan saya",
+      archive: "Arsip pribadi",
+      language: "Bahasa",
+      languageName: "Indonesia",
+      contactWord: "Hubungi",
+      emailLabel: "Kirim email kepada Salman Thoriq",
+    },
+  },
+  en: {
+    meta: {
+      title: "Salman Thoriq — Personal Portfolio",
+      description: "Experience, selected projects, and writing by Salman Thoriq.",
+    },
+    navigation: {
+      label: "Primary navigation",
+      homeLabel: "Salman Thoriq, homepage",
+      links: [
+        { label: "Experience", path: "/experience" },
+        { label: "Projects", path: "/projects" },
+        { label: "Writing", path: "/writing" },
+      ],
+    },
+    language: {
+      label: "Choose language",
+    },
+    home: {
+      praIdentity: "I'm",
+      identity: "Salman Thoriq Al Farisyi",
+      intro:
+        "A personal archive of my experience, projects, and notes from things I learn while building for the web.",
+      scroll: "Explore",
+      kicker: "Start here",
+      headingEmphasis: "Explore",
+      headingRest: "my space",
+      sectionIntro:
+        "Three parts of the same ongoing story: where I have been, what I have made, and what I have learned.",
+      sections: [
+        {
+          number: "01.",
+          title: "Experience",
+          description:
+            "A concise timeline of the roles, responsibilities, and lessons that have shaped how I work.",
+          path: "/experience",
+          cta: "See my journey",
+        },
+        {
+          number: "02.",
+          title: "Projects",
+          description:
+            "Selected things I have designed, built, or explored—along with the thinking behind them.",
+          path: "/projects",
+          cta: "Browse projects",
+        },
+        {
+          number: "03.",
+          title: "Writing",
+          description:
+            "Notes on technology, problem-solving, and whatever I am currently learning along the way.",
+          path: "/writing",
+          cta: "Read my notes",
+        },
+      ],
+    },
+    footer: {
+      basedIn: "Based in",
+      contact: "Contact",
+      elsewhere: "Elsewhere",
+      archive: "Personal archive",
+      language: "Language",
+      languageName: "English",
+      contactWord: "Contact",
+      emailLabel: "Email Salman Thoriq",
+    },
+  },
+} as const;

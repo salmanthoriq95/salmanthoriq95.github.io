@@ -1,0 +1,273 @@
+---
+import {
+  defaultLocale,
+  getLocalizedPath,
+  localeNames,
+  supportedLocales,
+  type Locale,
+} from "../i18n";
+import { ui } from "../i18n/ui";
+import SocialLinks from "./SocialLinks.astro";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const copy = ui[locale].footer;
+const year = new Date().getFullYear();
+---
+
+<footer id="contact" class="site-footer">
+  <div class="footer-meta">
+    <div>
+      <p class="label">{copy.basedIn}</p>
+      <p>Indonesia<br />UTC +7</p>
+    </div>
+
+    <div>
+      <p class="label">{copy.contact}</p>
+      <a href="mailto:salmanthoriq95@gmail.com">salmanthoriq95@gmail.com</a>
+    </div>
+
+    <div>
+      <p class="label">{copy.elsewhere}</p>
+      <SocialLinks />
+    </div>
+
+    <div class="language-picker">
+      <p class="label">{copy.language}</p>
+      <details data-smooth-details>
+        <summary>
+          <span>{copy.languageName}</span>
+          <span class="language-toggle" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="language-options" aria-label={ui[locale].language.label}>
+          {supportedLocales.map((supportedLocale) => (
+            <a
+              href={getLocalizedPath(supportedLocale, Astro.url.pathname)}
+              lang={supportedLocale}
+              hreflang={supportedLocale}
+              aria-label={localeNames[supportedLocale]}
+              aria-current={supportedLocale === locale ? "page" : undefined}
+            >
+              {ui[supportedLocale].footer.languageName}
+            </a>
+          ))}
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <a class="contact-word" href="mailto:salmanthoriq95@gmail.com" aria-label={copy.emailLabel}>
+    {copy.contactWord}
+  </a>
+  <p class="copyright">© {year} Salman Thoriq · {copy.archive}</p>
+</footer>
+
+<style>
+  .site-footer {
+    overflow: hidden;
+    padding: 3.5rem var(--page-pad) 1.75rem;
+    background: var(--night);
+    color: #f7f2f7;
+  }
+
+  .footer-meta {
+    display: grid;
+    gap: 2rem;
+    padding-bottom: 4rem;
+  }
+
+  p {
+    margin: 0;
+    color: #c9bdca;
+    font-size: 0.76rem;
+    line-height: 1.6;
+  }
+
+  .label {
+    margin-bottom: 0.55rem;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .footer-meta a {
+    display: inline-block;
+    color: #c9bdca;
+    font-size: 0.76rem;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.2rem;
+    transition:
+      color var(--motion-duration) var(--motion-ease),
+      text-decoration-color var(--motion-duration) var(--motion-ease);
+  }
+
+  .footer-meta a:hover,
+  .footer-meta a:focus-visible {
+    color: #fff;
+    text-decoration-color: currentColor;
+  }
+
+  .language-picker details {
+    max-width: 16rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  .language-picker summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 0 0.55rem;
+    cursor: pointer;
+    color: #c9bdca;
+    font-size: 0.76rem;
+    list-style: none;
+    text-transform: uppercase;
+  }
+
+  .language-picker summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .language-picker summary:focus-visible {
+    outline: 2px solid var(--electric);
+    outline-offset: 0.25rem;
+  }
+
+  .language-toggle {
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1;
+    transition: transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .language-picker details[open] .language-toggle {
+    transform: rotate(180deg);
+  }
+
+  .language-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.15rem 0 0.65rem;
+  }
+
+  .language-options a {
+    width: 100%;
+    padding: 0.45rem 0.55rem;
+    border-radius: 0.35rem;
+    text-transform: uppercase;
+  }
+
+  .language-options a:hover,
+  .language-options a:focus-visible {
+    background: rgba(255, 255, 255, 0.08);
+    text-decoration-color: transparent;
+  }
+
+  .language-options a[aria-current="page"] {
+    color: #fff;
+    text-decoration-color: var(--electric);
+  }
+
+  .contact-word {
+    display: block;
+    width: 100%;
+    padding-bottom: 0.12em;
+    color: var(--electric);
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+    font-size: clamp(3.85rem, 20vw, 16rem);
+    font-weight: 900;
+    line-height: 0.8;
+    letter-spacing: -0.09em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .copyright {
+    margin-top: 1.25rem;
+    text-align: center;
+  }
+
+  @media (min-width: 36rem) {
+    .footer-meta {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .site-footer {
+      padding-top: 5rem;
+    }
+
+    .footer-meta {
+      grid-template-columns: 0.8fr 1.2fr 0.8fr 1fr;
+      padding-bottom: 5.5rem;
+    }
+
+  }
+</style>
+
+<script>
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  document.querySelectorAll<HTMLDetailsElement>("details[data-smooth-details]").forEach((details) => {
+    const summary = details.querySelector<HTMLElement>("summary");
+
+    if (!summary || details.dataset.motionReady === "true") return;
+    details.dataset.motionReady = "true";
+
+    let animation: Animation | undefined;
+
+    summary.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      if (animation) {
+        animation.commitStyles();
+        animation.cancel();
+      }
+
+      if (reduceMotion.matches) {
+        details.open = !details.open;
+        return;
+      }
+
+      const startHeight = `${details.getBoundingClientRect().height}px`;
+      const isClosing = details.open;
+
+      if (isClosing) {
+        details.dataset.closing = "true";
+      } else {
+        details.open = true;
+        delete details.dataset.closing;
+      }
+
+      const endHeight = isClosing
+        ? `${summary.getBoundingClientRect().height}px`
+        : `${details.scrollHeight}px`;
+
+      details.style.overflow = "hidden";
+      animation = details.animate(
+        { height: [startHeight, endHeight] },
+        {
+          duration: 360,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        },
+      );
+
+      animation.addEventListener("finish", () => {
+        details.open = !isClosing;
+        delete details.dataset.closing;
+        details.style.removeProperty("overflow");
+        details.style.removeProperty("height");
+        animation = undefined;
+      }, { once: true });
+    });
+  });
+</script>

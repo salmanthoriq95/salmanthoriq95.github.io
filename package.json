@@ -2,7 +2,7 @@
   "name": "salmanthoriq95.github.io",
   "type": "module",
   "author": "Salman Thoriq Al Farisyi",
-  "description": "This is my personal blog",
+  "description": "Personal portfolio and writing by Salman Thoriq Al Farisyi",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
@@ -12,8 +12,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.41.4",
-    "astro": "^7.0.2",
-    "sharp": "^0.34.5"
+    "astro": "^7.3.3",
+    "sharp": "^0.35.4",
+    "simple-icons": "^16.32.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
   }
 }

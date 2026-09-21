@@ -1,0 +1,459 @@
+---
+import { defaultLocale, getLocalizedPath, type Locale } from "../i18n";
+import { ui } from "../i18n/ui";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Footer from "./Footer.astro";
+import Header from "./Header.astro";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const copy = ui[locale];
+const sections = copy.home.sections.map((section) => ({
+  ...section,
+  href: getLocalizedPath(locale, section.path),
+}));
+---
+
+<BaseLayout
+  locale={locale}
+  title={copy.meta.title}
+  description={copy.meta.description}
+>
+  <Header locale={locale} />
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-heading">
+        <h1 id="hero-title" aria-label="Hello.">
+          <span
+            class="greeting"
+            data-greeting
+            data-greetings='["Hello","Halo","Ciao","Bonjour","Hola","Hallo","Olá"]'
+            aria-hidden="true"
+          >Hello</span><span class="greeting-dot" aria-hidden="true">.</span>
+        </h1>
+        <p class="hero-mark"><span class="greeting-dot">{copy.home.praIdentity}</span> {copy.home.identity}</p>
+      </div>
+
+      <p class="intro">
+        {copy.home.intro}
+      </p>
+
+      <a class="scroll-cue" href="#explore">
+        {copy.home.scroll}
+        <span aria-hidden="true">↓</span>
+      </a>
+    </section>
+
+    <section id="explore" class="explore" aria-labelledby="explore-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker"><span></span> {copy.home.kicker}</p>
+          <h2 id="explore-title"><em>{copy.home.headingEmphasis}</em> {copy.home.headingRest}</h2>
+        </div>
+        <p class="section-copy">
+          {copy.home.sectionIntro}
+        </p>
+      </div>
+
+      <div class="accordion">
+        {sections.map((section, index) => (
+          <details open={index === 0} data-smooth-details>
+            <summary>
+              <span class="number">{section.number}</span>
+              <span class="title">{section.title}</span>
+              <span class="toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="panel">
+              <p>{section.description}</p>
+              <a href={section.href}>
+                {section.cta}
+                <span aria-hidden="true">↗</span>
+              </a>
+              <div class="panel-art" aria-hidden="true">
+                <span>{section.number.slice(0, 2)}</span>
+              </div>
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+</BaseLayout>
+
+<style>
+  .hero {
+    --content-width: 52rem;
+    position: relative;
+    display: grid;
+    min-height: calc(100svh - 2rem);
+    padding: 3rem var(--page-pad) 1.5rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(28rem, 1fr) auto auto;
+  }
+
+  .hero-heading {
+    align-self: center;
+  }
+
+  h1 {
+    display: flex;
+    align-items: baseline;
+    margin: 0;
+    font-size: clamp(4.5rem, 24vw, 13rem);
+    font-weight: 800;
+    line-height: 0.77;
+    letter-spacing: -0.095em;
+    white-space: nowrap;
+  }
+
+  .greeting-dot {
+    color: var(--accent);
+  }
+
+  .hero-mark {
+    margin: 1.15rem 0 0 0.15rem;
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  .intro {
+    align-self: end;
+    max-width: 34rem;
+    margin: 0 0 3.5rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .scroll-cue {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.69rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .scroll-cue span {
+    color: var(--accent);
+    font-size: 1rem;
+  }
+
+  .explore {
+    padding: 5rem var(--page-pad);
+    background: #fff;
+  }
+
+  .section-heading {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 52rem;
+    margin: 0 auto 2.5rem;
+  }
+
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.6rem;
+    color: var(--muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
+  .kicker span {
+    width: 1rem;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(2.35rem, 12vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.065em;
+  }
+
+  h2 em {
+    color: var(--accent);
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+  }
+
+  .section-copy {
+    max-width: 23rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .accordion {
+    display: grid;
+    gap: 0.65rem;
+    max-width: 52rem;
+    margin: 0 auto;
+  }
+
+  details {
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--paper);
+    transition:
+      background-color var(--motion-duration) var(--motion-ease),
+      color var(--motion-duration) var(--motion-ease);
+  }
+
+  details[open] {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  summary {
+    display: grid;
+    align-items: center;
+    min-height: 4.25rem;
+    padding: 0.9rem 1rem;
+    cursor: pointer;
+    list-style: none;
+    grid-template-columns: 2.7rem 1fr 2rem;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -4px;
+  }
+
+  .number {
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .toggle {
+    position: relative;
+    width: 1.8rem;
+    height: 1.8rem;
+    justify-self: end;
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  .toggle::before,
+  .toggle::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0.65rem;
+    height: 1px;
+    background: var(--ink);
+    content: "";
+    transform: translate(-50%, -50%);
+  }
+
+  .toggle::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+    transition: transform var(--motion-duration) var(--motion-ease);
+  }
+
+  details[open] .toggle {
+    background: var(--accent);
+  }
+
+  details[open] .toggle::before,
+  details[open] .toggle::after {
+    background: #fff;
+  }
+
+  details[open] .toggle::after {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  .panel {
+    display: grid;
+    gap: 1.25rem;
+    padding: 0.25rem 1rem 1rem 3.7rem;
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    transition:
+      opacity var(--motion-duration) var(--motion-ease),
+      transform var(--motion-duration) var(--motion-ease);
+  }
+
+  details[open]:not([data-closing]) .panel {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .panel p {
+    max-width: 27rem;
+    margin: 0;
+    color: #bdbdbd;
+    font-size: 0.76rem;
+  }
+
+  .panel a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: fit-content;
+    min-width: 9.5rem;
+    padding: 0.55rem 0.6rem 0.55rem 0.9rem;
+    border-radius: 999px;
+    background: var(--accent);
+    font-size: 0.67rem;
+    font-weight: 800;
+    transition:
+      background-color var(--motion-duration) var(--motion-ease),
+      transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .panel a:hover,
+  .panel a:focus-visible {
+    background: var(--electric);
+    transform: translateX(0.2rem);
+  }
+
+  .panel a span {
+    margin-left: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .panel-art {
+    display: grid;
+    overflow: hidden;
+    min-height: 8rem;
+    margin-top: 0.5rem;
+    place-items: center;
+    border-radius: 0.75rem;
+    background:
+      linear-gradient(135deg, transparent 49.5%, rgba(255, 255, 255, 0.18) 50%, transparent 50.5%),
+      var(--electric);
+    color: var(--ink);
+  }
+
+  .panel-art span {
+    font-family: "Arial Black", Arial, sans-serif;
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: -0.1em;
+  }
+
+  @media (min-width: 48rem) {
+    .hero {
+      min-height: calc(100vh - 4.8rem);
+      padding-top: 4rem;
+      padding-right: max(var(--page-pad), calc((100vw - var(--content-width)) / 2));
+      padding-left: max(var(--page-pad), calc((100vw - var(--content-width)) / 2));
+      column-gap: clamp(2rem, 5vw, 4rem);
+      grid-template-columns: minmax(0, 1.65fr) minmax(13rem, 0.8fr);
+      grid-template-rows: 1fr auto;
+    }
+
+    .hero-heading {
+      align-self: center;
+      margin: 0;
+      padding-top: 0;
+      transform: translateY(5vh);
+    }
+
+    h1 {
+      font-size: clamp(5rem, 9vw, 8rem);
+    }
+
+    .intro {
+      align-self: center;
+      margin: 0;
+      transform: translateY(5vh);
+    }
+
+    .scroll-cue {
+      grid-column: 1 / -1;
+    }
+
+    .explore {
+      padding-top: 7rem;
+      padding-bottom: 7rem;
+    }
+
+    summary {
+      min-height: 5rem;
+      padding-right: 1.4rem;
+      padding-left: 1.4rem;
+      grid-template-columns: 5rem 1fr 2rem;
+    }
+
+    .title {
+      font-size: 1.25rem;
+    }
+
+    .panel {
+      grid-template-columns: 1fr;
+      padding: 0.5rem 1.4rem 1.4rem 6.4rem;
+    }
+
+    .panel-art {
+      min-height: 14rem;
+      margin-top: 0.5rem;
+    }
+  }
+
+</style>
+
+<script>
+  const greeting = document.querySelector<HTMLElement>("[data-greeting]");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (greeting && !reduceMotion.matches && greeting.dataset.typingReady !== "true") {
+    greeting.dataset.typingReady = "true";
+
+    const greetings = JSON.parse(greeting.dataset.greetings ?? "[]") as string[];
+    let greetingIndex = 0;
+    let characterIndex = Array.from(greetings[0] ?? "Hello").length;
+    let isDeleting = true;
+
+    const tick = () => {
+      const word = Array.from(greetings[greetingIndex] ?? "Hello");
+
+      if (isDeleting) {
+        characterIndex = Math.max(0, characterIndex - 1);
+      } else {
+        characterIndex = Math.min(word.length, characterIndex + 1);
+      }
+
+      greeting.textContent = word.slice(0, characterIndex).join("");
+
+      let delay = isDeleting ? 55 : 105;
+
+      if (isDeleting && characterIndex === 0) {
+        isDeleting = false;
+        greetingIndex = (greetingIndex + 1) % greetings.length;
+        delay = 360;
+      } else if (!isDeleting && characterIndex === word.length) {
+        isDeleting = true;
+        delay = 1600;
+      }
+
+      window.setTimeout(tick, delay);
+    };
+
+    window.setTimeout(tick, 1800);
+  }
+</script>

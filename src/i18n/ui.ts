@@ -1,8 +1,8 @@
 export const ui = {
   id: {
     meta: {
-      title: "Salman Thoriq — Portofolio Pribadi",
-      description: "Pengalaman, proyek pilihan, dan tulisan Salman Thoriq.",
+      title: "Salman Thoriq Al Farisyi — Software Engineer",
+      description: "Pengalaman dan pemikiran dari Salman Thoriq Al Farisyi.",
     },
     navigation: {
       label: "Navigasi utama",
@@ -41,6 +41,14 @@ export const ui = {
         cta: "Jelajahi semua proyek",
         ariaLabel: "Proyek Salman Thoriq",
       },
+      writingPreview: {
+        title: "Yang sedang saya pikirkan",
+        intro:
+          "Tulisan terbaru diambil langsung dari arsip publish dan tersusun otomatis mengikuti topik foldernya.",
+        cta: "Jelajahi semua tulisan",
+        ariaLabel: "Tulisan terbaru Salman Thoriq",
+        empty: "Tulisan pertama sedang dipersiapkan.",
+      },
       sections: [
         {
           number: "01.",
@@ -67,6 +75,65 @@ export const ui = {
           cta: "Baca catatan saya",
         },
       ],
+    },
+    writing: {
+      meta: {
+        title: "Tulisan — Salman Thoriq",
+        description:
+          "Catatan Salman Thoriq tentang pemrograman, pemecahan masalah, dan hal-hal yang sedang dipelajari.",
+      },
+      hero: {
+        label: "Arsip tulisan",
+        emphasis: "Catatan",
+        title: "dari perjalanan",
+        intro:
+          "Hal-hal yang ingin saya pahami lebih lama: ditulis, disusun berdasarkan topik, lalu dibagikan agar dapat ditemukan kembali.",
+        count: "tulisan dipublikasikan",
+      },
+      filters: {
+        label: "Saring berdasarkan bahasa",
+        all: "Semua bahasa",
+        id: "Indonesia",
+        en: "Inggris",
+        empty: "Belum ada tulisan dalam bahasa ini.",
+      },
+      topics: {
+        label: "Jelajahi topik",
+        title: "Mulai dari sebuah topik",
+        intro:
+          "Setiap folder menjadi jalur baca. Pilih topik untuk melihat seluruh tulisan di dalamnya, termasuk semua subtopik.",
+        empty: "Topik akan muncul otomatis ketika tulisan pertama diterbitkan.",
+        article: "tulisan",
+        childLabel: "Subtopik",
+      },
+      latest: {
+        label: "Semua tulisan",
+        title: "Terbaru dari arsip",
+        intro:
+          "Daftar ini diperbarui otomatis setiap kali file Markdown atau MDX baru ditambahkan ke folder publish.",
+        emptyTitle: "Arsipnya masih kosong.",
+        emptyBody:
+          "Tulisan pertama akan muncul di sini setelah sebuah file diterbitkan dari folder publish.",
+      },
+      article: {
+        back: "Kembali ke tulisan",
+        published: "Diterbitkan",
+        updated: "Diperbarui",
+        language: "Bahasa",
+        topics: "Topik",
+        contents: "Di halaman ini",
+        relatedLabel: "Baca berikutnya",
+        relatedTitle: "Dari topik yang sama",
+        readIn: "Baca versi",
+        id: "Bahasa Indonesia",
+        en: "Bahasa Inggris",
+      },
+      topic: {
+        label: "Topik tulisan",
+        back: "Semua tulisan",
+        intro:
+          "Seluruh tulisan dalam topik ini, termasuk yang tersimpan di subtopik di bawahnya.",
+      },
     },
     footer: {
       basedIn: "Berdomisili di",
@@ -121,6 +188,14 @@ export const ui = {
         cta: "Explore all projects",
         ariaLabel: "Projects by Salman Thoriq",
       },
+      writingPreview: {
+        title: "What I am thinking about",
+        intro:
+          "The latest writing comes directly from the publish archive and is organized automatically by its folder topics.",
+        cta: "Explore all writing",
+        ariaLabel: "Latest writing by Salman Thoriq",
+        empty: "The first article is being prepared.",
+      },
       sections: [
         {
           number: "01.",
@@ -147,6 +222,65 @@ export const ui = {
           cta: "Read my notes",
         },
       ],
+    },
+    writing: {
+      meta: {
+        title: "Writing — Salman Thoriq",
+        description:
+          "Notes by Salman Thoriq on programming, problem-solving, and things learned along the way.",
+      },
+      hero: {
+        label: "Writing archive",
+        emphasis: "Notes",
+        title: "from the journey",
+        intro:
+          "Things I want to understand for longer: written down, organized by topic, and shared so they can be found again.",
+        count: "published articles",
+      },
+      filters: {
+        label: "Filter by language",
+        all: "All languages",
+        id: "Indonesian",
+        en: "English",
+        empty: "There are no articles in this language yet.",
+      },
+      topics: {
+        label: "Explore topics",
+        title: "Start with a topic",
+        intro:
+          "Every folder becomes a reading path. Choose a topic to see everything inside it, including all of its subtopics.",
+        empty: "Topics will appear automatically when the first article is published.",
+        article: "articles",
+        childLabel: "Subtopics",
+      },
+      latest: {
+        label: "All writing",
+        title: "Latest from the archive",
+        intro:
+          "This list updates automatically whenever a new Markdown or MDX file is added to the publish folder.",
+        emptyTitle: "The archive is still empty.",
+        emptyBody:
+          "The first article will appear here after a file is released from the publish folder.",
+      },
+      article: {
+        back: "Back to writing",
+        published: "Published",
+        updated: "Updated",
+        language: "Language",
+        topics: "Topics",
+        contents: "On this page",
+        relatedLabel: "Read next",
+        relatedTitle: "From the same topic",
+        readIn: "Read in",
+        id: "Indonesian",
+        en: "English",
+      },
+      topic: {
+        label: "Writing topic",
+        back: "All writing",
+        intro:
+          "Every article in this topic, including those stored in any subtopics below it.",
+      },
     },
     footer: {
       basedIn: "Based in",

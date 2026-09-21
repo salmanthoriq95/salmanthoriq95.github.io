@@ -1,0 +1,304 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  locale="id"
+  title="Halaman tidak ditemukan — Salman Thoriq"
+  description="Halaman yang kamu cari tidak tersedia."
+  noindex
+>
+  <main class="not-found">
+    <header class="error-header">
+      <a class="brand" href="/" data-home-link data-home-label aria-label="Salman Thoriq, halaman utama">
+        <span>Salman </span><span class="brand-accent">.T</span>
+      </a>
+      <p data-copy data-id="Kesalahan 404" data-en="Error 404">Kesalahan 404</p>
+    </header>
+
+    <section class="error-content" aria-labelledby="error-title">
+      <p
+        class="eyebrow"
+      >
+        <span></span><span
+          data-copy
+          data-id="Sepertinya kamu tersesat"
+          data-en="It looks like you are lost"
+        >Sepertinya kamu tersesat</span>
+      </p>
+
+      <div class="error-number" aria-hidden="true">
+        <span>404</span><em>.</em>
+      </div>
+
+      <div class="message-grid">
+        <h1
+          id="error-title"
+          data-copy
+          data-id="Halaman ini tidak ditemukan."
+          data-en="This page could not be found."
+        >
+          Halaman ini tidak ditemukan.
+        </h1>
+
+        <div class="message-copy">
+          <p
+            data-copy
+            data-id="Mungkin alamatnya berubah, tautannya sudah tidak berlaku, atau halaman ini memang belum saya buat."
+            data-en="The address may have changed, the link may be outdated, or I may not have built this page yet."
+          >
+            Mungkin alamatnya berubah, tautannya sudah tidak berlaku, atau halaman ini memang belum saya buat.
+          </p>
+          <a class="home-button" href="/" data-home-link>
+            <span
+              data-copy
+              data-id="Kembali ke halaman utama"
+              data-en="Return to the homepage"
+            >Kembali ke halaman utama</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="error-card" aria-hidden="true">
+        <span>404</span>
+        <span
+          data-copy
+          data-id="Tidak ada apa-apa di sini"
+          data-en="There is nothing here"
+        >Tidak ada apa-apa di sini</span>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .not-found {
+    display: grid;
+    min-height: 100svh;
+    background: var(--paper);
+    grid-template-rows: auto 1fr;
+  }
+
+  .error-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem var(--page-pad);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .brand {
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.055em;
+    text-transform: uppercase;
+  }
+
+  .brand-accent {
+    color: var(--accent);
+  }
+
+  .error-header p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .error-content {
+    display: grid;
+    width: 100%;
+    max-width: 52rem;
+    margin-inline: auto;
+    padding: 3rem var(--page-pad) 1rem;
+    grid-template-rows: auto auto 1fr auto;
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow > span:first-child {
+    width: 1rem;
+    height: 2px;
+    flex: 0 0 auto;
+    background: var(--accent);
+  }
+
+  .error-number {
+    display: flex;
+    align-items: baseline;
+    align-self: center;
+    margin-top: 4rem;
+    font-size: clamp(7rem, 36vw, 15rem);
+    font-weight: 900;
+    line-height: 0.7;
+    letter-spacing: -0.11em;
+  }
+
+  .error-number em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .message-grid {
+    display: grid;
+    align-self: center;
+    gap: 1.5rem;
+    margin: 4rem 0;
+  }
+
+  h1 {
+    max-width: 31rem;
+    margin: 0;
+    font-size: clamp(2.4rem, 12vw, 5rem);
+    line-height: 0.92;
+    letter-spacing: -0.07em;
+  }
+
+  .message-copy {
+    display: grid;
+    align-content: end;
+    gap: 1.5rem;
+  }
+
+  .message-copy p {
+    max-width: 25rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .home-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: fit-content;
+    min-width: 13rem;
+    padding: 0.65rem 0.7rem 0.65rem 1rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.67rem;
+    font-weight: 800;
+    transition:
+      background-color var(--motion-duration) var(--motion-ease),
+      transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .home-button:hover,
+  .home-button:focus-visible {
+    background: var(--night);
+    transform: translateX(0.2rem);
+  }
+
+  .home-button > span:last-child {
+    margin-left: 1rem;
+  }
+
+  .error-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 5rem;
+    padding: 1rem 1.25rem;
+    overflow: hidden;
+    border-radius: var(--radius) var(--radius) 0 0;
+    background: var(--night);
+    color: var(--electric);
+    font-size: 0.63rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .error-card > span:first-child {
+    font-size: 2.25rem;
+    letter-spacing: -0.06em;
+  }
+
+  @media (min-width: 48rem) {
+    .error-header {
+      padding-top: 1.4rem;
+      padding-right: max(var(--page-pad), calc((100vw - 52rem) / 2));
+      padding-bottom: 1.4rem;
+      padding-left: max(var(--page-pad), calc((100vw - 52rem) / 2));
+    }
+
+    .brand {
+      font-size: 0.9rem;
+    }
+
+    .error-content {
+      padding: 4rem 0 0;
+    }
+
+    .error-number {
+      justify-self: center;
+      margin-top: 3rem;
+      font-size: clamp(11rem, 18vw, 15rem);
+    }
+
+    .message-grid {
+      align-items: end;
+      margin: 3rem 0 5rem;
+      grid-template-columns: minmax(0, 1.3fr) minmax(15rem, 0.7fr);
+      gap: 3rem;
+    }
+
+    .error-card {
+      min-height: 6rem;
+      padding-right: 1.5rem;
+      padding-left: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  const isEnglish = window.location.pathname === "/en" || window.location.pathname.startsWith("/en/");
+  const locale = isEnglish ? "en" : "id";
+  const homePath = isEnglish ? "/en/" : "/";
+
+  document.documentElement.lang = locale;
+  document.title = isEnglish
+    ? "Page not found — Salman Thoriq"
+    : "Halaman tidak ditemukan — Salman Thoriq";
+
+  document.querySelectorAll<HTMLElement>("[data-copy]").forEach((element) => {
+    element.textContent = locale === "en"
+      ? element.dataset.en ?? ""
+      : element.dataset.id ?? "";
+  });
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-home-link]").forEach((link) => {
+    link.href = homePath;
+  });
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-home-label]").forEach((link) => {
+    link.ariaLabel = isEnglish
+      ? "Salman Thoriq, homepage"
+      : "Salman Thoriq, halaman utama";
+  });
+
+  const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+  if (description) {
+    description.content = isEnglish
+      ? "The page you are looking for is not available."
+      : "Halaman yang kamu cari tidak tersedia.";
+  }
+</script>

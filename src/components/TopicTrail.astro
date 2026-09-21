@@ -1,0 +1,82 @@
+---
+import { type Locale } from "../i18n";
+import {
+  getTopicLabel,
+  getTopicPath,
+  getTopicSegments,
+  type WritingEntry,
+} from "../lib/writing";
+
+interface Props {
+  entry: WritingEntry;
+  locale: Locale;
+  compact?: boolean;
+}
+
+const { entry, locale, compact = false } = Astro.props;
+const topics = getTopicSegments(entry);
+---
+
+{
+  topics.length > 0 && (
+    <ul class:list={["topic-trail", { compact }]} aria-label="Topics">
+      {topics.map((topic, index) => {
+        const segments = topics.slice(0, index + 1);
+
+        return (
+          <li>
+            <a href={getTopicPath(segments, locale)}>
+              {getTopicLabel(topic, locale)}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  )
+}
+
+<style>
+  .topic-trail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: block;
+    padding: 0.36rem 0.62rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 0.61rem;
+    font-weight: 700;
+    line-height: 1;
+    transition:
+      border-color var(--motion-duration) var(--motion-ease),
+      background-color var(--motion-duration) var(--motion-ease),
+      color var(--motion-duration) var(--motion-ease);
+  }
+
+  a:hover,
+  a:focus-visible {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .compact a {
+    padding: 0.3rem 0.52rem;
+    border-color: rgba(255, 255, 255, 0.16);
+    color: #c9c9c9;
+  }
+
+  .compact a:hover,
+  .compact a:focus-visible {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+  }
+</style>

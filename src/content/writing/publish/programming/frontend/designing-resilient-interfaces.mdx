@@ -1,0 +1,44 @@
+---
+title: "Designing Interfaces That Fail Gracefully"
+description: "A sample note on loading, empty, error, and recovery states in resilient web interfaces."
+publishedAt: 2026-09-18
+language: en
+draft: false
+featured: false
+---
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla
+non metus auctor fringilla. An interface is not only the state we show in a
+perfect screenshot; it is also every transition around that state.
+
+## Design the edges first
+
+Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Start with the
+moments where data has not arrived, a request has failed, or a list has no
+items. These edges reveal what the interface truly needs to communicate.
+
+- loading should preserve context;
+- empty states should explain what can happen next;
+- errors should offer a useful recovery path; and
+- success should be clear without interrupting the user.
+
+## Make recovery visible
+
+Nullam quis risus eget urna mollis ornare vel eu leo. A retry action is useful
+only when the user understands what failed and whether repeating the action is
+safe.
+
+```ts
+type ViewState = "loading" | "empty" | "ready" | "error";
+```
+
+### Motion should clarify
+
+Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Motion can
+connect two states, but it should never hide an important change or prevent the
+user from acting.
+
+## Closing note
+
+This English-only sample makes it possible to inspect language filtering while
+keeping the topic hierarchy and article layout realistic.

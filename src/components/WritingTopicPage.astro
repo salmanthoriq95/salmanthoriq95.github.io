@@ -1,0 +1,340 @@
+---
+import { defaultLocale, getLocalizedPath, type Locale } from "../i18n";
+import { ui } from "../i18n/ui";
+import {
+  getDirectChildTopics,
+  getPublishedWriting,
+  getTopicLabel,
+  getTopicPath,
+  isEntryInTopic,
+} from "../lib/writing";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Footer from "./Footer.astro";
+import Header from "./Header.astro";
+import WritingCard from "./WritingCard.astro";
+
+interface Props {
+  locale?: Locale;
+  topic: string;
+}
+
+const { locale = defaultLocale, topic } = Astro.props;
+const copy = ui[locale].writing;
+const segments = topic.split("/").filter(Boolean);
+const allEntries = await getPublishedWriting();
+const entries = allEntries.filter((entry) => isEntryInTopic(entry, segments));
+const childTopics = getDirectChildTopics(allEntries, segments);
+const topicTitle = getTopicLabel(segments.at(-1) ?? topic, locale);
+const writingPath = getLocalizedPath(locale, "/writing");
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${topicTitle} — ${copy.meta.title}`}
+  description={copy.topic.intro}
+>
+  <Header locale={locale} />
+
+  <main>
+    <section class="topic-hero" aria-labelledby="topic-title">
+      <a class="back-link" href={writingPath}>← {copy.topic.back}</a>
+
+      <div class="topic-heading">
+        <div>
+          <p class="eyebrow"><span></span>{copy.topic.label}</p>
+          <h1 id="topic-title">{topicTitle}<span>.</span></h1>
+        </div>
+        <p>{copy.topic.intro}</p>
+      </div>
+
+      <nav class="breadcrumbs" aria-label={copy.article.topics}>
+        {segments.map((segment, index) => (
+          <a
+            href={getTopicPath(segments.slice(0, index + 1), locale)}
+            aria-current={index === segments.length - 1 ? "page" : undefined}
+          >
+            {getTopicLabel(segment, locale)}
+          </a>
+        ))}
+      </nav>
+    </section>
+
+    {
+      childTopics.length > 0 && (
+        <section class="subtopics" aria-labelledby="subtopics-title">
+          <p class="eyebrow"><span></span>{copy.topics.childLabel}</p>
+          <h2 id="subtopics-title">{copy.topics.title}</h2>
+          <div class="subtopic-list">
+            {childTopics.map((child) => (
+              <a href={getTopicPath(child.segments, locale)}>
+                <strong>{getTopicLabel(child.segments.at(-1)!, locale)}</strong>
+                <span>
+                  {child.count} {copy.topics.article} ↗
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <section class="topic-articles" aria-labelledby="articles-title" data-writing-archive>
+      <header>
+        <p class="eyebrow"><span></span>{copy.latest.label}</p>
+        <h2 id="articles-title">{topicTitle}</h2>
+      </header>
+
+      <div class="filters" aria-label={copy.filters.label}>
+        <button class="is-active" type="button" data-language-filter="all">
+          {copy.filters.all}
+        </button>
+        <button type="button" data-language-filter="id">{copy.filters.id}</button>
+        <button type="button" data-language-filter="en">{copy.filters.en}</button>
+      </div>
+
+      <div class="writing-list">
+        {entries.map((entry, index) => (
+          <WritingCard entry={entry} locale={locale} index={index} />
+        ))}
+      </div>
+
+      <p class="filter-empty" data-filter-empty hidden>{copy.filters.empty}</p>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+</BaseLayout>
+
+<style>
+  .topic-hero,
+  .subtopics,
+  .topic-articles {
+    width: 100%;
+    max-width: 52rem;
+    margin-inline: auto;
+  }
+
+  .topic-hero {
+    padding: 2rem var(--page-pad) 3rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    padding-bottom: 0.18rem;
+    border-bottom: 1px solid currentColor;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color var(--motion-duration) var(--motion-ease);
+  }
+
+  .back-link:hover,
+  .back-link:focus-visible {
+    color: var(--accent);
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow > span {
+    width: 1rem;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .topic-heading {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 5rem;
+  }
+
+  h1 {
+    margin: 0.9rem 0 0;
+    overflow-wrap: anywhere;
+    font-size: clamp(3.2rem, 16vw, 7rem);
+    line-height: 0.84;
+    letter-spacing: -0.08em;
+  }
+
+  h1 span {
+    color: var(--accent);
+  }
+
+  .topic-heading > p {
+    max-width: 27rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.6;
+  }
+
+  .breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 4rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .breadcrumbs a {
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 0.61rem;
+    font-weight: 700;
+  }
+
+  .breadcrumbs a[aria-current="page"],
+  .breadcrumbs a:hover,
+  .breadcrumbs a:focus-visible {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .subtopics,
+  .topic-articles {
+    max-width: none;
+    padding: 5rem max(var(--page-pad), calc((100vw - 52rem) / 2));
+  }
+
+  .subtopics {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .subtopics .eyebrow {
+    color: #bdbdbd;
+  }
+
+  h2 {
+    max-width: 42rem;
+    margin: 0.75rem 0 2.5rem;
+    font-size: clamp(2.55rem, 12vw, 5rem);
+    line-height: 0.9;
+    letter-spacing: -0.07em;
+  }
+
+  .subtopic-list {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .subtopic-list a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius);
+    transition:
+      border-color var(--motion-duration) var(--motion-ease),
+      background-color var(--motion-duration) var(--motion-ease);
+  }
+
+  .subtopic-list a:hover,
+  .subtopic-list a:focus-visible {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+
+  .subtopic-list strong {
+    font-size: 1rem;
+  }
+
+  .subtopic-list span {
+    color: #bdbdbd;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .subtopic-list a:hover span,
+  .subtopic-list a:focus-visible span {
+    color: #fff;
+  }
+
+  .topic-articles {
+    background: #fff;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 2rem;
+  }
+
+  .filters button {
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.63rem;
+    font-weight: 800;
+    transition:
+      background-color var(--motion-duration) var(--motion-ease),
+      color var(--motion-duration) var(--motion-ease);
+  }
+
+  .filters button:hover,
+  .filters button:focus-visible,
+  .filters button.is-active {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .filter-empty {
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  @media (min-width: 48rem) {
+    .topic-heading {
+      align-items: end;
+      grid-template-columns: minmax(0, 1.5fr) minmax(14rem, 0.75fr);
+    }
+
+    .subtopic-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-writing-archive]").forEach((archive) => {
+    const buttons = archive.querySelectorAll<HTMLButtonElement>("[data-language-filter]");
+    const entries = archive.querySelectorAll<HTMLElement>("[data-writing-entry]");
+    const empty = archive.querySelector<HTMLElement>("[data-filter-empty]");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const language = button.dataset.languageFilter ?? "all";
+        let visibleCount = 0;
+
+        buttons.forEach((item) => item.classList.toggle("is-active", item === button));
+        entries.forEach((entry) => {
+          const visible = language === "all" || entry.dataset.language === language;
+          entry.hidden = !visible;
+          if (visible) visibleCount += 1;
+        });
+
+        if (empty) empty.hidden = visibleCount > 0;
+      });
+    });
+  });
+</script>

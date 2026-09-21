@@ -3,6 +3,11 @@ import { defaultLocale, getLocalizedPath, type Locale } from "../i18n";
 import { ui } from "../i18n/ui";
 import { experienceContent, getExperienceId } from "../data/experience";
 import { projects } from "../data/projects";
+import {
+  formatWritingDate,
+  getPublishedWriting,
+  getWritingPath,
+} from "../lib/writing";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Footer from "./Footer.astro";
 import Header from "./Header.astro";
@@ -16,6 +21,8 @@ const copy = ui[locale];
 const experiences = experienceContent[locale].entries;
 const experienceHref = getLocalizedPath(locale, "/experience");
 const projectsHref = getLocalizedPath(locale, "/projects");
+const writingHref = getLocalizedPath(locale, "/writing");
+const writingEntries = (await getPublishedWriting()).slice(0, 8);
 const sections = copy.home.sections.map((section) => ({
   ...section,
   href: getLocalizedPath(locale, section.path),
@@ -161,14 +168,53 @@ const sections = copy.home.sections.map((section) => ({
                 </>
               ) : (
                 <>
-                  <p>{section.description}</p>
-                  <a class="panel-cta" href={section.href}>
-                    {section.cta}
+                  <div class="carousel-panel-copy">
+                    <h3>{copy.home.writingPreview.title}</h3>
+                    <p>{copy.home.writingPreview.intro}</p>
+                  </div>
+
+                  <a class="panel-cta" href={writingHref}>
+                    {copy.home.writingPreview.cta}
                     <span aria-hidden="true">↗</span>
                   </a>
-                  <div class="panel-art" aria-hidden="true">
-                    <span>{section.number.slice(0, 2)}</span>
-                  </div>
+
+                  {writingEntries.length > 0 ? (
+                    <div
+                      class="experience-carousel"
+                      data-auto-carousel
+                      role="region"
+                      aria-label={copy.home.writingPreview.ariaLabel}
+                      tabindex="0"
+                    >
+                      <div class="experience-track">
+                        <div class="experience-set">
+                          {writingEntries.map((entry, writingIndex) => (
+                            <a
+                              class="experience-card"
+                              href={getWritingPath(entry, locale)}
+                            >
+                              <span class="experience-card-index">
+                                {String(writingIndex + 1).padStart(2, "0")}.
+                              </span>
+                              <div>
+                                <h4>{entry.data.title}</h4>
+                                <p>{copy.writing.filters[entry.data.language]}</p>
+                              </div>
+                              <p class="experience-card-period">
+                                {formatWritingDate(entry.data.publishedAt, locale)}
+                              </p>
+                              <span class="experience-card-arrow" aria-hidden="true">↗</span>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="panel-art panel-art--empty">
+                      <span aria-hidden="true">03</span>
+                      <p>{copy.home.writingPreview.empty}</p>
+                    </div>
+                  )}
                 </>
               )}
             </div>
@@ -470,6 +516,18 @@ const sections = copy.home.sections.map((section) => ({
     letter-spacing: -0.1em;
   }
 
+  .panel-art--empty {
+    align-content: center;
+    gap: 0.5rem;
+  }
+
+  .panel-art--empty p {
+    margin: 0;
+    color: var(--ink);
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
   .experience-carousel {
     width: 100%;
     padding: 0.25rem 0;
@@ -715,6 +773,7 @@ const sections = copy.home.sections.map((section) => ({
   document.querySelectorAll<HTMLElement>("[data-auto-carousel]").forEach((carousel) => {
     if (carousel.dataset.carouselReady === "true") return;
     carousel.dataset.carouselReady = "true";
+    const containingDetails = carousel.closest<HTMLDetailsElement>("details");
 
     let isHovering = false;
     let isInteracting = false;
@@ -740,7 +799,10 @@ const sections = copy.home.sections.map((section) => ({
     const animate = (currentTime: number) => {
       const delta = Math.min(currentTime - previousTime, 64);
       previousTime = currentTime;
-      const isVisible = carousel.clientWidth > 0 && carousel.getClientRects().length > 0;
+      const isVisible =
+        (!containingDetails || containingDetails.open) &&
+        carousel.clientWidth > 0 &&
+        carousel.getClientRects().length > 0;
 
       if (!isVisible) {
         autoScrollPosition = 0;

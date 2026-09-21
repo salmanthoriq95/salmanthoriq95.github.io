@@ -4,6 +4,7 @@ import { defaultLocale, getLocalizedPath, type Locale } from "../i18n";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Footer from "./Footer.astro";
 import Header from "./Header.astro";
+import HeroScrollCue from "./HeroScrollCue.astro";
 
 interface Props {
   locale?: Locale;
@@ -21,8 +22,6 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
 
   <main>
     <section class="projects-hero" aria-labelledby="projects-title">
-      <p class="eyebrow"><span></span>{copy.hero.label}</p>
-
       <div class="hero-grid">
         <h1 id="projects-title">
           <em>{copy.hero.emphasis}</em>
@@ -31,13 +30,10 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
         <p>{copy.hero.intro}</p>
       </div>
 
-      <div class="project-count">
-        <strong>{String(projects.length).padStart(2, "0")}</strong>
-        <span>{copy.hero.count}</span>
-      </div>
+      <HeroScrollCue href="#featured-projects" label={copy.hero.count} />
     </section>
 
-    <section class="featured" aria-labelledby="featured-title">
+    <section id="featured-projects" class="featured" aria-labelledby="featured-title">
       <header class="section-heading">
         <div>
           <p class="eyebrow"><span></span>{copy.featured.label}</p>
@@ -49,7 +45,6 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
       <div class="featured-grid">
         {featuredProjects.map((project, index) => {
           const content = project.content[locale];
-          const projectNumber = projects.indexOf(project) + 1;
 
           return (
             <a
@@ -57,7 +52,6 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
               href={projectPath(project.slug)}
             >
               <div class="card-topline">
-                <span>{String(projectNumber).padStart(2, "0")}.</span>
                 <span>{project.company}</span>
               </div>
               <div class="card-copy">
@@ -88,11 +82,10 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
       <div class="archive-list">
         {archivedProjects.map((project) => {
           const content = project.content[locale];
-          const projectNumber = projects.indexOf(project) + 1;
 
           return (
             <a href={projectPath(project.slug)} class="archive-row">
-              <span class="archive-number">{String(projectNumber).padStart(2, "0")}.</span>
+              <span class="archive-number" aria-hidden="true">*</span>
               <div class="archive-title">
                 <h3>{content.title}</h3>
                 <p>{project.company}</p>
@@ -129,7 +122,7 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
     display: grid;
     min-height: min(44rem, calc(100svh - 4.25rem));
     padding: 3.5rem var(--page-pad) 2rem;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: 1fr auto;
   }
 
   .eyebrow {
@@ -178,26 +171,6 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
     color: var(--muted);
     font-size: 0.88rem;
     line-height: 1.55;
-  }
-
-  .project-count {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    padding-top: 0.9rem;
-    border-top: 1px solid var(--line);
-  }
-
-  .project-count strong {
-    font-size: 1.1rem;
-  }
-
-  .project-count span {
-    color: var(--muted);
-    font-size: 0.65rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
   }
 
   .featured,
@@ -304,14 +277,11 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
   }
 
   .card-topline {
+    justify-content: flex-end;
     font-size: 0.65rem;
     font-weight: 800;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-  }
-
-  .featured-card--lead .card-topline span:first-child {
-    color: var(--accent);
   }
 
   .card-copy {
@@ -401,8 +371,9 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
   .archive-number {
     align-self: start;
     color: var(--accent);
-    font-size: 0.66rem;
+    font-size: clamp(1.6rem, 5vw, 2.1rem);
     font-weight: 800;
+    line-height: 0.8;
   }
 
   .archive-title h3 {

@@ -50,15 +50,21 @@ for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) 
   <main>
     <article>
       <header class="article-hero">
-        <a class="back-link" href={getLocalizedPath(locale, "/writing")}>
-          ← {copy.article.back}
-        </a>
+        <nav class="article-breadcrumb" aria-label={copy.article.topics}>
+          <span class="breadcrumb-line" aria-hidden="true"></span>
+          <a href={getLocalizedPath(locale, "/writing")}>{copy.article.back}</a>
+          {topics.map((topic, index) => (
+            <>
+              <span class="breadcrumb-separator" aria-hidden="true">/</span>
+              <a href={getTopicPath(topics.slice(0, index + 1), locale)}>
+                {getTopicLabel(topic, locale)}
+              </a>
+            </>
+          ))}
+        </nav>
 
         <div class="article-heading">
           <div>
-            <p class="eyebrow">
-              <span></span>{copy.filters[entry.data.language]}
-            </p>
             <h1>{entry.data.title}<span aria-hidden="true">.</span></h1>
           </div>
           <p>{entry.data.description}</p>
@@ -148,8 +154,8 @@ for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) 
           <p class="eyebrow"><span></span>{copy.article.relatedLabel}</p>
           <h2 id="related-title">{copy.article.relatedTitle}</h2>
           <div>
-            {related.map((candidate, index) => (
-              <WritingCard entry={candidate} locale={locale} index={index} />
+            {related.map((candidate) => (
+              <WritingCard entry={candidate} locale={locale} />
             ))}
           </div>
         </section>
@@ -173,19 +179,35 @@ for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) 
     padding: 2rem var(--page-pad) 3rem;
   }
 
-  .back-link {
-    display: inline-block;
-    padding-bottom: 0.18rem;
-    border-bottom: 1px solid currentColor;
+  .article-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--muted);
     font-size: 0.65rem;
     font-weight: 800;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
+  }
+
+  .breadcrumb-line {
+    width: 1rem;
+    height: 2px;
+    flex: 0 0 auto;
+    background: var(--accent);
+  }
+
+  .article-breadcrumb a {
     transition: color var(--motion-duration) var(--motion-ease);
   }
 
-  .back-link:hover,
-  .back-link:focus-visible {
+  .article-breadcrumb a:hover,
+  .article-breadcrumb a:focus-visible {
+    color: var(--accent);
+  }
+
+  .breadcrumb-separator {
     color: var(--accent);
   }
 

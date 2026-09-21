@@ -2,14 +2,17 @@
 import { defaultLocale, type Locale } from "../i18n";
 import { ui } from "../i18n/ui";
 import {
+  formatWritingDate,
   getDirectChildTopics,
   getPublishedWriting,
   getTopicLabel,
   getTopicPath,
+  getWritingPath,
 } from "../lib/writing";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Footer from "./Footer.astro";
 import Header from "./Header.astro";
+import HeroScrollCue from "./HeroScrollCue.astro";
 import WritingCard from "./WritingCard.astro";
 
 interface Props {
@@ -19,7 +22,9 @@ interface Props {
 const { locale = defaultLocale } = Astro.props;
 const copy = ui[locale].writing;
 const entries = await getPublishedWriting();
+const featuredEntries = entries.filter((entry) => entry.data.featured);
 const topics = getDirectChildTopics(entries);
+const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#writing-archive";
 ---
 
 <BaseLayout locale={locale} title={copy.meta.title} description={copy.meta.description}>
@@ -27,8 +32,6 @@ const topics = getDirectChildTopics(entries);
 
   <main>
     <section class="writing-hero" aria-labelledby="writing-title">
-      <p class="eyebrow"><span></span>{copy.hero.label}</p>
-
       <div class="hero-grid">
         <h1 id="writing-title">
           <em>{copy.hero.emphasis}</em>
@@ -37,42 +40,40 @@ const topics = getDirectChildTopics(entries);
         <p>{copy.hero.intro}</p>
       </div>
 
-      <div class="writing-count">
-        <strong>{String(entries.length).padStart(2, "0")}</strong>
-        <span>{copy.hero.count}</span>
-      </div>
+      <HeroScrollCue href={firstSectionPath} label={copy.hero.count} />
     </section>
 
-    <section class="topics" aria-labelledby="topics-title">
-      <header class="section-heading">
-        <div>
-          <p class="eyebrow"><span></span>{copy.topics.label}</p>
-          <h2 id="topics-title">{copy.topics.title}</h2>
-        </div>
-        <p>{copy.topics.intro}</p>
-      </header>
+    {
+      featuredEntries.length > 0 && (
+        <section id="featured-writing" class="featured" aria-labelledby="featured-title">
+          <header class="section-heading">
+            <div>
+              <p class="eyebrow"><span></span>{copy.featured.label}</p>
+              <h2 id="featured-title">{copy.featured.title}</h2>
+            </div>
+            <p>{copy.featured.intro}</p>
+          </header>
 
-      {
-        topics.length > 0 ? (
-          <div class="topic-grid">
-            {topics.map((topic, index) => (
-              <a class="topic-card" href={getTopicPath(topic.segments, locale)}>
-                <span>{String(index + 1).padStart(2, "0")}.</span>
-                <h3>{getTopicLabel(topic.segments.at(-1)!, locale)}</h3>
-                <p>
-                  {topic.count} {copy.topics.article}
-                </p>
+          <div class="featured-grid">
+            {featuredEntries.map((entry) => (
+              <a class="featured-card" href={getWritingPath(entry, locale)}>
+                <div class="featured-meta">
+                  <time datetime={entry.data.publishedAt.toISOString()}>
+                    {formatWritingDate(entry.data.publishedAt, locale)}
+                  </time>
+                  <span>{copy.filters[entry.data.language]}</span>
+                </div>
+                <h3>{entry.data.title}</h3>
+                <p>{entry.data.description}</p>
                 <i aria-hidden="true">↗</i>
               </a>
             ))}
           </div>
-        ) : (
-          <p class="topic-empty">{copy.topics.empty}</p>
-        )
-      }
-    </section>
+        </section>
+      )
+    }
 
-    <section class="archive" aria-labelledby="archive-title" data-writing-archive>
+    <section id="writing-archive" class="archive" aria-labelledby="archive-title" data-writing-archive>
       <header class="section-heading">
         <div>
           <p class="eyebrow"><span></span>{copy.latest.label}</p>
@@ -93,8 +94,8 @@ const topics = getDirectChildTopics(entries);
             </div>
 
             <div class="writing-list">
-              {entries.map((entry, index) => (
-                <WritingCard entry={entry} locale={locale} index={index} />
+              {entries.map((entry) => (
+                <WritingCard entry={entry} locale={locale} />
               ))}
             </div>
 
@@ -108,6 +109,34 @@ const topics = getDirectChildTopics(entries);
         )
       }
     </section>
+
+    <section id="writing-topics" class="topics" aria-labelledby="topics-title">
+      <header class="section-heading">
+        <div>
+          <p class="eyebrow"><span></span>{copy.topics.label}</p>
+          <h2 id="topics-title">{copy.topics.title}</h2>
+        </div>
+        <p>{copy.topics.intro}</p>
+      </header>
+
+      {
+        topics.length > 0 ? (
+          <div class="topic-grid">
+            {topics.map((topic) => (
+              <a class="topic-card" href={getTopicPath(topic.segments, locale)}>
+                <h3>{getTopicLabel(topic.segments.at(-1)!, locale)}</h3>
+                <p>
+                  {topic.count} {copy.topics.article}
+                </p>
+                <i aria-hidden="true">↗</i>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p class="topic-empty">{copy.topics.empty}</p>
+        )
+      }
+    </section>
   </main>
 
   <Footer locale={locale} />
@@ -116,6 +145,7 @@ const topics = getDirectChildTopics(entries);
 <style>
   .writing-hero,
   .section-heading,
+  .featured-grid,
   .topic-grid,
   .topic-empty,
   .filters,
@@ -131,7 +161,7 @@ const topics = getDirectChildTopics(entries);
     display: grid;
     min-height: min(44rem, calc(100svh - 4.25rem));
     padding: 3.5rem var(--page-pad) 2rem;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: 1fr auto;
   }
 
   .eyebrow {
@@ -182,37 +212,28 @@ const topics = getDirectChildTopics(entries);
     line-height: 1.6;
   }
 
-  .writing-count {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    padding-top: 0.9rem;
-    border-top: 1px solid var(--line);
-  }
-
-  .writing-count strong {
-    font-size: 1.1rem;
-  }
-
-  .writing-count span {
-    color: var(--muted);
-    font-size: 0.62rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
+  .featured,
   .topics,
   .archive {
     padding: 5rem var(--page-pad);
   }
 
+  .featured {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .featured .eyebrow,
+  .featured .section-heading > p {
+    color: #bdbdbd;
+  }
+
   .topics {
-    background: #fff;
+    background: var(--paper);
   }
 
   .archive {
-    background: var(--paper);
+    background: #fff;
   }
 
   .section-heading {
@@ -229,21 +250,91 @@ const topics = getDirectChildTopics(entries);
     letter-spacing: -0.07em;
   }
 
-  .topic-grid {
+  .featured-grid {
     display: grid;
     gap: 0.75rem;
   }
 
+  .featured-card {
+    position: relative;
+    display: flex;
+    min-height: 17rem;
+    flex-direction: column;
+    padding: 1.25rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius);
+    background: #171717;
+    transition:
+      border-radius var(--motion-duration) var(--motion-ease),
+      border-color var(--motion-duration) var(--motion-ease),
+      transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .featured-card:hover,
+  .featured-card:focus-visible {
+    border-color: var(--accent);
+    border-radius: 2.25rem;
+    transform: translateY(-0.25rem);
+  }
+
+  .featured-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    color: #bdbdbd;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .featured-card h3 {
+    max-width: 31rem;
+    margin: auto 0 0;
+    font-size: clamp(2rem, 9vw, 3.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.065em;
+  }
+
+  .featured-card > p {
+    max-width: 31rem;
+    margin: 1rem 2.5rem 0 0;
+    color: #bdbdbd;
+    font-size: 0.72rem;
+    line-height: 1.55;
+  }
+
+  .featured-card i {
+    position: absolute;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .topic-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+
   .topic-card {
     position: relative;
-    display: grid;
-    min-height: 15rem;
-    padding: 1.2rem;
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    height: 6.5rem;
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem 2.8rem 1rem 1rem;
     overflow: hidden;
     border-radius: var(--radius);
     background: var(--ink);
     color: #fff;
-    grid-template-rows: auto 1fr auto;
     transition:
       border-radius var(--motion-duration) var(--motion-ease),
       transform var(--motion-duration) var(--motion-ease);
@@ -264,40 +355,30 @@ const topics = getDirectChildTopics(entries);
     transform: translateY(-0.25rem);
   }
 
-  .topic-card > span,
   .topic-card p {
     font-size: 0.65rem;
     font-weight: 800;
   }
 
-  .topic-card > span {
-    color: var(--accent);
-  }
-
-  .topic-card:nth-child(3n + 2) > span,
-  .topic-card:nth-child(3n + 3) > span {
-    color: currentColor;
-  }
-
   .topic-card h3 {
-    align-self: center;
     margin: 0;
-    font-size: clamp(2rem, 9vw, 3.5rem);
-    line-height: 0.92;
+    font-size: clamp(1.15rem, 5vw, 1.7rem);
+    line-height: 1;
     letter-spacing: -0.065em;
   }
 
   .topic-card p {
-    margin: 0;
+    margin: 0.5rem 0 0;
     opacity: 0.7;
     text-transform: uppercase;
   }
 
   .topic-card i {
     position: absolute;
-    right: 1.1rem;
-    bottom: 1rem;
+    top: 50%;
+    right: 1rem;
     font-style: normal;
+    transform: translateY(-50%);
   }
 
   .topic-empty,
@@ -362,8 +443,12 @@ const topics = getDirectChildTopics(entries);
       grid-template-columns: minmax(0, 1.5fr) minmax(14rem, 0.75fr);
     }
 
-    .topic-grid {
+    .featured-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .featured-card:first-child:nth-last-child(odd) {
+      grid-column: 1 / -1;
     }
   }
 </style>

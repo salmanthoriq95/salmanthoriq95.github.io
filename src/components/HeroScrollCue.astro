@@ -1,0 +1,44 @@
+---
+interface Props {
+  href: `#${string}`;
+  label: string;
+}
+
+const { href, label } = Astro.props;
+---
+
+<a class="hero-scroll-cue" href={href}>
+  <span>{label}</span>
+  <span class="arrow" aria-hidden="true">↓</span>
+</a>
+
+<style>
+  .hero-scroll-cue {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.69rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    grid-column: 1 / -1;
+  }
+
+  .arrow {
+    color: var(--accent);
+    font-size: 1rem;
+    transition: transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .hero-scroll-cue:hover .arrow,
+  .hero-scroll-cue:focus-visible .arrow {
+    transform: translateY(0.25rem);
+  }
+
+  .hero-scroll-cue:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 0.35rem;
+  }
+</style>

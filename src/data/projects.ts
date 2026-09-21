@@ -14,12 +14,19 @@ export interface LocalizedProjectContent {
   };
 }
 
+export interface ProjectMedia {
+  src: string;
+  alt: Record<Locale, string>;
+  caption?: Record<Locale, string>;
+}
+
 export interface Project {
   slug: string;
   company: string;
   featured: boolean;
   stackKind: "technologies" | "tools";
   stack: string[];
+  media?: ProjectMedia[];
   content: Record<Locale, LocalizedProjectContent>;
 }
 
@@ -498,6 +505,7 @@ export const projectPageContent: Record<Locale, {
     viewProject: string;
     back: string;
     next: string;
+    gallery: string;
     privacy: string;
   };
 }> = {
@@ -536,6 +544,7 @@ export const projectPageContent: Record<Locale, {
       viewProject: "Buka studi proyek",
       back: "Kembali ke semua proyek",
       next: "Proyek berikutnya",
+      gallery: "Galeri proyek",
       privacy: "Untuk proyek internal, detail disampaikan pada level yang menjaga konteks pekerjaan tanpa mengekspos data atau proses yang bersifat rahasia.",
     },
   },
@@ -574,6 +583,7 @@ export const projectPageContent: Record<Locale, {
       viewProject: "Open project study",
       back: "Back to all projects",
       next: "Next project",
+      gallery: "Project gallery",
       privacy: "For internal projects, details are presented at a level that preserves the work context without exposing confidential data or processes.",
     },
   },

@@ -36,52 +36,28 @@ const writingPath = getLocalizedPath(locale, "/writing");
   <Header locale={locale} />
 
   <main>
-    <section class="topic-hero" aria-labelledby="topic-title">
-      <a class="back-link" href={writingPath}>← {copy.topic.back}</a>
-
-      <div class="topic-heading">
-        <div>
-          <p class="eyebrow"><span></span>{copy.topic.label}</p>
-          <h1 id="topic-title">{topicTitle}<span>.</span></h1>
-        </div>
-        <p>{copy.topic.intro}</p>
-      </div>
-
-      <nav class="breadcrumbs" aria-label={copy.article.topics}>
-        {segments.map((segment, index) => (
-          <a
-            href={getTopicPath(segments.slice(0, index + 1), locale)}
-            aria-current={index === segments.length - 1 ? "page" : undefined}
-          >
-            {getTopicLabel(segment, locale)}
-          </a>
-        ))}
-      </nav>
-    </section>
-
-    {
-      childTopics.length > 0 && (
-        <section class="subtopics" aria-labelledby="subtopics-title">
-          <p class="eyebrow"><span></span>{copy.topics.childLabel}</p>
-          <h2 id="subtopics-title">{copy.topics.title}</h2>
-          <div class="subtopic-list">
-            {childTopics.map((child) => (
-              <a href={getTopicPath(child.segments, locale)}>
-                <strong>{getTopicLabel(child.segments.at(-1)!, locale)}</strong>
-                <span>
-                  {child.count} {copy.topics.article} ↗
-                </span>
-              </a>
-            ))}
-          </div>
-        </section>
-      )
-    }
-
     <section class="topic-articles" aria-labelledby="articles-title" data-writing-archive>
-      <header>
-        <p class="eyebrow"><span></span>{copy.latest.label}</p>
-        <h2 id="articles-title">{topicTitle}</h2>
+      <header class="topic-header">
+        <nav class="topic-breadcrumb" aria-label={copy.article.topics}>
+          <span class="breadcrumb-line" aria-hidden="true"></span>
+          <a href={writingPath}>{copy.topic.back}</a>
+          {segments.map((segment, index) => (
+            <>
+              <span class="breadcrumb-separator" aria-hidden="true">/</span>
+              <a
+                href={getTopicPath(segments.slice(0, index + 1), locale)}
+                aria-current={index === segments.length - 1 ? "page" : undefined}
+              >
+                {getTopicLabel(segment, locale)}
+              </a>
+            </>
+          ))}
+        </nav>
+
+        <div class="topic-heading">
+          <h1 id="articles-title">{topicTitle}<span>.</span></h1>
+          <p>{copy.topic.intro}</p>
+        </div>
       </header>
 
       <div class="filters" aria-label={copy.filters.label}>
@@ -93,45 +69,120 @@ const writingPath = getLocalizedPath(locale, "/writing");
       </div>
 
       <div class="writing-list">
-        {entries.map((entry, index) => (
-          <WritingCard entry={entry} locale={locale} index={index} />
+        {entries.map((entry) => (
+          <WritingCard entry={entry} locale={locale} />
         ))}
       </div>
 
       <p class="filter-empty" data-filter-empty hidden>{copy.filters.empty}</p>
     </section>
+
+    {
+      childTopics.length > 0 && (
+        <section class="subtopics" aria-labelledby="subtopics-title">
+          <div class="subtopic-inner">
+            <p class="eyebrow"><span></span>{copy.topics.childLabel}</p>
+            <h2 id="subtopics-title">{copy.topics.title}</h2>
+            <div class="subtopic-list">
+              {childTopics.map((child) => (
+                <a href={getTopicPath(child.segments, locale)}>
+                  <strong>{getTopicLabel(child.segments.at(-1)!, locale)}</strong>
+                  <span>{child.count} {copy.topics.article}</span>
+                  <i aria-hidden="true">↗</i>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
   </main>
 
   <Footer locale={locale} />
 </BaseLayout>
 
 <style>
-  .topic-hero,
-  .subtopics,
-  .topic-articles {
+  .topic-header,
+  .filters,
+  .writing-list,
+  .filter-empty,
+  .subtopic-inner {
     width: 100%;
     max-width: 52rem;
     margin-inline: auto;
   }
 
-  .topic-hero {
-    padding: 2rem var(--page-pad) 3rem;
-  }
-
-  .back-link {
-    display: inline-block;
-    padding-bottom: 0.18rem;
-    border-bottom: 1px solid currentColor;
+  .topic-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--muted);
     font-size: 0.65rem;
     font-weight: 800;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
+  }
+
+  .breadcrumb-line {
+    width: 1rem;
+    height: 2px;
+    flex: 0 0 auto;
+    background: var(--accent);
+  }
+
+  .topic-breadcrumb a {
     transition: color var(--motion-duration) var(--motion-ease);
   }
 
-  .back-link:hover,
-  .back-link:focus-visible {
+  .topic-breadcrumb a:hover,
+  .topic-breadcrumb a:focus-visible,
+  .topic-breadcrumb a[aria-current="page"] {
+    color: var(--ink);
+  }
+
+  .breadcrumb-separator {
     color: var(--accent);
+  }
+
+  .topic-heading {
+    display: grid;
+    gap: 1.5rem;
+    margin: 3rem 0 3.5rem;
+  }
+
+  h1 {
+    margin: 0;
+    overflow-wrap: anywhere;
+    font-size: clamp(2.8rem, 13vw, 5rem);
+    line-height: 0.88;
+    letter-spacing: -0.08em;
+  }
+
+  h1 span {
+    color: var(--accent);
+  }
+
+  .topic-heading > p {
+    max-width: 27rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.6;
+  }
+
+  .subtopics,
+  .topic-articles {
+    padding: 5rem max(var(--page-pad), calc((100vw - 52rem) / 2));
+  }
+
+  .topic-articles {
+    background: #fff;
+  }
+
+  .subtopics {
+    background: var(--ink);
+    color: #fff;
   }
 
   .eyebrow {
@@ -149,69 +200,8 @@ const writingPath = getLocalizedPath(locale, "/writing");
   .eyebrow > span {
     width: 1rem;
     height: 2px;
+    flex: 0 0 auto;
     background: var(--accent);
-  }
-
-  .topic-heading {
-    display: grid;
-    gap: 1.5rem;
-    margin-top: 5rem;
-  }
-
-  h1 {
-    margin: 0.9rem 0 0;
-    overflow-wrap: anywhere;
-    font-size: clamp(3.2rem, 16vw, 7rem);
-    line-height: 0.84;
-    letter-spacing: -0.08em;
-  }
-
-  h1 span {
-    color: var(--accent);
-  }
-
-  .topic-heading > p {
-    max-width: 27rem;
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.78rem;
-    line-height: 1.6;
-  }
-
-  .breadcrumbs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 4rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--line);
-  }
-
-  .breadcrumbs a {
-    padding: 0.35rem 0.6rem;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    color: var(--muted);
-    font-size: 0.61rem;
-    font-weight: 700;
-  }
-
-  .breadcrumbs a[aria-current="page"],
-  .breadcrumbs a:hover,
-  .breadcrumbs a:focus-visible {
-    background: var(--ink);
-    color: #fff;
-  }
-
-  .subtopics,
-  .topic-articles {
-    max-width: none;
-    padding: 5rem max(var(--page-pad), calc((100vw - 52rem) / 2));
-  }
-
-  .subtopics {
-    background: var(--ink);
-    color: #fff;
   }
 
   .subtopics .eyebrow {
@@ -227,47 +217,75 @@ const writingPath = getLocalizedPath(locale, "/writing");
   }
 
   .subtopic-list {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
     gap: 0.65rem;
   }
 
   .subtopic-list a {
+    position: relative;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1.1rem;
+    width: fit-content;
+    max-width: 100%;
+    height: 6.5rem;
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem 2.8rem 1rem 1rem;
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--radius);
+    background: #191919;
     transition:
+      border-radius var(--motion-duration) var(--motion-ease),
       border-color var(--motion-duration) var(--motion-ease),
-      background-color var(--motion-duration) var(--motion-ease);
+      transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .subtopic-list a:nth-child(3n + 2) {
+    border-color: transparent;
+    background: var(--electric);
+    color: var(--ink);
+  }
+
+  .subtopic-list a:nth-child(3n + 3) {
+    border-color: transparent;
+    background: var(--accent);
   }
 
   .subtopic-list a:hover,
   .subtopic-list a:focus-visible {
     border-color: var(--accent);
-    background: var(--accent);
+    border-radius: 2.25rem;
+    transform: translateY(-0.25rem);
   }
 
   .subtopic-list strong {
-    font-size: 1rem;
+    display: block;
+    font-size: clamp(1.15rem, 5vw, 1.7rem);
+    line-height: 1;
+    letter-spacing: -0.055em;
   }
 
   .subtopic-list span {
+    display: block;
+    margin-top: 0.5rem;
     color: #bdbdbd;
     font-size: 0.62rem;
     font-weight: 700;
     text-transform: uppercase;
   }
 
-  .subtopic-list a:hover span,
-  .subtopic-list a:focus-visible span {
-    color: #fff;
+  .subtopic-list a:nth-child(3n + 2) span {
+    color: rgba(7, 7, 7, 0.65);
   }
 
-  .topic-articles {
-    background: #fff;
+  .subtopic-list i {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    font-style: normal;
+    transform: translateY(-50%);
   }
 
   .filters {
@@ -307,10 +325,6 @@ const writingPath = getLocalizedPath(locale, "/writing");
     .topic-heading {
       align-items: end;
       grid-template-columns: minmax(0, 1.5fr) minmax(14rem, 0.75fr);
-    }
-
-    .subtopic-list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 </style>

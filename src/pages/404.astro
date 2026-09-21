@@ -1,4 +1,6 @@
 ---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
@@ -8,27 +10,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   description="Halaman yang kamu cari tidak tersedia."
   noindex
 >
+  <Header locale="id" />
+
   <main class="not-found">
-    <header class="error-header">
-      <a class="brand" href="/" data-home-link data-home-label aria-label="Salman Thoriq, halaman utama">
-        <span>Salman </span><span class="brand-accent">.T</span>
-      </a>
-      <p data-copy data-id="Kesalahan 404" data-en="Error 404">Kesalahan 404</p>
-    </header>
-
     <section class="error-content" aria-labelledby="error-title">
-      <p
-        class="eyebrow"
-      >
-        <span></span><span
-          data-copy
-          data-id="Sepertinya kamu tersesat"
-          data-en="It looks like you are lost"
-        >Sepertinya kamu tersesat</span>
-      </p>
-
-      <div class="error-number" aria-hidden="true">
-        <span>404</span><em>.</em>
+      <div class="error-number" aria-label="404">
+        <span data-error-number aria-hidden="true">404</span><em aria-hidden="true">.</em>
       </div>
 
       <div class="message-grid">
@@ -59,94 +46,42 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           </a>
         </div>
       </div>
-
-      <div class="error-card" aria-hidden="true">
-        <span>404</span>
-        <span
-          data-copy
-          data-id="Tidak ada apa-apa di sini"
-          data-en="There is nothing here"
-        >Tidak ada apa-apa di sini</span>
-      </div>
     </section>
   </main>
+
+  <Footer locale="id" />
 </BaseLayout>
 
 <style>
   .not-found {
-    display: grid;
-    min-height: 100svh;
     background: var(--paper);
-    grid-template-rows: auto 1fr;
-  }
-
-  .error-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1.1rem var(--page-pad);
-    border-bottom: 1px solid var(--line);
-  }
-
-  .brand {
-    font-size: 1rem;
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: -0.055em;
-    text-transform: uppercase;
-  }
-
-  .brand-accent {
-    color: var(--accent);
-  }
-
-  .error-header p {
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.65rem;
-    font-weight: 800;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
   }
 
   .error-content {
     display: grid;
     width: 100%;
     max-width: 52rem;
+    min-height: min(44rem, calc(100svh - 4.25rem));
     margin-inline: auto;
-    padding: 3rem var(--page-pad) 1rem;
-    grid-template-rows: auto auto 1fr auto;
-  }
-
-  .eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.65rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .eyebrow > span:first-child {
-    width: 1rem;
-    height: 2px;
-    flex: 0 0 auto;
-    background: var(--accent);
+    padding: 4rem var(--page-pad);
+    place-content: center;
   }
 
   .error-number {
     display: flex;
     align-items: baseline;
-    align-self: center;
-    margin-top: 4rem;
+    justify-self: center;
     font-size: clamp(7rem, 36vw, 15rem);
+    font-variant-numeric: tabular-nums;
     font-weight: 900;
     line-height: 0.7;
     letter-spacing: -0.11em;
+  }
+
+  .error-number span {
+    display: inline-block;
+    min-width: 2.7ch;
+    text-align: right;
   }
 
   .error-number em {
@@ -156,9 +91,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   .message-grid {
     display: grid;
-    align-self: center;
     gap: 1.5rem;
-    margin: 4rem 0;
+    margin-top: 5rem;
   }
 
   h1 {
@@ -210,61 +144,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     margin-left: 1rem;
   }
 
-  .error-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    min-height: 5rem;
-    padding: 1rem 1.25rem;
-    overflow: hidden;
-    border-radius: var(--radius) var(--radius) 0 0;
-    background: var(--night);
-    color: var(--electric);
-    font-size: 0.63rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .error-card > span:first-child {
-    font-size: 2.25rem;
-    letter-spacing: -0.06em;
-  }
-
   @media (min-width: 48rem) {
-    .error-header {
-      padding-top: 1.4rem;
-      padding-right: max(var(--page-pad), calc((100vw - 52rem) / 2));
-      padding-bottom: 1.4rem;
-      padding-left: max(var(--page-pad), calc((100vw - 52rem) / 2));
-    }
-
-    .brand {
-      font-size: 0.9rem;
-    }
-
     .error-content {
-      padding: 4rem 0 0;
+      padding-block: 6rem;
     }
 
     .error-number {
-      justify-self: center;
-      margin-top: 3rem;
       font-size: clamp(11rem, 18vw, 15rem);
     }
 
     .message-grid {
       align-items: end;
-      margin: 3rem 0 5rem;
       grid-template-columns: minmax(0, 1.3fr) minmax(15rem, 0.7fr);
       gap: 3rem;
-    }
-
-    .error-card {
-      min-height: 6rem;
-      padding-right: 1.5rem;
-      padding-left: 1.5rem;
     }
   }
 </style>
@@ -289,10 +181,72 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     link.href = homePath;
   });
 
-  document.querySelectorAll<HTMLAnchorElement>("[data-home-label]").forEach((link) => {
-    link.ariaLabel = isEnglish
+  const headerBrand = document.querySelector<HTMLAnchorElement>(".site-header .brand");
+  if (headerBrand) {
+    headerBrand.href = homePath;
+    headerBrand.ariaLabel = isEnglish
       ? "Salman Thoriq, homepage"
       : "Salman Thoriq, halaman utama";
+  }
+
+  const navigation = isEnglish
+    ? [
+        ["Experience", "/en/experience"],
+        ["Projects", "/en/projects"],
+        ["Writing", "/en/writing"],
+      ]
+    : [
+        ["Pengalaman", "/experience"],
+        ["Proyek", "/projects"],
+        ["Tulisan", "/writing"],
+      ];
+
+  document.querySelectorAll<HTMLAnchorElement>(".site-header nav a").forEach((link, index) => {
+    const item = navigation[index];
+    if (!item) return;
+    link.textContent = item[0];
+    link.href = item[1];
+  });
+
+  const footerLabels = document.querySelectorAll<HTMLElement>(".site-footer .label");
+  const localizedFooterLabels = isEnglish
+    ? ["Based in", "Contact", "Elsewhere", "Language"]
+    : ["Berdomisili di", "Kontak", "Temukan saya", "Bahasa"];
+
+  footerLabels.forEach((label, index) => {
+    label.textContent = localizedFooterLabels[index] ?? label.textContent;
+  });
+
+  const languageName = document.querySelector<HTMLElement>(".language-picker summary span:first-child");
+  if (languageName) languageName.textContent = isEnglish ? "English" : "Indonesia";
+
+  const contactWord = document.querySelector<HTMLAnchorElement>(".site-footer .contact-word");
+  if (contactWord) {
+    contactWord.textContent = isEnglish ? "Contact" : "Hubungi";
+    contactWord.ariaLabel = isEnglish
+      ? "Email Salman Thoriq"
+      : "Kirim email kepada Salman Thoriq";
+  }
+
+  const copyright = document.querySelector<HTMLElement>(".site-footer .copyright");
+  if (copyright) {
+    copyright.textContent = `© ${new Date().getFullYear()} Salman Thoriq · ${
+      isEnglish ? "Personal archive" : "Arsip pribadi"
+    }`;
+  }
+
+  const currentPath = window.location.pathname.replace(/^\/en(?=\/|$)/, "") || "/";
+  const languageLinks = document.querySelectorAll<HTMLAnchorElement>(".language-options a");
+  const localizedPaths = [
+    currentPath,
+    currentPath === "/" ? "/en/" : `/en${currentPath}`,
+  ];
+  const languageNames = ["Indonesia", "English"];
+
+  languageLinks.forEach((link, index) => {
+    link.href = localizedPaths[index] ?? link.href;
+    link.textContent = languageNames[index] ?? link.textContent;
+    link.toggleAttribute("aria-current", index === (isEnglish ? 1 : 0));
   });
 
   const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
@@ -300,5 +254,26 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     description.content = isEnglish
       ? "The page you are looking for is not available."
       : "Halaman yang kamu cari tidak tersedia.";
+  }
+
+  const number = document.querySelector<HTMLElement>("[data-error-number]");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (number && !reduceMotion) {
+    const finalNumber = "404";
+    const duration = 1000;
+    const interval = 70;
+    const startedAt = performance.now();
+
+    const scramble = window.setInterval(() => {
+      number.textContent = Array.from({ length: finalNumber.length }, () =>
+        Math.floor(Math.random() * 10),
+      ).join("");
+
+      if (performance.now() - startedAt >= duration) {
+        window.clearInterval(scramble);
+        number.textContent = finalNumber;
+      }
+    }, interval);
   }
 </script>

@@ -106,6 +106,12 @@ export const ui = {
         article: "tulisan",
         childLabel: "Subtopik",
       },
+      featured: {
+        label: "Pilihan tulisan",
+        title: "Tulisan unggulan",
+        intro:
+          "Beberapa catatan yang paling mewakili hal-hal yang sedang saya pelajari, pikirkan, atau kerjakan.",
+      },
       latest: {
         label: "Semua tulisan",
         title: "Terbaru dari arsip",
@@ -252,6 +258,12 @@ export const ui = {
         empty: "Topics will appear automatically when the first article is published.",
         article: "articles",
         childLabel: "Subtopics",
+      },
+      featured: {
+        label: "Selected writing",
+        title: "Featured articles",
+        intro:
+          "A few notes that best represent what I am currently learning, thinking about, or working on.",
       },
       latest: {
         label: "All writing",

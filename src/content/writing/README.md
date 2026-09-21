@@ -31,5 +31,7 @@ featured: false
 ```
 
 Set `draft: true` to keep a file in `publish/` without generating a public
-page. Use the same `translationKey` on Indonesian and English versions when
-both translations exist.
+page. Set `featured: true` to also show the article in the featured section on
+the Writing page; it will remain available in the complete archive. Use the
+same `translationKey` on Indonesian and English versions when both
+translations exist.

@@ -812,15 +812,19 @@ const defaultGreeting = site.greetings[0];
       didDrag = false;
       dragStartX = event.clientX;
       dragStartScroll = carousel.scrollLeft;
-      carousel.classList.add("is-dragging");
-      carousel.setPointerCapture(event.pointerId);
       pauseTemporarily();
     });
 
     carousel.addEventListener("pointermove", (event) => {
       if (!isDragging) return;
       const distance = event.clientX - dragStartX;
-      if (Math.abs(distance) > 4) didDrag = true;
+      if (!didDrag && Math.abs(distance) > 4) {
+        didDrag = true;
+        carousel.classList.add("is-dragging");
+        carousel.setPointerCapture(event.pointerId);
+      }
+      if (!didDrag) return;
+      event.preventDefault();
       carousel.scrollLeft = dragStartScroll - distance;
     });
 
@@ -836,6 +840,7 @@ const defaultGreeting = site.greetings[0];
 
     carousel.addEventListener("pointerup", endDrag);
     carousel.addEventListener("pointercancel", endDrag);
+    carousel.addEventListener("dragstart", (event) => event.preventDefault());
     carousel.addEventListener("click", (event) => {
       if (!didDrag) return;
       event.preventDefault();

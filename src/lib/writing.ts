@@ -7,45 +7,6 @@ export interface TopicSummary {
   count: number;
 }
 
-const topicLabels: Record<Locale, Record<string, string>> = {
-  id: {
-    programming: "Pemrograman",
-    algorithm: "Algoritma",
-    algorithms: "Algoritma",
-    algoritma: "Algoritma",
-    "basic-algorithms": "Algoritma Dasar",
-    "advanced-algorithms": "Algoritma Lanjutan",
-    "algoritma-dasar": "Algoritma Dasar",
-    "algoritma-lanjutan": "Algoritma Lanjutan",
-    backend: "Backend",
-    frontend: "Frontend",
-    notes: "Catatan",
-    catatan: "Catatan",
-    career: "Karier",
-    karier: "Karier",
-    architecture: "Arsitektur",
-    arsitektur: "Arsitektur",
-  },
-  en: {
-    programming: "Programming",
-    algorithm: "Algorithms",
-    algorithms: "Algorithms",
-    algoritma: "Algorithms",
-    "basic-algorithms": "Basic Algorithms",
-    "advanced-algorithms": "Advanced Algorithms",
-    "algoritma-dasar": "Basic Algorithms",
-    "algoritma-lanjutan": "Advanced Algorithms",
-    backend: "Backend",
-    frontend: "Frontend",
-    notes: "Notes",
-    catatan: "Notes",
-    career: "Career",
-    karier: "Career",
-    architecture: "Architecture",
-    arsitektur: "Architecture",
-  },
-};
-
 export async function getPublishedWriting() {
   const entries = await getCollection("writing", ({ data }) => !data.draft);
 
@@ -72,11 +33,7 @@ export function getTopicPath(segments: string[], locale: Locale) {
   return getLocalizedPath(locale, `/writing/topic/${segments.join("/")}`);
 }
 
-export function getTopicLabel(segment: string, locale: Locale) {
-  const knownLabel = topicLabels[locale][segment.toLowerCase()];
-
-  if (knownLabel) return knownLabel;
-
+export function getTopicLabel(segment: string) {
   return segment
     .split("-")
     .filter(Boolean)

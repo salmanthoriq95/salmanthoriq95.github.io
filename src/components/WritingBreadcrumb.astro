@@ -23,7 +23,7 @@ const { locale, segments, rootLabel, ariaLabel, markCurrent = false } = Astro.pr
         href={getTopicPath(segments.slice(0, index + 1), locale)}
         aria-current={markCurrent && index === segments.length - 1 ? "page" : undefined}
       >
-        {getTopicLabel(segment, locale)}
+        {getTopicLabel(segment)}
       </a>
     </>
   ))}

@@ -1,5 +1,4 @@
 ---
-import { type Locale } from "../i18n";
 import {
   getTopicLabel,
   getTopicPath,
@@ -8,17 +7,16 @@ import {
 
 interface Props {
   topics: TopicSummary[];
-  locale: Locale;
   articleLabel: string;
   inverse?: boolean;
 }
 
-const { topics, locale, articleLabel, inverse = false } = Astro.props;
+const { topics, articleLabel, inverse = false } = Astro.props;
 ---
 
 <div class:list={["topic-cards", { inverse }]}>
   {topics.map((topic) => (
-    <a href={getTopicPath(topic.segments, locale)}>
+    <a href={getTopicPath(topic.segments)}>
       <strong>{getTopicLabel(topic.segments.at(-1)!)}</strong>
       <span>{topic.count} {articleLabel}</span>
       <i aria-hidden="true">↗</i>

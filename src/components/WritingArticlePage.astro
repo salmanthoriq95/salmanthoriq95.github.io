@@ -1,16 +1,13 @@
 ---
 import { render } from "astro:content";
 import { site } from "../data/site";
-import { defaultLocale, type Locale } from "../i18n";
-import { ui } from "../i18n/ui";
+import { ui } from "../data/ui";
 import {
   formatWritingDate,
   getPublishedWriting,
   getTopicLabel,
   getTopicPath,
   getTopicSegments,
-  getTranslation,
-  getWritingPath,
   isEntryInTopic,
   type WritingEntry,
 } from "../lib/writing";
@@ -19,17 +16,14 @@ import WritingBreadcrumb from "./WritingBreadcrumb.astro";
 import WritingCard from "./WritingCard.astro";
 
 interface Props {
-  locale?: Locale;
   entry: WritingEntry;
 }
 
-const { locale = defaultLocale, entry } = Astro.props;
-const copy = ui[locale].writing;
+const { entry } = Astro.props;
+const copy = ui.writing;
 const { Content, headings } = await render(entry);
 const entries = await getPublishedWriting();
 const topics = getTopicSegments(entry);
-const translation = getTranslation(entry, entries);
-const translationLocale = translation?.data.language;
 let related: WritingEntry[] = [];
 
 for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) {
@@ -41,7 +35,6 @@ for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) 
 ---
 
 <SiteLayout
-  locale={locale}
   title={`${entry.data.title} — ${site.author.shortName}`}
   description={entry.data.description}
 >
@@ -49,7 +42,6 @@ for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) 
     <article>
       <header class="article-hero">
         <WritingBreadcrumb
-          locale={locale}
           segments={topics}
           rootLabel={copy.article.back}
           ariaLabel={copy.article.topics}
@@ -67,7 +59,7 @@ for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) 
             <dt>{copy.article.published}</dt>
             <dd>
               <time datetime={entry.data.publishedAt.toISOString()}>
-                {formatWritingDate(entry.data.publishedAt, locale)}
+                {formatWritingDate(entry.data.publishedAt)}
               </time>
             </dd>
           </div>
@@ -77,23 +69,19 @@ for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) 
                 <dt>{copy.article.updated}</dt>
                 <dd>
                   <time datetime={entry.data.updatedAt.toISOString()}>
-                    {formatWritingDate(entry.data.updatedAt, locale)}
+                    {formatWritingDate(entry.data.updatedAt)}
                   </time>
                 </dd>
               </div>
             )
           }
-          <div>
-            <dt>{copy.article.language}</dt>
-            <dd>{copy.filters[entry.data.language]}</dd>
-          </div>
           {
             topics.length > 0 && (
               <div class="meta-topics">
                 <dt>{copy.article.topics}</dt>
                 <dd>
                   {topics.map((topic, index) => (
-                    <a href={getTopicPath(topics.slice(0, index + 1), locale)}>
+                    <a href={getTopicPath(topics.slice(0, index + 1))}>
                       {getTopicLabel(topic)}
                     </a>
                   ))}
@@ -103,17 +91,6 @@ for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) 
           }
         </dl>
 
-        {
-          translation && translationLocale && (
-            <a
-              class="translation-link"
-              href={getWritingPath(translation, translationLocale)}
-              hreflang={translationLocale}
-            >
-              {copy.article.readIn} {copy.article[translationLocale]} ↗
-            </a>
-          )
-        }
       </header>
 
       <div class="article-layout">
@@ -147,7 +124,7 @@ for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) 
           <h2 id="related-title">{copy.article.relatedTitle}</h2>
           <div>
             {related.map((candidate) => (
-              <WritingCard entry={candidate} locale={locale} />
+              <WritingCard entry={candidate} />
             ))}
           </div>
         </section>
@@ -228,26 +205,6 @@ for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) 
   .meta-topics a {
     padding-bottom: 0.12rem;
     border-bottom: 1px solid var(--line);
-  }
-
-  .translation-link {
-    display: inline-block;
-    margin-top: 1.5rem;
-    padding: 0.65rem 0.9rem;
-    border-radius: 999px;
-    background: var(--accent);
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: 800;
-    transition:
-      background-color var(--motion-duration) var(--motion-ease),
-      transform var(--motion-duration) var(--motion-ease);
-  }
-
-  .translation-link:hover,
-  .translation-link:focus-visible {
-    background: var(--ink);
-    transform: translateY(-0.15rem);
   }
 
   .article-layout {
@@ -413,7 +370,7 @@ for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) 
     }
 
     .article-meta {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
     }
 
     .article-layout:has(.table-of-contents) {

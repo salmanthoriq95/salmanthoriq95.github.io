@@ -1,26 +1,24 @@
 ---
-import { getLocalizedPath, type Locale } from "../i18n";
 import { getTopicLabel, getTopicPath } from "../lib/writing";
 
 interface Props {
-  locale: Locale;
   segments: string[];
   rootLabel: string;
   ariaLabel: string;
   markCurrent?: boolean;
 }
 
-const { locale, segments, rootLabel, ariaLabel, markCurrent = false } = Astro.props;
+const { segments, rootLabel, ariaLabel, markCurrent = false } = Astro.props;
 ---
 
 <nav class="writing-breadcrumb" aria-label={ariaLabel}>
   <span class="breadcrumb-line" aria-hidden="true"></span>
-  <a href={getLocalizedPath(locale, "/writing")}>{rootLabel}</a>
+  <a href="/writing">{rootLabel}</a>
   {segments.map((segment, index) => (
     <>
       <span class="breadcrumb-separator" aria-hidden="true">/</span>
       <a
-        href={getTopicPath(segments.slice(0, index + 1), locale)}
+        href={getTopicPath(segments.slice(0, index + 1))}
         aria-current={markCurrent && index === segments.length - 1 ? "page" : undefined}
       >
         {getTopicLabel(segment)}

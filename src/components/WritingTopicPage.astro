@@ -1,6 +1,5 @@
 ---
-import { defaultLocale, type Locale } from "../i18n";
-import { ui } from "../i18n/ui";
+import { ui } from "../data/ui";
 import {
   getDirectChildTopics,
   getPublishedWriting,
@@ -13,12 +12,11 @@ import WritingBreadcrumb from "./WritingBreadcrumb.astro";
 import WritingList from "./WritingList.astro";
 
 interface Props {
-  locale?: Locale;
   topic: string;
 }
 
-const { locale = defaultLocale, topic } = Astro.props;
-const copy = ui[locale].writing;
+const { topic } = Astro.props;
+const copy = ui.writing;
 const segments = topic.split("/").filter(Boolean);
 const allEntries = await getPublishedWriting();
 const entries = allEntries.filter((entry) => isEntryInTopic(entry, segments));
@@ -27,7 +25,6 @@ const topicTitle = getTopicLabel(segments.at(-1) ?? topic);
 ---
 
 <SiteLayout
-  locale={locale}
   title={`${topicTitle} — ${copy.meta.title}`}
   description={copy.topic.intro}
 >
@@ -35,7 +32,6 @@ const topicTitle = getTopicLabel(segments.at(-1) ?? topic);
     <section class="topic-articles" aria-labelledby="articles-title">
       <header class="topic-header">
         <WritingBreadcrumb
-          locale={locale}
           segments={segments}
           rootLabel={copy.topic.back}
           ariaLabel={copy.article.topics}
@@ -48,7 +44,7 @@ const topicTitle = getTopicLabel(segments.at(-1) ?? topic);
         </div>
       </header>
 
-      <WritingList entries={entries} locale={locale} />
+      <WritingList entries={entries} />
     </section>
 
     {
@@ -59,7 +55,6 @@ const topicTitle = getTopicLabel(segments.at(-1) ?? topic);
             <h2 id="subtopics-title">{copy.topics.title}</h2>
             <TopicCards
               topics={childTopics}
-              locale={locale}
               articleLabel={copy.topics.article}
               inverse
             />

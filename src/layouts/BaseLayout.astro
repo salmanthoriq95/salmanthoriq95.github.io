@@ -1,47 +1,30 @@
 ---
 import "../styles/global.css";
-import {
-  defaultLocale,
-  getLocalizedPath,
-  supportedLocales,
-  type Locale,
-} from "../i18n";
-import { ui } from "../i18n/ui";
 import { site } from "../data/site";
+import { ui } from "../data/ui";
 
 interface Props {
   title?: string;
   description?: string;
-  locale?: Locale;
   noindex?: boolean;
 }
 
 const {
-  title = ui[defaultLocale].meta.title,
-  description = ui[defaultLocale].meta.description,
-  locale = defaultLocale,
+  title = ui.meta.title,
+  description = ui.meta.description,
   noindex = false,
 } = Astro.props;
 
 const canonicalURL = Astro.site
   ? new URL(Astro.url.pathname, Astro.site)
   : Astro.url;
-const localeURLs = supportedLocales.map((supportedLocale) => ({
-  locale: supportedLocale,
-  url: Astro.site
-    ? new URL(getLocalizedPath(supportedLocale, Astro.url.pathname), Astro.site)
-    : getLocalizedPath(supportedLocale, Astro.url.pathname),
-}));
-const defaultURL = Astro.site
-  ? new URL(getLocalizedPath(defaultLocale, Astro.url.pathname), Astro.site)
-  : getLocalizedPath(defaultLocale, Astro.url.pathname);
 const sitemapURL = Astro.site
   ? new URL("sitemap-index.xml", Astro.site)
   : "/sitemap-index.xml";
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -53,13 +36,9 @@ const sitemapURL = Astro.site
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:locale" content={locale === "id" ? "id_ID" : "en_US"} />
+    <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary" />
     <link rel="canonical" href={canonicalURL} />
-    {localeURLs.map(({ locale: alternateLocale, url }) => (
-      <link rel="alternate" hreflang={alternateLocale} href={url} />
-    ))}
-    <link rel="alternate" hreflang="x-default" href={defaultURL} />
     <link rel="sitemap" href={sitemapURL} />
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
     <title>{title}</title>

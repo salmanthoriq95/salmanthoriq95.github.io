@@ -1,6 +1,4 @@
 ---
-import { ui } from "../i18n/ui";
-import { type Locale } from "../i18n";
 import {
   formatWritingDate,
   getWritingPath,
@@ -10,35 +8,31 @@ import TopicTrail from "./TopicTrail.astro";
 
 interface Props {
   entry: WritingEntry;
-  locale: Locale;
 }
 
-const { entry, locale } = Astro.props;
-const copy = ui[locale].writing;
-const languageLabel = copy.filters[entry.data.language];
+const { entry } = Astro.props;
 ---
 
-<article class="writing-card" data-writing-entry data-language={entry.data.language}>
+<article class="writing-card">
   <div class="card-accent" aria-hidden="true">*</div>
 
   <div class="card-main">
     <div class="card-meta">
       <time datetime={entry.data.publishedAt.toISOString()}>
-        {formatWritingDate(entry.data.publishedAt, locale)}
+        {formatWritingDate(entry.data.publishedAt)}
       </time>
-      <span>{languageLabel}</span>
     </div>
 
     <h3>
-      <a href={getWritingPath(entry, locale)}>{entry.data.title}</a>
+      <a href={getWritingPath(entry)}>{entry.data.title}</a>
     </h3>
     <p>{entry.data.description}</p>
-    <TopicTrail entry={entry} locale={locale} />
+    <TopicTrail entry={entry} />
   </div>
 
   <a
     class="card-arrow"
-    href={getWritingPath(entry, locale)}
+    href={getWritingPath(entry)}
     aria-label={`${entry.data.title}`}
   >
     <span aria-hidden="true">↗</span>

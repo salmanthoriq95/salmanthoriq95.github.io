@@ -10,20 +10,6 @@ export default defineConfig({
     mdx(),
     sitemap({
       filter: (page) => !/\/404\/?$/.test(new URL(page).pathname),
-      i18n: {
-        defaultLocale: "en",
-        locales: {
-          en: "en-US",
-          id: "id-ID",
-        },
-      },
     }),
   ],
-  i18n: {
-    locales: ["en", "id"],
-    defaultLocale: "en",
-    routing: {
-      prefixDefaultLocale: false,
-    },
-  },
 });

@@ -33,7 +33,6 @@ interface ExperienceContent {
     description: string;
   };
   hero: {
-    label: string;
     title: string;
     intro: string;
     range: string;
@@ -48,14 +47,12 @@ interface ExperienceContent {
     location: string;
     contributions: string;
     selectedWork: string;
-    technologies: string;
   };
   entries: ExperienceEntry[];
   closing: {
     label: string;
     title: string;
     paragraphs: string[];
-    quote: string;
   };
 }
 
@@ -67,7 +64,6 @@ export const experienceContent: Record<Locale, ExperienceContent> = {
         "Perjalanan profesional Salman Thoriq dalam software engineering sejak 2021.",
     },
     hero: {
-      label: "Perjalanan profesional",
       title: "Pengalaman",
       intro:
         "Catatan tentang pekerjaan, keputusan, masalah, dan pelajaran yang membentuk cara saya berpikir sebagai software engineer.",
@@ -84,7 +80,6 @@ export const experienceContent: Record<Locale, ExperienceContent> = {
       location: "Lokasi",
       contributions: "Kontribusi utama",
       selectedWork: "Pekerjaan pilihan",
-      technologies: "Teknologi",
     },
     entries: [
       {
@@ -297,8 +292,6 @@ export const experienceContent: Record<Locale, ExperienceContent> = {
         "Cara berpikir saya berkembang dari membuat fitur bekerja, menuju code yang dapat dipahami, architecture yang dapat dirawat, dan akhirnya memahami problem bisnis yang sebenarnya sedang diselesaikan.",
         "Bagi saya, software adalah gabungan business rule, data, people, infrastructure, operational process, documentation, communication, dan constraint.",
       ],
-      quote:
-        "Saya ingin membuat software yang tidak hanya bekerja hari ini, tetapi tetap dapat dipahami dan dirawat besok.",
     },
   },
   en: {
@@ -308,7 +301,6 @@ export const experienceContent: Record<Locale, ExperienceContent> = {
         "Salman Thoriq's professional journey in software engineering since 2021.",
     },
     hero: {
-      label: "Professional journey",
       title: "Experience",
       intro:
         "A record of the work, decisions, problems, and lessons that have shaped how I think as a software engineer.",
@@ -325,7 +317,6 @@ export const experienceContent: Record<Locale, ExperienceContent> = {
       location: "Location",
       contributions: "Key contributions",
       selectedWork: "Selected work",
-      technologies: "Technologies",
     },
     entries: [
       {
@@ -537,8 +528,6 @@ export const experienceContent: Record<Locale, ExperienceContent> = {
         "My thinking evolved from making features work, to writing understandable code, to maintainable architecture, and finally to understanding the business problem being solved.",
         "To me, software is a combination of business rules, data, people, infrastructure, operational processes, documentation, communication, and constraints.",
       ],
-      quote:
-        "I want to build software that does not only work today, but remains understandable and maintainable tomorrow.",
     },
   },
 };

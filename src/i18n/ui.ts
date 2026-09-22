@@ -50,32 +50,7 @@ export const ui = {
         empty: "Tulisan pertama sedang dipersiapkan.",
         emptyMark: "03",
       },
-      sections: [
-        {
-          number: "01.",
-          title: "Pengalaman",
-          description:
-            "Linimasa singkat tentang peran, tanggung jawab, dan pelajaran yang membentuk cara saya bekerja.",
-          path: "/experience",
-          cta: "Lihat perjalanan saya",
-        },
-        {
-          number: "02.",
-          title: "Proyek",
-          description:
-            "Pilihan hal yang pernah saya rancang, bangun, atau eksplorasi beserta pemikiran di baliknya.",
-          path: "/projects",
-          cta: "Lihat proyek",
-        },
-        {
-          number: "03.",
-          title: "Tulisan",
-          description:
-            "Catatan tentang teknologi, pemecahan masalah, dan hal-hal yang sedang saya pelajari.",
-          path: "/writing",
-          cta: "Baca catatan saya",
-        },
-      ],
+      sections: ["Pengalaman", "Proyek", "Tulisan"],
     },
     writing: {
       meta: {
@@ -84,7 +59,6 @@ export const ui = {
           "Catatan Salman Thoriq tentang pemrograman, pemecahan masalah, dan hal-hal yang sedang dipelajari.",
       },
       hero: {
-        label: "Arsip tulisan",
         emphasis: "Catatan",
         title: "dari perjalanan",
         intro:
@@ -136,7 +110,6 @@ export const ui = {
         en: "Bahasa Inggris",
       },
       topic: {
-        label: "Topik tulisan",
         back: "Semua tulisan",
         intro:
           "Seluruh tulisan dalam topik ini, termasuk yang tersimpan di subtopik di bawahnya.",
@@ -215,32 +188,7 @@ export const ui = {
         empty: "The first article is being prepared.",
         emptyMark: "03",
       },
-      sections: [
-        {
-          number: "01.",
-          title: "Experience",
-          description:
-            "A concise timeline of the roles, responsibilities, and lessons that have shaped how I work.",
-          path: "/experience",
-          cta: "See my journey",
-        },
-        {
-          number: "02.",
-          title: "Projects",
-          description:
-            "Selected things I have designed, built, or explored—along with the thinking behind them.",
-          path: "/projects",
-          cta: "Browse projects",
-        },
-        {
-          number: "03.",
-          title: "Writing",
-          description:
-            "Notes on technology, problem-solving, and whatever I am currently learning along the way.",
-          path: "/writing",
-          cta: "Read my notes",
-        },
-      ],
+      sections: ["Experience", "Projects", "Writing"],
     },
     writing: {
       meta: {
@@ -249,7 +197,6 @@ export const ui = {
           "Notes by Salman Thoriq on programming, problem-solving, and things learned along the way.",
       },
       hero: {
-        label: "Writing archive",
         emphasis: "Notes",
         title: "from the journey",
         intro:
@@ -301,7 +248,6 @@ export const ui = {
         en: "English",
       },
       topic: {
-        label: "Writing topic",
         back: "All writing",
         intro:
           "Every article in this topic, including those stored in any subtopics below it.",

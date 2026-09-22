@@ -66,5 +66,12 @@ const sitemapURL = Astro.site
   </head>
   <body>
     <slot />
+    <script>
+      import { initializeHorizontalDrag } from "../scripts/horizontalDrag";
+      import { initializeSmoothDetails } from "../scripts/smoothDetails";
+
+      initializeHorizontalDrag();
+      initializeSmoothDetails();
+    </script>
   </body>
 </html>

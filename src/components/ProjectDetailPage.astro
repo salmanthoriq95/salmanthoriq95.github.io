@@ -6,9 +6,7 @@ import {
 } from "../data/projects";
 import { defaultLocale, getLocalizedPath, type Locale } from "../i18n";
 import { site } from "../data/site";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Footer from "./Footer.astro";
-import Header from "./Header.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 
 interface Props {
   locale?: Locale;
@@ -30,13 +28,11 @@ const contextParagraphs = content.summary.slice(1);
 const media = project.media ?? [];
 ---
 
-<BaseLayout
+<SiteLayout
   locale={locale}
   title={`${content.title} — ${site.author.shortName}`}
   description={content.summary[0]}
 >
-  <Header locale={locale} />
-
   <main>
     <section class="project-hero" aria-labelledby="project-title">
       <a class="back-link" href={projectsPath}>← {copy.labels.back}</a>
@@ -73,7 +69,7 @@ const media = project.media ?? [];
       <section class="project-gallery" aria-label={copy.labels.gallery}>
         <div
           class="gallery-scroller"
-          data-project-gallery
+          data-horizontal-drag
           role="region"
           aria-label={`${copy.labels.gallery}: ${content.title}`}
           tabindex="0"
@@ -109,7 +105,7 @@ const media = project.media ?? [];
         )}
 
         <div class="contribution-story">
-          <p class="eyebrow"><span></span>{copy.labels.contributions}</p>
+          <p class="eyebrow eyebrow--inverse"><span></span>{copy.labels.contributions}</p>
           <h2 id="contributions-title">
             {content.contribution}<span aria-hidden="true">.</span>
           </h2>
@@ -141,8 +137,7 @@ const media = project.media ?? [];
     </nav>
   </main>
 
-  <Footer locale={locale} />
-</BaseLayout>
+</SiteLayout>
 
 <style>
   .project-hero,
@@ -152,7 +147,7 @@ const media = project.media ?? [];
   .privacy-note,
   .next-project-inner {
     width: 100%;
-    max-width: 52rem;
+    max-width: var(--content-width);
     margin-inline: auto;
   }
 
@@ -284,7 +279,7 @@ const media = project.media ?? [];
 
   .project-visual,
   .project-mark {
-    width: min(calc(100vw - (2 * var(--page-pad))), 52rem);
+    width: min(calc(100vw - (2 * var(--page-pad))), var(--content-width));
     min-height: 18rem;
     flex: 0 0 auto;
     overflow: hidden;
@@ -362,25 +357,6 @@ const media = project.media ?? [];
     border-radius: var(--radius);
     background: var(--ink);
     color: #fff;
-  }
-
-  .eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0;
-    color: #bdbdbd;
-    font-size: 0.65rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .eyebrow > span {
-    width: 1rem;
-    height: 2px;
-    flex: 0 0 auto;
-    background: var(--accent);
   }
 
   h2 {
@@ -511,40 +487,3 @@ const media = project.media ?? [];
     }
   }
 </style>
-
-<script>
-  document.querySelectorAll<HTMLElement>("[data-project-gallery]").forEach((gallery) => {
-    let isDragging = false;
-    let startX = 0;
-    let startScroll = 0;
-
-    gallery.addEventListener("pointerdown", (event) => {
-      if (event.pointerType === "touch" || event.button !== 0) return;
-
-      isDragging = true;
-      startX = event.clientX;
-      startScroll = gallery.scrollLeft;
-      gallery.classList.add("is-dragging");
-      gallery.setPointerCapture(event.pointerId);
-      event.preventDefault();
-    });
-
-    gallery.addEventListener("pointermove", (event) => {
-      if (!isDragging) return;
-      gallery.scrollLeft = startScroll - (event.clientX - startX);
-    });
-
-    const stopDragging = (event: PointerEvent) => {
-      if (!isDragging) return;
-
-      isDragging = false;
-      gallery.classList.remove("is-dragging");
-      if (gallery.hasPointerCapture(event.pointerId)) {
-        gallery.releasePointerCapture(event.pointerId);
-      }
-    };
-
-    gallery.addEventListener("pointerup", stopDragging);
-    gallery.addEventListener("pointercancel", stopDragging);
-  });
-</script>

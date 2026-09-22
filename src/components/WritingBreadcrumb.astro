@@ -1,0 +1,65 @@
+---
+import { getLocalizedPath, type Locale } from "../i18n";
+import { getTopicLabel, getTopicPath } from "../lib/writing";
+
+interface Props {
+  locale: Locale;
+  segments: string[];
+  rootLabel: string;
+  ariaLabel: string;
+  markCurrent?: boolean;
+}
+
+const { locale, segments, rootLabel, ariaLabel, markCurrent = false } = Astro.props;
+---
+
+<nav class="writing-breadcrumb" aria-label={ariaLabel}>
+  <span class="breadcrumb-line" aria-hidden="true"></span>
+  <a href={getLocalizedPath(locale, "/writing")}>{rootLabel}</a>
+  {segments.map((segment, index) => (
+    <>
+      <span class="breadcrumb-separator" aria-hidden="true">/</span>
+      <a
+        href={getTopicPath(segments.slice(0, index + 1), locale)}
+        aria-current={markCurrent && index === segments.length - 1 ? "page" : undefined}
+      >
+        {getTopicLabel(segment, locale)}
+      </a>
+    </>
+  ))}
+</nav>
+
+<style>
+  .writing-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--muted);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .breadcrumb-line {
+    width: 1rem;
+    height: 2px;
+    flex: 0 0 auto;
+    background: var(--accent);
+  }
+
+  a {
+    transition: color var(--motion-duration) var(--motion-ease);
+  }
+
+  a:hover,
+  a:focus-visible,
+  a[aria-current="page"] {
+    color: var(--accent);
+  }
+
+  .breadcrumb-separator {
+    color: var(--accent);
+  }
+</style>

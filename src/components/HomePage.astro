@@ -9,9 +9,7 @@ import {
   getPublishedWriting,
   getWritingPath,
 } from "../lib/writing";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Footer from "./Footer.astro";
-import Header from "./Header.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 import HeroScrollCue from "./HeroScrollCue.astro";
 
 interface Props {
@@ -25,20 +23,15 @@ const experienceHref = getLocalizedPath(locale, "/experience");
 const projectsHref = getLocalizedPath(locale, "/projects");
 const writingHref = getLocalizedPath(locale, "/writing");
 const writingEntries = (await getPublishedWriting()).slice(0, 8);
-const sections = copy.home.sections.map((section) => ({
-  ...section,
-  href: getLocalizedPath(locale, section.path),
-}));
+const sections = copy.home.sections;
 const defaultGreeting = site.greetings[0];
 ---
 
-<BaseLayout
+<SiteLayout
   locale={locale}
   title={copy.meta.title}
   description={copy.meta.description}
 >
-  <Header locale={locale} />
-
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-heading">
@@ -76,7 +69,7 @@ const defaultGreeting = site.greetings[0];
         {sections.map((section, index) => (
           <details open={index === 0} data-smooth-details>
             <summary>
-              <span class="title">{section.title}</span>
+              <span class="title">{section}</span>
               <span class="toggle" aria-hidden="true"></span>
             </summary>
             <div class="panel">
@@ -215,12 +208,10 @@ const defaultGreeting = site.greetings[0];
     </section>
   </main>
 
-  <Footer locale={locale} />
-</BaseLayout>
+</SiteLayout>
 
 <style>
   .hero {
-    --content-width: 52rem;
     position: relative;
     display: grid;
     min-height: calc(100svh - 2rem);
@@ -271,7 +262,7 @@ const defaultGreeting = site.greetings[0];
   .section-heading {
     display: grid;
     gap: 1.5rem;
-    max-width: 52rem;
+    max-width: var(--content-width);
     margin: 0 auto 2.5rem;
   }
 
@@ -314,7 +305,7 @@ const defaultGreeting = site.greetings[0];
   .accordion {
     display: grid;
     gap: 0.65rem;
-    max-width: 52rem;
+    max-width: var(--content-width);
     margin: 0 auto;
   }
 

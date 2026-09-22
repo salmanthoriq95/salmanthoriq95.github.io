@@ -1,10 +1,9 @@
 ---
 import { projects, projectPageContent } from "../data/projects";
 import { defaultLocale, getLocalizedPath, type Locale } from "../i18n";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Footer from "./Footer.astro";
-import Header from "./Header.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 import HeroScrollCue from "./HeroScrollCue.astro";
+import SectionHeading from "./SectionHeading.astro";
 
 interface Props {
   locale?: Locale;
@@ -17,9 +16,7 @@ const archivedProjects = projects.filter((project) => !project.featured);
 const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug}`);
 ---
 
-<BaseLayout locale={locale} title={copy.meta.title} description={copy.meta.description}>
-  <Header locale={locale} />
-
+<SiteLayout locale={locale} title={copy.meta.title} description={copy.meta.description}>
   <main>
     <section class="projects-hero" aria-labelledby="projects-title">
       <div class="hero-grid">
@@ -34,13 +31,12 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
     </section>
 
     <section id="featured-projects" class="featured" aria-labelledby="featured-title">
-      <header class="section-heading">
-        <div>
-          <p class="eyebrow"><span></span>{copy.featured.label}</p>
-          <h2 id="featured-title">{copy.featured.title}</h2>
-        </div>
-        <p>{copy.featured.intro}</p>
-      </header>
+      <SectionHeading
+        label={copy.featured.label}
+        title={copy.featured.title}
+        intro={copy.featured.intro}
+        titleId="featured-title"
+      />
 
       <div class="featured-grid">
         {featuredProjects.map((project, index) => {
@@ -71,13 +67,12 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
     </section>
 
     <section class="archive" aria-labelledby="archive-title">
-      <header class="section-heading">
-        <div>
-          <p class="eyebrow"><span></span>{copy.archive.label}</p>
-          <h2 id="archive-title">{copy.archive.title}</h2>
-        </div>
-        <p>{copy.archive.intro}</p>
-      </header>
+      <SectionHeading
+        label={copy.archive.label}
+        title={copy.archive.title}
+        intro={copy.archive.intro}
+        titleId="archive-title"
+      />
 
       <div class="archive-list">
         {archivedProjects.map((project) => {
@@ -104,17 +99,15 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
     </section>
   </main>
 
-  <Footer locale={locale} />
-</BaseLayout>
+</SiteLayout>
 
 <style>
   .projects-hero,
-  .section-heading,
   .featured-grid,
   .archive-list,
   .privacy-note {
     width: 100%;
-    max-width: 52rem;
+    max-width: var(--content-width);
     margin-inline: auto;
   }
 
@@ -123,25 +116,6 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
     min-height: min(44rem, calc(100svh - 4.25rem));
     padding: 3.5rem var(--page-pad) 2rem;
     grid-template-rows: 1fr auto;
-  }
-
-  .eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .eyebrow > span {
-    width: 1rem;
-    height: 2px;
-    flex: 0 0 auto;
-    background: var(--accent);
   }
 
   .hero-grid {
@@ -184,28 +158,6 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
 
   .archive {
     background: var(--paper);
-  }
-
-  .section-heading {
-    display: grid;
-    gap: 1.5rem;
-    margin-bottom: 2.75rem;
-  }
-
-  h2 {
-    max-width: 37rem;
-    margin: 0.75rem 0 0;
-    font-size: clamp(2.55rem, 12vw, 5.6rem);
-    line-height: 0.9;
-    letter-spacing: -0.07em;
-  }
-
-  .section-heading > p {
-    max-width: 26rem;
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.78rem;
-    line-height: 1.55;
   }
 
   .featured-grid {
@@ -428,13 +380,6 @@ const projectPath = (slug: string) => getLocalizedPath(locale, `/projects/${slug
     .archive {
       padding-top: 7rem;
       padding-bottom: 7rem;
-    }
-
-    .section-heading {
-      align-items: end;
-      margin-bottom: 3.5rem;
-      grid-template-columns: minmax(0, 1.35fr) minmax(14rem, 0.65fr);
-      gap: 3rem;
     }
 
     .featured-grid {

@@ -1,0 +1,108 @@
+---
+import { type Locale } from "../i18n";
+import {
+  getTopicLabel,
+  getTopicPath,
+  type TopicSummary,
+} from "../lib/writing";
+
+interface Props {
+  topics: TopicSummary[];
+  locale: Locale;
+  articleLabel: string;
+  inverse?: boolean;
+}
+
+const { topics, locale, articleLabel, inverse = false } = Astro.props;
+---
+
+<div class:list={["topic-cards", { inverse }]}>
+  {topics.map((topic) => (
+    <a href={getTopicPath(topic.segments, locale)}>
+      <strong>{getTopicLabel(topic.segments.at(-1)!, locale)}</strong>
+      <span>{topic.count} {articleLabel}</span>
+      <i aria-hidden="true">↗</i>
+    </a>
+  ))}
+</div>
+
+<style>
+  .topic-cards {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+
+  a {
+    position: relative;
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    height: 6.5rem;
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem 2.8rem 1rem 1rem;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: #fff;
+    transition:
+      border-radius var(--motion-duration) var(--motion-ease),
+      border-color var(--motion-duration) var(--motion-ease),
+      transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .inverse a {
+    border-color: rgba(255, 255, 255, 0.15);
+    background: #191919;
+  }
+
+  a:nth-child(3n + 2) {
+    border-color: transparent;
+    background: var(--electric);
+    color: var(--ink);
+  }
+
+  a:nth-child(3n + 3) {
+    border-color: transparent;
+    background: var(--accent);
+  }
+
+  a:hover,
+  a:focus-visible {
+    border-color: var(--accent);
+    border-radius: 2.25rem;
+    transform: translateY(-0.25rem);
+  }
+
+  strong {
+    display: block;
+    font-size: clamp(1.15rem, 5vw, 1.7rem);
+    line-height: 1;
+    letter-spacing: -0.055em;
+  }
+
+  span {
+    display: block;
+    margin-top: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  a:nth-child(3n + 2) span {
+    color: rgba(7, 7, 7, 0.65);
+  }
+
+  i {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    font-style: normal;
+    transform: translateY(-50%);
+  }
+</style>

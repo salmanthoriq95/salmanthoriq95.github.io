@@ -2,6 +2,10 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import { getLocalizedPath, type Locale } from "../i18n";
 
 export type WritingEntry = CollectionEntry<"writing">;
+export interface TopicSummary {
+  segments: string[];
+  count: number;
+}
 
 const topicLabels: Record<Locale, Record<string, string>> = {
   id: {
@@ -107,7 +111,7 @@ export function getDirectChildTopics(
   entries: WritingEntry[],
   parent: string[] = [],
 ) {
-  const children = new Map<string, { segments: string[]; count: number }>();
+  const children = new Map<string, TopicSummary>();
 
   entries.forEach((entry) => {
     if (!isEntryInTopic(entry, parent)) return;

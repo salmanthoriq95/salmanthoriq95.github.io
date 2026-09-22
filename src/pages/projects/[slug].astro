@@ -1,13 +1,9 @@
 ---
 import ProjectDetailPage from "../../components/ProjectDetailPage.astro";
-import { projects, type Project } from "../../data/projects";
+import { type Project } from "../../data/projects";
+import { getProjectStaticPaths } from "../../lib/staticPaths";
 
-export function getStaticPaths() {
-  return projects.map((project) => ({
-    params: { slug: project.slug },
-    props: { project },
-  }));
-}
+export const getStaticPaths = getProjectStaticPaths;
 
 interface Props {
   project: Project;

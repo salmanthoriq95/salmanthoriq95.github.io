@@ -37,6 +37,8 @@ owner explicitly requests it.
   and the Experience page must derive from this file.
 - `src/data/projects.ts`: all localized Project content, stacks, featured state,
   slugs, and optional media. Project routes and homepage previews derive from it.
+- `src/data/site.ts`: shared identity, contact, location, greeting, and social
+  data used across the shell and homepage.
 - `src/content.config.ts`: Writing collection schema. Only `publish/` is loaded.
 - `src/content/writing/publish/`: public `.md` and `.mdx` articles.
 - `src/content/writing/private/`: notes excluded from the generated website.
@@ -47,6 +49,10 @@ owner explicitly requests it.
 - `src/i18n/index.ts`: supported locales and localized path construction.
 - `src/layouts/BaseLayout.astro`: canonical metadata, alternate-language links,
   Open Graph metadata, favicon, and sitemap discovery.
+- `src/layouts/SiteLayout.astro`: standard page shell with the shared header and
+  footer. Use it for normal public pages.
+- `src/lib/staticPaths.ts`: shared generators for mirrored dynamic routes.
+- `src/scripts/`: shared browser interactions for details and horizontal drag.
 - `src/styles/global.css`: global design tokens and reduced-motion behavior.
 
 ## Routing and i18n
@@ -125,7 +131,8 @@ Core tokens live in `src/styles/global.css`:
 
 Important conventions:
 
-- Use `Header.astro` and `Footer.astro` for standard pages.
+- Use `SiteLayout.astro` for standard pages; it owns `Header.astro` and
+  `Footer.astro`.
 - Use `HeroScrollCue.astro` for top-level hero-to-body navigation.
 - Keep the square red period as the primary identity accent.
 - Top-level hero sections do not use eyebrow labels.

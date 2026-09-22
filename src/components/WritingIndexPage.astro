@@ -5,15 +5,13 @@ import {
   formatWritingDate,
   getDirectChildTopics,
   getPublishedWriting,
-  getTopicLabel,
-  getTopicPath,
   getWritingPath,
 } from "../lib/writing";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Footer from "./Footer.astro";
-import Header from "./Header.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 import HeroScrollCue from "./HeroScrollCue.astro";
-import WritingCard from "./WritingCard.astro";
+import SectionHeading from "./SectionHeading.astro";
+import TopicCards from "./TopicCards.astro";
+import WritingList from "./WritingList.astro";
 
 interface Props {
   locale?: Locale;
@@ -27,9 +25,7 @@ const topics = getDirectChildTopics(entries);
 const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#writing-archive";
 ---
 
-<BaseLayout locale={locale} title={copy.meta.title} description={copy.meta.description}>
-  <Header locale={locale} />
-
+<SiteLayout locale={locale} title={copy.meta.title} description={copy.meta.description}>
   <main>
     <section class="writing-hero" aria-labelledby="writing-title">
       <div class="hero-grid">
@@ -46,13 +42,13 @@ const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#wr
     {
       featuredEntries.length > 0 && (
         <section id="featured-writing" class="featured" aria-labelledby="featured-title">
-          <header class="section-heading">
-            <div>
-              <p class="eyebrow"><span></span>{copy.featured.label}</p>
-              <h2 id="featured-title">{copy.featured.title}</h2>
-            </div>
-            <p>{copy.featured.intro}</p>
-          </header>
+          <SectionHeading
+            label={copy.featured.label}
+            title={copy.featured.title}
+            intro={copy.featured.intro}
+            titleId="featured-title"
+            inverse
+          />
 
           <div class="featured-grid">
             {featuredEntries.map((entry) => (
@@ -73,33 +69,18 @@ const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#wr
       )
     }
 
-    <section id="writing-archive" class="archive" aria-labelledby="archive-title" data-writing-archive>
-      <header class="section-heading">
-        <div>
-          <p class="eyebrow"><span></span>{copy.latest.label}</p>
-          <h2 id="archive-title">{copy.latest.title}</h2>
-        </div>
-        <p>{copy.latest.intro}</p>
-      </header>
+    <section id="writing-archive" class="archive" aria-labelledby="archive-title">
+      <SectionHeading
+        label={copy.latest.label}
+        title={copy.latest.title}
+        intro={copy.latest.intro}
+        titleId="archive-title"
+      />
 
       {
         entries.length > 0 ? (
           <>
-            <div class="filters" aria-label={copy.filters.label}>
-              <button class="is-active" type="button" data-language-filter="all">
-                {copy.filters.all}
-              </button>
-              <button type="button" data-language-filter="id">{copy.filters.id}</button>
-              <button type="button" data-language-filter="en">{copy.filters.en}</button>
-            </div>
-
-            <div class="writing-list">
-              {entries.map((entry) => (
-                <WritingCard entry={entry} locale={locale} />
-              ))}
-            </div>
-
-            <p class="filter-empty" data-filter-empty hidden>{copy.filters.empty}</p>
+            <WritingList entries={entries} locale={locale} />
           </>
         ) : (
           <div class="archive-empty">
@@ -111,27 +92,16 @@ const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#wr
     </section>
 
     <section id="writing-topics" class="topics" aria-labelledby="topics-title">
-      <header class="section-heading">
-        <div>
-          <p class="eyebrow"><span></span>{copy.topics.label}</p>
-          <h2 id="topics-title">{copy.topics.title}</h2>
-        </div>
-        <p>{copy.topics.intro}</p>
-      </header>
+      <SectionHeading
+        label={copy.topics.label}
+        title={copy.topics.title}
+        intro={copy.topics.intro}
+        titleId="topics-title"
+      />
 
       {
         topics.length > 0 ? (
-          <div class="topic-grid">
-            {topics.map((topic) => (
-              <a class="topic-card" href={getTopicPath(topic.segments, locale)}>
-                <h3>{getTopicLabel(topic.segments.at(-1)!, locale)}</h3>
-                <p>
-                  {topic.count} {copy.topics.article}
-                </p>
-                <i aria-hidden="true">↗</i>
-              </a>
-            ))}
-          </div>
+          <TopicCards topics={topics} locale={locale} articleLabel={copy.topics.article} />
         ) : (
           <p class="topic-empty">{copy.topics.empty}</p>
         )
@@ -139,21 +109,15 @@ const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#wr
     </section>
   </main>
 
-  <Footer locale={locale} />
-</BaseLayout>
+</SiteLayout>
 
 <style>
   .writing-hero,
-  .section-heading,
   .featured-grid,
-  .topic-grid,
   .topic-empty,
-  .filters,
-  .writing-list,
-  .filter-empty,
   .archive-empty {
     width: 100%;
-    max-width: 52rem;
+    max-width: var(--content-width);
     margin-inline: auto;
   }
 
@@ -162,25 +126,6 @@ const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#wr
     min-height: min(44rem, calc(100svh - 4.25rem));
     padding: 3.5rem var(--page-pad) 2rem;
     grid-template-rows: 1fr auto;
-  }
-
-  .eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.65rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .eyebrow > span {
-    width: 1rem;
-    height: 2px;
-    flex: 0 0 auto;
-    background: var(--accent);
   }
 
   .hero-grid {
@@ -203,8 +148,7 @@ const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#wr
     font-weight: 400;
   }
 
-  .hero-grid > p,
-  .section-heading > p {
+  .hero-grid > p {
     max-width: 28rem;
     margin: 0;
     color: var(--muted);
@@ -223,31 +167,12 @@ const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#wr
     color: #fff;
   }
 
-  .featured .eyebrow,
-  .featured .section-heading > p {
-    color: #bdbdbd;
-  }
-
   .topics {
     background: var(--paper);
   }
 
   .archive {
     background: #fff;
-  }
-
-  .section-heading {
-    display: grid;
-    gap: 1.5rem;
-    margin-bottom: 2.75rem;
-  }
-
-  h2 {
-    max-width: 39rem;
-    margin: 0.75rem 0 0;
-    font-size: clamp(2.55rem, 12vw, 5.6rem);
-    line-height: 0.9;
-    letter-spacing: -0.07em;
   }
 
   .featured-grid {
@@ -314,112 +239,11 @@ const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#wr
     font-style: normal;
   }
 
-  .topic-grid {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 0.65rem;
-  }
-
-  .topic-card {
-    position: relative;
-    display: flex;
-    width: fit-content;
-    max-width: 100%;
-    height: 6.5rem;
-    flex: 0 0 auto;
-    flex-direction: column;
-    justify-content: center;
-    padding: 1rem 2.8rem 1rem 1rem;
-    overflow: hidden;
-    border-radius: var(--radius);
-    background: var(--ink);
-    color: #fff;
-    transition:
-      border-radius var(--motion-duration) var(--motion-ease),
-      transform var(--motion-duration) var(--motion-ease);
-  }
-
-  .topic-card:nth-child(3n + 2) {
-    background: var(--electric);
-    color: var(--ink);
-  }
-
-  .topic-card:nth-child(3n + 3) {
-    background: var(--accent);
-  }
-
-  .topic-card:hover,
-  .topic-card:focus-visible {
-    border-radius: 2.25rem;
-    transform: translateY(-0.25rem);
-  }
-
-  .topic-card p {
-    font-size: 0.65rem;
-    font-weight: 800;
-  }
-
-  .topic-card h3 {
-    margin: 0;
-    font-size: clamp(1.15rem, 5vw, 1.7rem);
-    line-height: 1;
-    letter-spacing: -0.065em;
-  }
-
-  .topic-card p {
-    margin: 0.5rem 0 0;
-    opacity: 0.7;
-    text-transform: uppercase;
-  }
-
-  .topic-card i {
-    position: absolute;
-    top: 50%;
-    right: 1rem;
-    font-style: normal;
-    transform: translateY(-50%);
-  }
-
   .topic-empty,
   .archive-empty {
     padding: 2rem;
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    color: var(--muted);
-    font-size: 0.78rem;
-  }
-
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    margin-bottom: 2rem;
-  }
-
-  .filters button {
-    padding: 0.55rem 0.8rem;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 0.63rem;
-    font-weight: 800;
-    transition:
-      background-color var(--motion-duration) var(--motion-ease),
-      color var(--motion-duration) var(--motion-ease);
-  }
-
-  .filters button:hover,
-  .filters button:focus-visible,
-  .filters button.is-active {
-    background: var(--ink);
-    color: #fff;
-  }
-
-  .filter-empty {
-    margin-top: 1.5rem;
     color: var(--muted);
     font-size: 0.78rem;
   }
@@ -437,8 +261,7 @@ const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#wr
   }
 
   @media (min-width: 48rem) {
-    .hero-grid,
-    .section-heading {
+    .hero-grid {
       align-items: end;
       grid-template-columns: minmax(0, 1.5fr) minmax(14rem, 0.75fr);
     }
@@ -452,27 +275,3 @@ const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#wr
     }
   }
 </style>
-
-<script>
-  document.querySelectorAll<HTMLElement>("[data-writing-archive]").forEach((archive) => {
-    const buttons = archive.querySelectorAll<HTMLButtonElement>("[data-language-filter]");
-    const entries = archive.querySelectorAll<HTMLElement>("[data-writing-entry]");
-    const empty = archive.querySelector<HTMLElement>("[data-filter-empty]");
-
-    buttons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const language = button.dataset.languageFilter ?? "all";
-        let visibleCount = 0;
-
-        buttons.forEach((item) => item.classList.toggle("is-active", item === button));
-        entries.forEach((entry) => {
-          const visible = language === "all" || entry.dataset.language === language;
-          entry.hidden = !visible;
-          if (visible) visibleCount += 1;
-        });
-
-        if (empty) empty.hidden = visibleCount > 0;
-      });
-    });
-  });
-</script>

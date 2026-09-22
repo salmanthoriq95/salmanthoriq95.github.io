@@ -1,6 +1,4 @@
 ---
-import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
 import { site } from "../data/site";
 import {
   defaultLocale,
@@ -8,7 +6,7 @@ import {
   supportedLocales,
 } from "../i18n";
 import { ui } from "../i18n/ui";
-import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 
 const copy = ui[defaultLocale].notFound;
 const year = new Date().getFullYear();
@@ -27,6 +25,7 @@ const localeConfig = Object.fromEntries(
       },
       footer: {
         ...ui[locale].footer,
+        languagePickerLabel: ui[locale].language.label,
         copyright: `© ${year} ${site.author.shortName} · ${ui[locale].footer.archive}`,
       },
     },
@@ -34,14 +33,12 @@ const localeConfig = Object.fromEntries(
 );
 ---
 
-<BaseLayout
+<SiteLayout
   locale={defaultLocale}
   title={copy.meta.title}
   description={copy.meta.description}
   noindex
 >
-  <Header locale={defaultLocale} />
-
   <main class="not-found" data-locale-config={JSON.stringify(localeConfig)}>
     <section class="error-content" aria-labelledby="error-title">
       <div class="error-number" aria-label={copy.code}>
@@ -62,8 +59,7 @@ const localeConfig = Object.fromEntries(
     </section>
   </main>
 
-  <Footer locale={defaultLocale} />
-</BaseLayout>
+</SiteLayout>
 
 <style>
   .not-found {
@@ -73,7 +69,7 @@ const localeConfig = Object.fromEntries(
   .error-content {
     display: grid;
     width: 100%;
-    max-width: 52rem;
+    max-width: var(--content-width);
     min-height: min(44rem, calc(100svh - 4.25rem));
     margin-inline: auto;
     padding: 4rem var(--page-pad);
@@ -196,6 +192,7 @@ const localeConfig = Object.fromEntries(
   }>;
   const locale = /^\/id(?:\/|$)/.test(window.location.pathname) ? "id" : "en";
   const config = configs[locale];
+  const number = document.querySelector<HTMLElement>("[data-error-number]");
 
   if (config) {
     document.documentElement.lang = locale;
@@ -205,6 +202,12 @@ const localeConfig = Object.fromEntries(
       const key = element.dataset.pageCopy as PageCopyKey;
       element.textContent = config.page[key] ?? element.textContent;
     });
+
+    if (number) {
+      number.textContent = config.page.code;
+      number.dataset.finalNumber = config.page.code;
+      number.parentElement?.setAttribute("aria-label", config.page.code);
+    }
 
     document.querySelectorAll<HTMLAnchorElement>("[data-home-link]").forEach((link) => {
       link.href = config.navigation.homePath;
@@ -234,6 +237,9 @@ const localeConfig = Object.fromEntries(
     const languageName = document.querySelector<HTMLElement>("[data-footer-language-name]");
     if (languageName) languageName.textContent = config.footer.languageName;
 
+    const languageOptions = document.querySelector<HTMLElement>(".language-options");
+    if (languageOptions) languageOptions.ariaLabel = config.footer.languagePickerLabel;
+
     const contactWord = document.querySelector<HTMLAnchorElement>("[data-footer-contact-word]");
     if (contactWord) {
       contactWord.textContent = config.footer.contactWord;
@@ -260,9 +266,14 @@ const localeConfig = Object.fromEntries(
 
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (description) description.content = config.page.meta.description;
+
+    const openGraphTitle = document.querySelector<HTMLMetaElement>('meta[property="og:title"]');
+    if (openGraphTitle) openGraphTitle.content = config.page.meta.title;
+
+    const openGraphDescription = document.querySelector<HTMLMetaElement>('meta[property="og:description"]');
+    if (openGraphDescription) openGraphDescription.content = config.page.meta.description;
   }
 
-  const number = document.querySelector<HTMLElement>("[data-error-number]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (number && !reduceMotion) {

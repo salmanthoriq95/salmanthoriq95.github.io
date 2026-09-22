@@ -10,7 +10,7 @@ export const localeNames: Record<Locale, string> = {
 };
 
 /**
- * Builds a localized path while keeping Indonesian routes unprefixed.
+ * Builds a localized path while keeping the default locale unprefixed.
  * It also accepts an already-localized path, which is useful for the
  * language switcher because the visitor stays on the equivalent page.
  */

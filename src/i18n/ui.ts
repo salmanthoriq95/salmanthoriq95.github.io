@@ -2,31 +2,34 @@ export const ui = {
   id: {
     meta: {
       title: "Salman Thoriq Al Farisyi — Software Engineer",
-      description: "Pengalaman dan pemikiran dari Salman Thoriq Al Farisyi.",
+      description: "Apa yang saya pelajari, pikirkan, dan percaya.",
     },
     navigation: {
       label: "Navigasi utama",
       homeLabel: "Salman Thoriq, halaman utama",
       links: [
-        { label: "Pengalaman", path: "/experience" },
-        { label: "Proyek", path: "/projects" },
-        { label: "Tulisan", path: "/writing" },
+        { label: "Perjalanan", path: "/experience" },
+        { label: "Projects", path: "/projects" },
+        { label: "Coretan", path: "/writing" },
       ],
     },
     language: {
-      label: "Pilih bahasa",
+      label: "Bahasa",
+    },
+    actions: {
+      scrollToTop: "Ke atas",
     },
     home: {
       praIdentity: "Saya,",
       identity: "Salman Thoriq Al Farisyi",
       intro:
-        "Arsip pribadi tentang pengalaman, proyek, dan berbagai hal yang saya pelajari ketika membangun untuk web.",
-      scroll: "Jelajahi",
-      kicker: "Mulai di sini",
-      headingEmphasis: "Jelajahi",
-      headingRest: "ruang saya",
+        "Sebuah kotak untuk menyimpan pemikiran yang terus bertumbuh, sepanjang perjalanan.",
+      scroll: "Masuki Perjalananku",
+      kicker: "Semuanya bermula di sini",
+      headingEmphasis: "Tempatku",
+      headingRest: "terus bertumbuh",
       sectionIntro:
-        "Tiga bagian dari perjalanan yang sama: tempat saya bertumbuh, hal yang saya buat, dan pelajaran yang saya temukan.",
+        "Tak ada yang sia-sia, semua bagian dari cerita membentuk saya sekarang: tempat saya belajar dan bertumbuh, hal-hal yang saya bangun, dan catatan tentang apa yang saya pelajari.",
       experiencePreview: {
         title: "Tempat yang membentuk saya",
         intro:
@@ -127,11 +130,11 @@ export const ui = {
     },
     notFound: {
       meta: {
-        title: "Halaman tidak ditemukan — Salman Thoriq",
+        title: "Halaman tidak ditemukan — Salman Thoriq Al Farisyi",
         description: "Halaman yang kamu cari tidak tersedia.",
       },
       code: "404",
-      title: "Halaman ini tidak ditemukan.",
+      title: "Maaf, halaman yang kamu cari tidak ditemukan.",
       description:
         "Mungkin alamatnya berubah, tautannya sudah tidak berlaku, atau halaman ini memang belum saya buat.",
       homeCta: "Kembali ke halaman utama",
@@ -139,32 +142,35 @@ export const ui = {
   },
   en: {
     meta: {
-      title: "Salman Thoriq — Personal Portfolio",
-      description: "Experience, selected projects, and writing by Salman Thoriq.",
+      title: "Salman Thoriq — Software Engineer",
+      description: "What I learn, think about, and believe.",
     },
     navigation: {
-      label: "Primary navigation",
+      label: "Main navigation",
       homeLabel: "Salman Thoriq, homepage",
       links: [
-        { label: "Experience", path: "/experience" },
+        { label: "Journey", path: "/experience" },
         { label: "Projects", path: "/projects" },
-        { label: "Writing", path: "/writing" },
+        { label: "Thoughts", path: "/writing" },
       ],
     },
     language: {
-      label: "Choose language",
+      label: "Laguage",
+    },
+    actions: {
+      scrollToTop: "Back to top",
     },
     home: {
       praIdentity: "I'm",
       identity: "Salman Thoriq Al Farisyi",
       intro:
-        "A personal archive of my experience, projects, and notes from things I learn while building for the web.",
-      scroll: "Explore",
-      kicker: "Start here",
-      headingEmphasis: "Explore",
-      headingRest: "my space",
+        "A little box for thoughts that keep growing along the way.",
+      scroll: "Walk With Me",
+      kicker: "It all start here",
+      headingEmphasis: "Where",
+      headingRest: "I Grow",
       sectionIntro:
-        "Three parts of the same ongoing story: where I have been, what I have made, and what I have learned.",
+        "Nothing is ever wasted. Every part of the story has shaped who I am today: the places where I learned and grew, the things I built, and the notes I kept along the way.",
       experiencePreview: {
         title: "Places that shaped me",
         intro:
@@ -269,7 +275,7 @@ export const ui = {
         description: "The page you are looking for is not available.",
       },
       code: "404",
-      title: "This page could not be found.",
+      title: "Sorry, the page doesn't exist.",
       description:
         "The address may have changed, the link may be outdated, or I may not have built this page yet.",
       homeCta: "Return to the homepage",

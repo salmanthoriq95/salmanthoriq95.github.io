@@ -98,9 +98,8 @@ Optional fields are `updatedAt` and `translationKey`.
   in the complete archive.
 - `translationKey`: pair two language versions even when filenames differ.
 
-If a new folder slug needs a deliberate localized label, update `topicLabels`
-in `src/lib/writing.ts`. Unknown folder names intentionally fall back to a
-title-cased label.
+Folder names are displayed through the automatic title-cased fallback in
+`src/lib/writing.ts`; topic labels are not localized separately.
 
 ## Experience and project data
 

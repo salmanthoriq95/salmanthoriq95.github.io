@@ -15,6 +15,7 @@ const localeConfig = Object.fromEntries(
     locale,
     {
       page: ui[locale].notFound,
+      actions: ui[locale].actions,
       navigation: {
         ...ui[locale].navigation,
         homePath: getLocalizedPath(locale),
@@ -182,6 +183,9 @@ const localeConfig = Object.fromEntries(
       description: string;
       homeCta: string;
     };
+    actions: {
+      scrollToTop: string;
+    };
     navigation: {
       label: string;
       homeLabel: string;
@@ -221,6 +225,12 @@ const localeConfig = Object.fromEntries(
 
     const navigation = document.querySelector<HTMLElement>(".site-header nav");
     if (navigation) navigation.ariaLabel = config.navigation.label;
+
+    const scrollToTop = document.querySelector<HTMLButtonElement>("[data-scroll-to-top]");
+    if (scrollToTop) {
+      scrollToTop.ariaLabel = config.actions.scrollToTop;
+      scrollToTop.title = config.actions.scrollToTop;
+    }
 
     document.querySelectorAll<HTMLAnchorElement>(".site-header nav a").forEach((link, index) => {
       const item = config.navigation.links[index];

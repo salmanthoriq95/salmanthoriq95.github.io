@@ -90,10 +90,10 @@ Other useful commands:
 
 All visible copy is version-controlled rather than embedded in page components.
 Shared interface text lives in `src/i18n/ui.ts`; section-specific Experience
-and Project text stays beside its typed data; folder labels live in
-`src/lib/writing.ts`; and identity, contact, greeting, location, and social data
-live in `src/data/site.ts`. Keep both `en` and `id` values in sync whenever
-localized copy changes.
+and Project text stays beside its typed data; folder labels are derived
+automatically in `src/lib/writing.ts`; and identity, contact, greeting,
+location, and social data live in `src/data/site.ts`. Keep both `en` and `id`
+values in sync whenever localized copy changes.
 
 ### Experience
 

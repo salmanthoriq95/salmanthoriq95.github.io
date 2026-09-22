@@ -23,7 +23,7 @@ const segments = topic.split("/").filter(Boolean);
 const allEntries = await getPublishedWriting();
 const entries = allEntries.filter((entry) => isEntryInTopic(entry, segments));
 const childTopics = getDirectChildTopics(allEntries, segments);
-const topicTitle = getTopicLabel(segments.at(-1) ?? topic, locale);
+const topicTitle = getTopicLabel(segments.at(-1) ?? topic);
 ---
 
 <SiteLayout

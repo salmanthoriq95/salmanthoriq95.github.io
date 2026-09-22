@@ -94,7 +94,7 @@ for (let depth = topics.length; depth >= 0 && related.length === 0; depth -= 1) 
                 <dd>
                   {topics.map((topic, index) => (
                     <a href={getTopicPath(topics.slice(0, index + 1), locale)}>
-                      {getTopicLabel(topic, locale)}
+                      {getTopicLabel(topic)}
                     </a>
                   ))}
                 </dd>

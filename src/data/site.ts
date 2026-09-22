@@ -14,7 +14,7 @@ export const site = {
     country: "Indonesia",
     timezone: "UTC +7",
   },
-  greetings: ["Hello", "Halo", "Ciao", "Bonjour", "Hola", "Hallo", "Olá", "Hej"],
+  greeting: "Hello",
   socialLinks: [
     {
       id: "github",

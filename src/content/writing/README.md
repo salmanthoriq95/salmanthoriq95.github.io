@@ -10,28 +10,25 @@ there. Use a private repository or a local ignored directory for those.
 Folder names below `publish/` become hierarchical topics automatically:
 
 ```text
-publish/programming/algoritma/algoritma-dasar/binary-search.mdx
+publish/programming/algorithms/fundamentals/binary-search.mdx
 ```
 
-The example above creates the topics `Programming`, `Algoritma`, and
-`Algoritma Dasar`, plus the article route ending in `/binary-search`.
+The example above creates the topics `Programming`, `Algorithms`, and
+`Fundamentals`, plus the article route ending in `/binary-search`.
 
 Use this frontmatter for a new article:
 
 ```yaml
 ---
-title: "Judul artikel"
-description: "Ringkasan singkat artikel."
+title: "Article title"
+description: "A short summary of the article."
 publishedAt: 2026-09-21
-language: id
 draft: false
 featured: false
-# translationKey: shared-key-for-translated-versions
 ---
 ```
 
 Set `draft: true` to keep a file in `publish/` without generating a public
 page. Set `featured: true` to also show the article in the featured section on
-the Writing page; it will remain available in the complete archive. Use the
-same `translationKey` on Indonesian and English versions when both
-translations exist.
+the Writing page; it will remain available in the complete archive. All public
+articles and interface copy are written in English.

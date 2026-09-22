@@ -1,20 +1,13 @@
 ---
 import { experienceContent, getExperienceId } from "../data/experience";
-import { defaultLocale, type Locale } from "../i18n";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import HeroScrollCue from "./HeroScrollCue.astro";
 import SectionHeading from "./SectionHeading.astro";
 
-interface Props {
-  locale?: Locale;
-}
-
-const { locale = defaultLocale } = Astro.props;
-const copy = experienceContent[locale];
+const copy = experienceContent;
 ---
 
 <SiteLayout
-  locale={locale}
   title={copy.meta.title}
   description={copy.meta.description}
 >

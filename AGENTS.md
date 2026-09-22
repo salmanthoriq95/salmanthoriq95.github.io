@@ -33,9 +33,9 @@ owner explicitly requests it.
 
 ## Source-of-truth map
 
-- `src/data/experience.ts`: all localized Experience content. Homepage previews
+- `src/data/experience.ts`: all Experience content. Homepage previews
   and the Experience page must derive from this file.
-- `src/data/projects.ts`: all localized Project content, stacks, featured state,
+- `src/data/projects.ts`: all Project content, stacks, featured state,
   slugs, and optional media. Project routes and homepage previews derive from it.
 - `src/data/site.ts`: shared identity, contact, location, greeting, and social
   data used across the shell and homepage.
@@ -43,36 +43,27 @@ owner explicitly requests it.
 - `src/content/writing/publish/`: public `.md` and `.mdx` articles.
 - `src/content/writing/private/`: notes excluded from the generated website.
   This is not secret storage because the repository itself is public.
-- `src/lib/writing.ts`: article/topic routing, folder labels, filtering, date
-  formatting, and translation lookup.
-- `src/i18n/ui.ts`: localized interface copy.
-- `src/i18n/index.ts`: supported locales and localized path construction.
-- `src/layouts/BaseLayout.astro`: canonical metadata, alternate-language links,
+- `src/lib/writing.ts`: article/topic routing, folder labels, filtering, and date
+  formatting.
+- `src/data/ui.ts`: all shared English interface copy.
+- `src/layouts/BaseLayout.astro`: canonical metadata,
   Open Graph metadata, favicon, and sitemap discovery.
 - `src/layouts/SiteLayout.astro`: standard page shell with the shared header and
   footer. Use it for normal public pages.
-- `src/lib/staticPaths.ts`: shared generators for mirrored dynamic routes.
+- `src/lib/staticPaths.ts`: shared generators for dynamic routes.
 - `src/scripts/`: shared browser interactions for details and horizontal drag.
 - `src/styles/global.css`: global design tokens and reduced-motion behavior.
 
-## Routing and i18n
+## Language and routing
 
-English (`en`) is the default locale and has no prefix. Indonesian (`id`) uses
-the `/id` prefix. Route wrappers under `src/pages/id/` should remain equivalent
-to their English counterparts.
+The website and all public articles use English only. Routes do not use a
+locale prefix.
 
 When changing visible interface copy:
 
-1. Update both locale objects in `src/i18n/ui.ts` or the relevant localized data
-   object.
-2. Build links with `getLocalizedPath()` rather than manually adding `/id`.
-3. Preserve the current locale through index, topic, detail, header, footer, and
-   404 navigation.
-4. Keep titles, descriptions, aria labels, and empty states localized too.
-
-An article's `language` describes the article body, not the interface locale.
-Articles can be Indonesian-only, English-only, or paired using the same
-`translationKey`.
+1. Update `src/data/ui.ts` or the relevant data object.
+2. Use direct root-relative links such as `/projects` and `/writing`.
+3. Keep titles, descriptions, aria labels, and empty states in English too.
 
 ## Writing content model
 
@@ -86,17 +77,15 @@ Required frontmatter:
 title: "Article title"
 description: "Short summary"
 publishedAt: 2026-09-22
-language: id
 draft: false
 featured: false
 ```
 
-Optional fields are `updatedAt` and `translationKey`.
+The optional field is `updatedAt`.
 
 - `draft: true`: exclude from public pages and generated routes.
 - `featured: true`: show in the featured Writing section while keeping the item
   in the complete archive.
-- `translationKey`: pair two language versions even when filenames differ.
 
 Folder names are displayed through the automatic title-cased fallback in
 `src/lib/writing.ts`; topic labels are not localized separately.
@@ -104,14 +93,14 @@ Folder names are displayed through the automatic title-cased fallback in
 ## Experience and project data
 
 Experience and Projects are intentionally hardcoded typed data, not content
-collections. Always add or revise both `id` and `en` content.
+collections. Keep all public content in English.
 
 - Experience anchors are derived with `getExperienceId(company)`. Homepage
   experience cards link to these anchors; preserve this connection.
 - Project `slug` values are public URLs and should be treated as stable.
 - Project `featured` controls its index grouping.
 - Project `media` supports multiple horizontally scrollable images. Every media
-  item needs localized alt text; captions are optional.
+  item needs alt text; captions are optional.
 
 ## Design system and interaction rules
 
@@ -147,7 +136,7 @@ Important conventions:
 ## SEO
 
 `@astrojs/sitemap` generates `sitemap-index.xml` and chunk files. The sitemap
-has Indonesian/English annotations and excludes `/404`. `src/pages/robots.txt.ts`
+excludes `/404`. `src/pages/robots.txt.ts`
 allows crawling and points to the sitemap. The 404 page must remain `noindex`.
 
 If the production domain changes, update both:
@@ -211,5 +200,4 @@ Consult the relevant official guide before changing these areas:
 - Astro components: https://docs.astro.build/en/basics/astro-components/
 - Content collections: https://docs.astro.build/en/guides/content-collections/
 - Styling: https://docs.astro.build/en/guides/styling/
-- Internationalization: https://docs.astro.build/en/guides/internationalization/
 - Sitemap integration: https://docs.astro.build/en/guides/integrations-guide/sitemap/

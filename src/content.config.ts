@@ -14,10 +14,8 @@ const writing = defineCollection({
     description: z.string(),
     publishedAt: z.coerce.date(),
     updatedAt: z.coerce.date().optional(),
-    language: z.enum(["id", "en"]).default("id"),
     draft: z.boolean().default(false),
     featured: z.boolean().default(false),
-    translationKey: z.string().optional(),
   }),
 });
 

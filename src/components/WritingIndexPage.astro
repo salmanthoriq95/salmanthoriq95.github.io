@@ -1,6 +1,5 @@
 ---
-import { defaultLocale, type Locale } from "../i18n";
-import { ui } from "../i18n/ui";
+import { ui } from "../data/ui";
 import {
   formatWritingDate,
   getDirectChildTopics,
@@ -13,19 +12,14 @@ import SectionHeading from "./SectionHeading.astro";
 import TopicCards from "./TopicCards.astro";
 import WritingList from "./WritingList.astro";
 
-interface Props {
-  locale?: Locale;
-}
-
-const { locale = defaultLocale } = Astro.props;
-const copy = ui[locale].writing;
+const copy = ui.writing;
 const entries = await getPublishedWriting();
 const featuredEntries = entries.filter((entry) => entry.data.featured);
 const topics = getDirectChildTopics(entries);
 const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#writing-archive";
 ---
 
-<SiteLayout locale={locale} title={copy.meta.title} description={copy.meta.description}>
+<SiteLayout title={copy.meta.title} description={copy.meta.description}>
   <main>
     <section class="writing-hero" aria-labelledby="writing-title">
       <div class="hero-grid">
@@ -52,12 +46,11 @@ const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#wr
 
           <div class="featured-grid">
             {featuredEntries.map((entry) => (
-              <a class="featured-card" href={getWritingPath(entry, locale)}>
+              <a class="featured-card" href={getWritingPath(entry)}>
                 <div class="featured-meta">
                   <time datetime={entry.data.publishedAt.toISOString()}>
-                    {formatWritingDate(entry.data.publishedAt, locale)}
+                    {formatWritingDate(entry.data.publishedAt)}
                   </time>
-                  <span>{copy.filters[entry.data.language]}</span>
                 </div>
                 <h3>{entry.data.title}</h3>
                 <p>{entry.data.description}</p>
@@ -80,7 +73,7 @@ const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#wr
       {
         entries.length > 0 ? (
           <>
-            <WritingList entries={entries} locale={locale} />
+            <WritingList entries={entries} />
           </>
         ) : (
           <div class="archive-empty">
@@ -101,7 +94,7 @@ const firstSectionPath = featuredEntries.length > 0 ? "#featured-writing" : "#wr
 
       {
         topics.length > 0 ? (
-          <TopicCards topics={topics} locale={locale} articleLabel={copy.topics.article} />
+          <TopicCards topics={topics} articleLabel={copy.topics.article} />
         ) : (
           <p class="topic-empty">{copy.topics.empty}</p>
         )

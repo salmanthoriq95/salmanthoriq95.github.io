@@ -1,6 +1,5 @@
 ---
-import { type Locale } from "../i18n";
-import { ui } from "../i18n/ui";
+import { ui } from "../data/ui";
 import {
   getTopicLabel,
   getTopicPath,
@@ -10,13 +9,12 @@ import {
 
 interface Props {
   entry: WritingEntry;
-  locale: Locale;
   compact?: boolean;
 }
 
-const { entry, locale, compact = false } = Astro.props;
+const { entry, compact = false } = Astro.props;
 const topics = getTopicSegments(entry);
-const copy = ui[locale].writing;
+const copy = ui.writing;
 ---
 
 {
@@ -27,7 +25,7 @@ const copy = ui[locale].writing;
 
         return (
           <li>
-            <a href={getTopicPath(segments, locale)}>
+            <a href={getTopicPath(segments)}>
               {getTopicLabel(topic)}
             </a>
           </li>

@@ -1,21 +1,9 @@
 ---
-import {
-  defaultLocale,
-  getLocalizedPath,
-  localeNames,
-  supportedLocales,
-  type Locale,
-} from "../i18n";
-import { ui } from "../i18n/ui";
 import { site } from "../data/site";
+import { ui } from "../data/ui";
 import SocialLinks from "./SocialLinks.astro";
 
-interface Props {
-  locale?: Locale;
-}
-
-const { locale = defaultLocale } = Astro.props;
-const copy = ui[locale].footer;
+const copy = ui.footer;
 const year = new Date().getFullYear();
 const emailHref = `mailto:${site.contact.email}`;
 ---
@@ -23,49 +11,25 @@ const emailHref = `mailto:${site.contact.email}`;
 <footer id="contact" class="site-footer">
   <div class="footer-meta">
     <div>
-      <p class="label" data-footer-copy="basedIn">{copy.basedIn}</p>
+      <p class="label">{copy.basedIn}</p>
       <p>{site.location.country}<br />{site.location.timezone}</p>
     </div>
 
     <div>
-      <p class="label" data-footer-copy="contact">{copy.contact}</p>
+      <p class="label">{copy.contact}</p>
       <a href={emailHref}>{site.contact.email}</a>
     </div>
 
     <div>
-      <p class="label" data-footer-copy="elsewhere">{copy.elsewhere}</p>
+      <p class="label">{copy.elsewhere}</p>
       <SocialLinks />
-    </div>
-
-    <div class="language-picker">
-      <p class="label" data-footer-copy="language">{copy.language}</p>
-      <details data-smooth-details>
-        <summary>
-          <span data-footer-language-name>{copy.languageName}</span>
-          <span class="language-toggle" aria-hidden="true">⌄</span>
-        </summary>
-        <div class="language-options" aria-label={ui[locale].language.label}>
-          {supportedLocales.map((supportedLocale) => (
-            <a
-              href={getLocalizedPath(supportedLocale, Astro.url.pathname)}
-              lang={supportedLocale}
-              hreflang={supportedLocale}
-              aria-label={localeNames[supportedLocale]}
-              aria-current={supportedLocale === locale ? "page" : undefined}
-              data-locale={supportedLocale}
-            >
-              {ui[supportedLocale].footer.languageName}
-            </a>
-          ))}
-        </div>
-      </details>
     </div>
   </div>
 
-  <a class="contact-word" href={emailHref} aria-label={copy.emailLabel} data-footer-contact-word>
+  <a class="contact-word" href={emailHref} aria-label={copy.emailLabel}>
     {copy.contactWord}
   </a>
-  <p class="copyright" data-footer-copyright>© {year} {site.author.shortName} · {copy.archive}</p>
+  <p class="copyright">© {year} {site.author.shortName} · {copy.archive}</p>
 </footer>
 
 <style>
@@ -116,69 +80,6 @@ const emailHref = `mailto:${site.contact.email}`;
     text-decoration-color: currentColor;
   }
 
-  .language-picker details {
-    max-width: 16rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-  }
-
-  .language-picker summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0 0 0.55rem;
-    cursor: pointer;
-    color: #c9bdca;
-    font-size: 0.76rem;
-    list-style: none;
-    text-transform: uppercase;
-  }
-
-  .language-picker summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .language-picker summary:focus-visible {
-    outline: 2px solid var(--electric);
-    outline-offset: 0.25rem;
-  }
-
-  .language-toggle {
-    color: #fff;
-    font-size: 1rem;
-    line-height: 1;
-    transition: transform var(--motion-duration) var(--motion-ease);
-  }
-
-  .language-picker details[open] .language-toggle {
-    transform: rotate(180deg);
-  }
-
-  .language-options {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    padding: 0.15rem 0 0.65rem;
-  }
-
-  .language-options a {
-    width: 100%;
-    padding: 0.45rem 0.55rem;
-    border-radius: 0.35rem;
-    text-transform: uppercase;
-  }
-
-  .language-options a:hover,
-  .language-options a:focus-visible {
-    background: rgba(255, 255, 255, 0.08);
-    text-decoration-color: transparent;
-  }
-
-  .language-options a[aria-current="page"] {
-    color: #fff;
-    text-decoration-color: var(--electric);
-  }
-
   .contact-word {
     display: block;
     width: 100%;
@@ -210,7 +111,7 @@ const emailHref = `mailto:${site.contact.email}`;
     }
 
     .footer-meta {
-      grid-template-columns: 0.8fr 1.2fr 0.8fr 1fr;
+      grid-template-columns: 0.8fr 1.2fr 0.8fr;
       padding-bottom: 5.5rem;
     }
 

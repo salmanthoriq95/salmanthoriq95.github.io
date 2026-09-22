@@ -1,5 +1,4 @@
 import { getCollection, type CollectionEntry } from "astro:content";
-import { getLocalizedPath, type Locale } from "../i18n";
 
 export type WritingEntry = CollectionEntry<"writing">;
 export interface TopicSummary {
@@ -20,8 +19,8 @@ export function getWritingSlug(entry: WritingEntry) {
   return entry.id.replace(/\.(md|mdx)$/i, "").replace(/^\/+|\/+$/g, "");
 }
 
-export function getWritingPath(entry: WritingEntry, locale: Locale) {
-  return getLocalizedPath(locale, `/writing/${getWritingSlug(entry)}`);
+export function getWritingPath(entry: WritingEntry) {
+  return `/writing/${getWritingSlug(entry)}`;
 }
 
 export function getTopicSegments(entry: WritingEntry) {
@@ -29,8 +28,8 @@ export function getTopicSegments(entry: WritingEntry) {
   return segments.slice(0, -1);
 }
 
-export function getTopicPath(segments: string[], locale: Locale) {
-  return getLocalizedPath(locale, `/writing/topic/${segments.join("/")}`);
+export function getTopicPath(segments: string[]) {
+  return `/writing/topic/${segments.join("/")}`;
 }
 
 export function getTopicLabel(segment: string) {
@@ -91,24 +90,10 @@ export function getDirectChildTopics(
   );
 }
 
-export function formatWritingDate(date: Date, locale: Locale) {
-  return new Intl.DateTimeFormat(locale === "id" ? "id-ID" : "en-US", {
+export function formatWritingDate(date: Date) {
+  return new Intl.DateTimeFormat("en-US", {
     day: "numeric",
     month: "long",
     year: "numeric",
   }).format(date);
-}
-
-export function getTranslation(
-  entry: WritingEntry,
-  entries: WritingEntry[],
-) {
-  if (!entry.data.translationKey) return undefined;
-
-  return entries.find(
-    (candidate) =>
-      candidate.id !== entry.id &&
-      candidate.data.translationKey === entry.data.translationKey &&
-      candidate.data.language !== entry.data.language,
-  );
 }

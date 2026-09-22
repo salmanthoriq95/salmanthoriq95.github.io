@@ -1,9 +1,8 @@
 ---
-import { defaultLocale, getLocalizedPath, type Locale } from "../i18n";
-import { ui } from "../i18n/ui";
 import { experienceContent, getExperienceId } from "../data/experience";
 import { projects } from "../data/projects";
 import { site } from "../data/site";
+import { ui } from "../data/ui";
 import {
   formatWritingDate,
   getPublishedWriting,
@@ -12,37 +11,25 @@ import {
 import SiteLayout from "../layouts/SiteLayout.astro";
 import HeroScrollCue from "./HeroScrollCue.astro";
 
-interface Props {
-  locale?: Locale;
-}
-
-const { locale = defaultLocale } = Astro.props;
-const copy = ui[locale];
-const experiences = experienceContent[locale].entries;
-const experienceHref = getLocalizedPath(locale, "/experience");
-const projectsHref = getLocalizedPath(locale, "/projects");
-const writingHref = getLocalizedPath(locale, "/writing");
+const copy = ui;
+const experiences = experienceContent.entries;
+const experienceHref = "/experience";
+const projectsHref = "/projects";
+const writingHref = "/writing";
 const writingEntries = (await getPublishedWriting()).slice(0, 8);
 const sections = copy.home.sections;
-const defaultGreeting = site.greetings[0];
+const greeting = site.greeting;
 ---
 
 <SiteLayout
-  locale={locale}
   title={copy.meta.title}
   description={copy.meta.description}
 >
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-heading">
-        <h1 id="hero-title" aria-label={`${defaultGreeting}.`}>
-          <span
-            class="greeting"
-            data-greeting
-            data-greetings={JSON.stringify(site.greetings)}
-            data-default-greeting={defaultGreeting}
-            aria-hidden="true"
-          >{defaultGreeting}</span><span class="greeting-dot" aria-hidden="true">.</span>
+        <h1 id="hero-title">
+          <span class="greeting">{greeting}</span><span class="greeting-dot" aria-hidden="true">.</span>
         </h1>
         <p class="hero-mark"><span class="greeting-dot">{copy.home.praIdentity}</span> {copy.home.identity}</p>
       </div>
@@ -133,12 +120,12 @@ const defaultGreeting = site.greetings[0];
                     <div class="experience-track">
                       <div class="experience-set">
                         {projects.map((project) => {
-                          const projectContent = project.content[locale];
+                          const projectContent = project.content;
 
                           return (
                             <a
                               class="experience-card"
-                              href={getLocalizedPath(locale, `/projects/${project.slug}`)}
+                              href={`/projects/${project.slug}`}
                             >
                               <div>
                                 <h4>{projectContent.title}</h4>
@@ -178,14 +165,13 @@ const defaultGreeting = site.greetings[0];
                           {writingEntries.map((entry) => (
                             <a
                               class="experience-card"
-                              href={getWritingPath(entry, locale)}
+                              href={getWritingPath(entry)}
                             >
                               <div>
                                 <h4>{entry.data.title}</h4>
-                                <p>{copy.writing.filters[entry.data.language]}</p>
                               </div>
                               <p class="experience-card-period">
-                                {formatWritingDate(entry.data.publishedAt, locale)}
+                                {formatWritingDate(entry.data.publishedAt)}
                               </p>
                               <span class="experience-card-arrow" aria-hidden="true">↗</span>
                             </a>
@@ -681,45 +667,7 @@ const defaultGreeting = site.greetings[0];
 </style>
 
 <script>
-  const greeting = document.querySelector<HTMLElement>("[data-greeting]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-  if (greeting && !reduceMotion.matches && greeting.dataset.typingReady !== "true") {
-    greeting.dataset.typingReady = "true";
-
-    const greetings = JSON.parse(greeting.dataset.greetings ?? "[]") as string[];
-    const defaultGreeting = greeting.dataset.defaultGreeting ?? "";
-    let greetingIndex = 0;
-    let characterIndex = Array.from(greetings[0] ?? defaultGreeting).length;
-    let isDeleting = true;
-
-    const tick = () => {
-      const word = Array.from(greetings[greetingIndex] ?? defaultGreeting);
-
-      if (isDeleting) {
-        characterIndex = Math.max(0, characterIndex - 1);
-      } else {
-        characterIndex = Math.min(word.length, characterIndex + 1);
-      }
-
-      greeting.textContent = word.slice(0, characterIndex).join("");
-
-      let delay = isDeleting ? 55 : 105;
-
-      if (isDeleting && characterIndex === 0) {
-        isDeleting = false;
-        greetingIndex = (greetingIndex + 1) % greetings.length;
-        delay = 360;
-      } else if (!isDeleting && characterIndex === word.length) {
-        isDeleting = true;
-        delay = 1600;
-      }
-
-      window.setTimeout(tick, delay);
-    };
-
-    window.setTimeout(tick, 1800);
-  }
 
   document.querySelectorAll<HTMLElement>("[data-auto-carousel]").forEach((carousel) => {
     if (carousel.dataset.carouselReady === "true") return;

@@ -1,22 +1,12 @@
 ---
-import {
-  defaultLocale,
-  getLocalizedPath,
-  type Locale,
-} from "../i18n";
-import { ui } from "../i18n/ui";
+import { ui } from "../data/ui";
 import { site } from "../data/site";
 
-interface Props {
-  locale?: Locale;
-}
-
-const { locale = defaultLocale } = Astro.props;
-const copy = ui[locale];
+const copy = ui;
 const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const links = copy.navigation.links.map((link) => ({
   ...link,
-  href: getLocalizedPath(locale, link.path),
+  href: link.path,
 }));
 
 const isCurrentPage = (href: string) => {
@@ -28,7 +18,7 @@ const isCurrentPage = (href: string) => {
 <header class="site-header">
   <a
     class="brand"
-    href={getLocalizedPath(locale)}
+    href="/"
     aria-label={copy.navigation.homeLabel}
   >
     <span class="brand-name">{site.brand.name} </span><span class="brand-accent">{site.brand.accent}</span>

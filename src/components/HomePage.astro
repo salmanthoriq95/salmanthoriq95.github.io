@@ -3,6 +3,7 @@ import { defaultLocale, getLocalizedPath, type Locale } from "../i18n";
 import { ui } from "../i18n/ui";
 import { experienceContent, getExperienceId } from "../data/experience";
 import { projects } from "../data/projects";
+import { site } from "../data/site";
 import {
   formatWritingDate,
   getPublishedWriting,
@@ -28,6 +29,7 @@ const sections = copy.home.sections.map((section) => ({
   ...section,
   href: getLocalizedPath(locale, section.path),
 }));
+const defaultGreeting = site.greetings[0];
 ---
 
 <BaseLayout
@@ -40,13 +42,14 @@ const sections = copy.home.sections.map((section) => ({
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-heading">
-        <h1 id="hero-title" aria-label="Hello.">
+        <h1 id="hero-title" aria-label={`${defaultGreeting}.`}>
           <span
             class="greeting"
             data-greeting
-            data-greetings='["Hello","Halo","Ciao","Bonjour","Hola","Hallo","Olá", "Hej"]'
+            data-greetings={JSON.stringify(site.greetings)}
+            data-default-greeting={defaultGreeting}
             aria-hidden="true"
-          >Hello</span><span class="greeting-dot" aria-hidden="true">.</span>
+          >{defaultGreeting}</span><span class="greeting-dot" aria-hidden="true">.</span>
         </h1>
         <p class="hero-mark"><span class="greeting-dot">{copy.home.praIdentity}</span> {copy.home.identity}</p>
       </div>
@@ -199,7 +202,7 @@ const sections = copy.home.sections.map((section) => ({
                     </div>
                   ) : (
                     <div class="panel-art panel-art--empty">
-                      <span aria-hidden="true">03</span>
+                      <span aria-hidden="true">{copy.home.writingPreview.emptyMark}</span>
                       <p>{copy.home.writingPreview.empty}</p>
                     </div>
                   )}
@@ -694,12 +697,13 @@ const sections = copy.home.sections.map((section) => ({
     greeting.dataset.typingReady = "true";
 
     const greetings = JSON.parse(greeting.dataset.greetings ?? "[]") as string[];
+    const defaultGreeting = greeting.dataset.defaultGreeting ?? "";
     let greetingIndex = 0;
-    let characterIndex = Array.from(greetings[0] ?? "Hello").length;
+    let characterIndex = Array.from(greetings[0] ?? defaultGreeting).length;
     let isDeleting = true;
 
     const tick = () => {
-      const word = Array.from(greetings[greetingIndex] ?? "Hello");
+      const word = Array.from(greetings[greetingIndex] ?? defaultGreeting);
 
       if (isDeleting) {
         characterIndex = Math.max(0, characterIndex - 1);

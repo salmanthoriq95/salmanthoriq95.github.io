@@ -11,17 +11,17 @@ export default defineConfig({
     sitemap({
       filter: (page) => !/\/404\/?$/.test(new URL(page).pathname),
       i18n: {
-        defaultLocale: "id",
+        defaultLocale: "en",
         locales: {
-          id: "id-ID",
           en: "en-US",
+          id: "id-ID",
         },
       },
     }),
   ],
   i18n: {
-    locales: ["id", "en"],
-    defaultLocale: "id",
+    locales: ["en", "id"],
+    defaultLocale: "en",
     routing: {
       prefixDefaultLocale: false,
     },

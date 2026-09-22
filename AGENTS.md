@@ -51,15 +51,15 @@ owner explicitly requests it.
 
 ## Routing and i18n
 
-Indonesian (`id`) is the default locale and has no prefix. English (`en`) uses
-the `/en` prefix. Route wrappers under `src/pages/en/` should remain equivalent
-to their Indonesian counterparts.
+English (`en`) is the default locale and has no prefix. Indonesian (`id`) uses
+the `/id` prefix. Route wrappers under `src/pages/id/` should remain equivalent
+to their English counterparts.
 
 When changing visible interface copy:
 
 1. Update both locale objects in `src/i18n/ui.ts` or the relevant localized data
    object.
-2. Build links with `getLocalizedPath()` rather than manually adding `/en`.
+2. Build links with `getLocalizedPath()` rather than manually adding `/id`.
 3. Preserve the current locale through index, topic, detail, header, footer, and
    404 navigation.
 4. Keep titles, descriptions, aria labels, and empty states localized too.

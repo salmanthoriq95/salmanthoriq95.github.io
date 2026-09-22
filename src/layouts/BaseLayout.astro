@@ -6,6 +6,8 @@ import {
   supportedLocales,
   type Locale,
 } from "../i18n";
+import { ui } from "../i18n/ui";
+import { site } from "../data/site";
 
 interface Props {
   title?: string;
@@ -15,8 +17,8 @@ interface Props {
 }
 
 const {
-  title = "Salman Thoriq — Personal Portfolio",
-  description = "Experience, selected projects, and writing by Salman Thoriq.",
+  title = ui[defaultLocale].meta.title,
+  description = ui[defaultLocale].meta.description,
   locale = defaultLocale,
   noindex = false,
 } = Astro.props;
@@ -44,7 +46,7 @@ const sitemapURL = Astro.site
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <meta name="author" content="Salman Thoriq Al Farisyi" />
+    <meta name="author" content={site.author.fullName} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content="#f2f2ef" />
     <meta property="og:type" content="website" />

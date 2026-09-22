@@ -7,6 +7,7 @@ import {
   type Locale,
 } from "../i18n";
 import { ui } from "../i18n/ui";
+import { site } from "../data/site";
 import SocialLinks from "./SocialLinks.astro";
 
 interface Props {
@@ -16,30 +17,31 @@ interface Props {
 const { locale = defaultLocale } = Astro.props;
 const copy = ui[locale].footer;
 const year = new Date().getFullYear();
+const emailHref = `mailto:${site.contact.email}`;
 ---
 
 <footer id="contact" class="site-footer">
   <div class="footer-meta">
     <div>
-      <p class="label">{copy.basedIn}</p>
-      <p>Indonesia<br />UTC +7</p>
+      <p class="label" data-footer-copy="basedIn">{copy.basedIn}</p>
+      <p>{site.location.country}<br />{site.location.timezone}</p>
     </div>
 
     <div>
-      <p class="label">{copy.contact}</p>
-      <a href="mailto:salmanthoriq95@gmail.com">salmanthoriq95@gmail.com</a>
+      <p class="label" data-footer-copy="contact">{copy.contact}</p>
+      <a href={emailHref}>{site.contact.email}</a>
     </div>
 
     <div>
-      <p class="label">{copy.elsewhere}</p>
+      <p class="label" data-footer-copy="elsewhere">{copy.elsewhere}</p>
       <SocialLinks />
     </div>
 
     <div class="language-picker">
-      <p class="label">{copy.language}</p>
+      <p class="label" data-footer-copy="language">{copy.language}</p>
       <details data-smooth-details>
         <summary>
-          <span>{copy.languageName}</span>
+          <span data-footer-language-name>{copy.languageName}</span>
           <span class="language-toggle" aria-hidden="true">⌄</span>
         </summary>
         <div class="language-options" aria-label={ui[locale].language.label}>
@@ -50,6 +52,7 @@ const year = new Date().getFullYear();
               hreflang={supportedLocale}
               aria-label={localeNames[supportedLocale]}
               aria-current={supportedLocale === locale ? "page" : undefined}
+              data-locale={supportedLocale}
             >
               {ui[supportedLocale].footer.languageName}
             </a>
@@ -59,10 +62,10 @@ const year = new Date().getFullYear();
     </div>
   </div>
 
-  <a class="contact-word" href="mailto:salmanthoriq95@gmail.com" aria-label={copy.emailLabel}>
+  <a class="contact-word" href={emailHref} aria-label={copy.emailLabel} data-footer-contact-word>
     {copy.contactWord}
   </a>
-  <p class="copyright">© {year} Salman Thoriq · {copy.archive}</p>
+  <p class="copyright" data-footer-copyright>© {year} {site.author.shortName} · {copy.archive}</p>
 </footer>
 
 <style>

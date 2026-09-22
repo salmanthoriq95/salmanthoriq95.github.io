@@ -48,6 +48,7 @@ export const ui = {
         cta: "Jelajahi semua tulisan",
         ariaLabel: "Tulisan terbaru Salman Thoriq",
         empty: "Tulisan pertama sedang dipersiapkan.",
+        emptyMark: "03",
       },
       sections: [
         {
@@ -151,6 +152,17 @@ export const ui = {
       contactWord: "Hubungi",
       emailLabel: "Kirim email kepada Salman Thoriq",
     },
+    notFound: {
+      meta: {
+        title: "Halaman tidak ditemukan — Salman Thoriq",
+        description: "Halaman yang kamu cari tidak tersedia.",
+      },
+      code: "404",
+      title: "Halaman ini tidak ditemukan.",
+      description:
+        "Mungkin alamatnya berubah, tautannya sudah tidak berlaku, atau halaman ini memang belum saya buat.",
+      homeCta: "Kembali ke halaman utama",
+    },
   },
   en: {
     meta: {
@@ -201,6 +213,7 @@ export const ui = {
         cta: "Explore all writing",
         ariaLabel: "Latest writing by Salman Thoriq",
         empty: "The first article is being prepared.",
+        emptyMark: "03",
       },
       sections: [
         {
@@ -303,6 +316,17 @@ export const ui = {
       languageName: "English",
       contactWord: "Contact",
       emailLabel: "Email Salman Thoriq",
+    },
+    notFound: {
+      meta: {
+        title: "Page not found — Salman Thoriq",
+        description: "The page you are looking for is not available.",
+      },
+      code: "404",
+      title: "This page could not be found.",
+      description:
+        "The address may have changed, the link may be outdated, or I may not have built this page yet.",
+      homeCta: "Return to the homepage",
     },
   },
 } as const;

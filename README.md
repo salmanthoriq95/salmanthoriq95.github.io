@@ -42,12 +42,12 @@ src/
 ├── i18n/                Locale helpers and translated interface copy
 ├── layouts/             Shared document metadata and page shell
 ├── lib/writing.ts       Writing paths, topics, dates, and translations
-├── pages/               Indonesian routes plus `/en` route counterparts
+├── pages/               English routes plus `/id` route counterparts
 └── styles/global.css    Design tokens and global foundations
 ```
 
-The default locale is Indonesian and does not use a URL prefix. English pages
-use `/en/...`.
+The default locale is English and does not use a URL prefix. Indonesian pages
+use `/id/...`.
 
 ## Local development
 
@@ -97,7 +97,7 @@ the Experience page read from this same source.
 Edit [`src/data/projects.ts`](src/data/projects.ts). Every project needs a unique
 `slug`, localized `content.id` and `content.en`, its stack, and a `featured`
 value. Project detail routes are generated automatically at
-`/projects/<slug>` and `/en/projects/<slug>`.
+`/projects/<slug>` and `/id/projects/<slug>`.
 
 Optional project images are declared through the `media` field. Store the
 actual assets in a publicly available location and use localized alternative

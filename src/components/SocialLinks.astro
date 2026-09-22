@@ -5,6 +5,7 @@ import {
   siInstagram,
   siThreads,
 } from "simple-icons";
+import { site, type SocialLinkId } from "../data/site";
 
 const emailIcon = {
   path: "M2.4 5.2A2.4 2.4 0 0 1 4.8 2.8h14.4a2.4 2.4 0 0 1 2.4 2.4v13.6a2.4 2.4 0 0 1-2.4 2.4H4.8a2.4 2.4 0 0 1-2.4-2.4V5.2Zm2.18-.4L12 10.74l7.42-5.94H4.58Zm15.02 2.5-6.85 5.48a1.2 1.2 0 0 1-1.5 0L4.4 7.3v11.5c0 .22.18.4.4.4h14.4a.4.4 0 0 0 .4-.4V7.3Z",
@@ -14,48 +15,18 @@ const linkedinIcon = {
   path: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286ZM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124ZM7.119 20.452H3.554V9H7.12v11.452Z",
 };
 
-const socialLinks = [
-  {
-    label: "GitHub",
-    href: "https://github.com/salmanthoriq95",
-    icon: siGithub,
-    external: true,
-  },
-  {
-    label: "GitLab",
-    href: "https://gitlab.com/salmanthoriq95",
-    icon: siGitlab,
-    external: true,
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/salmanthoriq95",
-    icon: linkedinIcon,
-    external: true,
-  },
-  {
-    label: "Email",
-    href: "mailto:salmanthoriq95@gmail.com",
-    icon: emailIcon,
-    external: false,
-  },
-  {
-    label: "Threads",
-    href: "https://www.threads.net/@salmanthoriq95",
-    icon: siThreads,
-    external: true,
-  },
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/salmanthoriq95",
-    icon: siInstagram,
-    external: true,
-  },
-];
+const icons: Record<SocialLinkId, { path: string }> = {
+  github: siGithub,
+  gitlab: siGitlab,
+  linkedin: linkedinIcon,
+  email: emailIcon,
+  threads: siThreads,
+  instagram: siInstagram,
+};
 ---
 
 <ul class="social-links">
-  {socialLinks.map((social) => (
+  {site.socialLinks.map((social) => (
     <li>
       <a
         href={social.href}
@@ -65,7 +36,7 @@ const socialLinks = [
         rel={social.external ? "me noreferrer" : undefined}
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d={social.icon.path}></path>
+          <path d={icons[social.id].path}></path>
         </svg>
       </a>
     </li>

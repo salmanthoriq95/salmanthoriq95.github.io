@@ -7,7 +7,6 @@ export interface LocalizedProjectContent {
   contribution: string;
   summary: string[];
   contributions: string[];
-  learning: string[];
   additional?: {
     title: string;
     paragraphs: string[];
@@ -57,10 +56,6 @@ export const projects: Project[] = [
           "Menambahkan database index pada slow retrieval path dan mengurangi response time sekitar 0,5 detik.",
           "Membantu membangun API, Git, dan development convention agar pola kerja backend lebih konsisten.",
         ],
-        learning: [
-          "Proyek ini mengubah cara saya melihat backend engineering.",
-          "Backend bukan hanya API dan business logic, tetapi juga maintainability, database, automation, reliability, dan cara memperbaiki legacy system tanpa selalu melakukan rewrite.",
-        ],
       },
       en: {
         title: "Susi Air Internal Operational System",
@@ -80,10 +75,6 @@ export const projects: Project[] = [
           "Built an automated production database backup scheduler.",
           "Added an index to a slow retrieval path, reducing response time by approximately 0.5 seconds.",
           "Helped establish API, Git, and development conventions for a more consistent backend workflow.",
-        ],
-        learning: [
-          "This project changed how I think about backend engineering.",
-          "A backend is not only APIs and business logic; it also includes maintainability, databases, automation, reliability, and the ability to improve a legacy system without always rewriting it.",
         ],
       },
     },
@@ -114,10 +105,6 @@ export const projects: Project[] = [
           "Menerapkan basic technical SEO melalui metadata dan URL atau slug yang ramah mesin pencari.",
           "Menjalankan aplikasi, PostgreSQL, dan MinIO dalam container terpisah melalui shared Docker network.",
         ],
-        learning: [
-          "Proyek ini memperkuat ketertarikan saya terhadap portability dan containerized application.",
-          "Saya ingin sebuah aplikasi web berjalan dengan dependency yang jelas dan tidak terlalu terikat pada satu cloud provider.",
-        ],
       },
       en: {
         title: "Susi Environmental School Web",
@@ -137,10 +124,6 @@ export const projects: Project[] = [
           "Implemented multilingual content handling.",
           "Added basic technical SEO through metadata and search-friendly URLs or slugs.",
           "Ran the application, PostgreSQL, and MinIO as separate containers on a shared Docker network.",
-        ],
-        learning: [
-          "This project strengthened my interest in portability and containerized applications.",
-          "I want a web application to run with explicit dependencies without being too tightly coupled to a single cloud provider.",
         ],
       },
     },
@@ -168,10 +151,6 @@ export const projects: Project[] = [
           "Mengimplementasikan perubahan kecil pada backend.",
           "Membuat Python scheduled jobs untuk reporting dan pemrosesan application dataset.",
         ],
-        learning: [
-          "Environment ini memperkenalkan saya pada codebase dan technology stack yang lebih beragam.",
-          "Bekerja pada existing product membutuhkan kemampuan memahami convention, architecture, domain, dan code yang sudah dibangun banyak engineer sebelumnya.",
-        ],
       },
       en: {
         title: "Laku6 Web Application",
@@ -188,10 +167,6 @@ export const projects: Project[] = [
           "Maintained and debugged existing Symfony 2 services.",
           "Implemented small backend changes.",
           "Built Python scheduled jobs for reporting and application dataset processing.",
-        ],
-        learning: [
-          "This environment exposed me to a wider range of codebases and technology stacks.",
-          "Working on an existing product requires understanding its conventions, architecture, domain, and code written by many engineers before you.",
         ],
       },
     },
@@ -222,10 +197,6 @@ export const projects: Project[] = [
           "Membantu mencari third-party development partner.",
           "Memantau implementasi melalui GitHub activity, local build, dan technical progress review.",
         ],
-        learning: [
-          "Masalah software sering kali dimulai sebelum developer menulis code.",
-          "Scope, requirement, technical constraint, dan Definition of Done yang tidak jelas dapat menjadi masalah lebih besar daripada pilihan framework atau bahasa pemrograman.",
-        ],
       },
       en: {
         title: "Rhapsodie.co Platform Revamp",
@@ -245,10 +216,6 @@ export const projects: Project[] = [
           "Created an initial web structure and interface framework in Figma.",
           "Helped source a third-party development partner.",
           "Monitored implementation through GitHub activity, local builds, and technical progress reviews.",
-        ],
-        learning: [
-          "Software problems often begin before a developer writes code.",
-          "Unclear scope, requirements, technical constraints, and definitions of done can become larger problems than the choice of framework or programming language.",
         ],
       },
     },
@@ -276,10 +243,6 @@ export const projects: Project[] = [
           "Menangani parent-child relationship yang dibutuhkan nested folder.",
           "Berkontribusi pada functionality frontend dan backend dalam existing application.",
         ],
-        learning: [
-          "Fitur seperti file explorer terlihat sederhana dari sisi pengguna, tetapi memiliki banyak konsekuensi pada data modeling.",
-          "Proyek ini membantu saya memahami bagaimana struktur data harus mendukung behavior yang tampak sederhana pada interface.",
-        ],
       },
       en: {
         title: "Qonnectic",
@@ -296,10 +259,6 @@ export const projects: Project[] = [
           "Modelled hierarchical file-folder relationships in MySQL.",
           "Handled the parent-child relationships required by nested folders.",
           "Contributed to frontend and backend functionality within the existing application.",
-        ],
-        learning: [
-          "A file explorer can look simple to users while carrying significant data-modelling consequences.",
-          "This project helped me understand how data structures must support behaviour that appears simple in the interface.",
         ],
       },
     },
@@ -329,10 +288,6 @@ export const projects: Project[] = [
           "Membuat backend boilerplate untuk digunakan development team.",
           "Membagikan architecture approach melalui internal technical session.",
         ],
-        learning: [
-          "Architecture bukan sebuah tujuan.",
-          "Architecture seharusnya membantu developer memahami code, mempermudah debugging, dan mengurangi context switching ketika mengembangkan feature.",
-        ],
       },
       en: {
         title: "Prima Health Tracking System",
@@ -351,10 +306,6 @@ export const projects: Project[] = [
           "Proposed and applied an N-layered architecture with feature-based vertical slicing.",
           "Created a backend boilerplate for the development team.",
           "Shared the architecture approach through internal technical sessions.",
-        ],
-        learning: [
-          "Architecture is not a goal in itself.",
-          "It should help developers understand code, make debugging easier, and reduce context switching while developing a feature.",
         ],
       },
     },
@@ -391,10 +342,6 @@ export const projects: Project[] = [
             "Saya mengangkat risiko tersebut kepada technical lead, membantu menerapkan interim query-safety measures, dan merekomendasikan database-access approach yang lebih aman.",
           ],
         },
-        learning: [
-          "Proyek ini memperkuat ketertarikan saya pada system integration.",
-          "Backend sering kali menjadi penghubung antara monitoring, notification, external service, database, dan operational workflow—bukan hanya tempat business logic berada.",
-        ],
       },
       en: {
         title: "T3 BAKTI KOMINFO",
@@ -421,10 +368,6 @@ export const projects: Project[] = [
             "I raised the risk with the technical lead, helped apply interim query-safety measures, and recommended a safer database-access approach.",
           ],
         },
-        learning: [
-          "This project strengthened my interest in system integration.",
-          "A backend often connects monitoring, notifications, external services, databases, and operational workflows—it is not only where business logic lives.",
-        ],
       },
     },
   },
@@ -454,10 +397,6 @@ export const projects: Project[] = [
           "Menulis unit test menggunakan Jest dan memelihara dokumentasi Swagger/OpenAPI.",
           "Mengorganisasi backend menggunakan feature atau domain-oriented structure.",
         ],
-        learning: [
-          "Migration bukan sekadar mengganti bahasa pemrograman.",
-          "Hal yang lebih penting adalah memahami business behavior yang sudah ada dan menjaganya tetap bekerja ketika implementation di bawahnya berubah. Proyek ini juga menjadi fondasi saya mempelajari authentication, authorization, API security, documentation, dan application structure.",
-        ],
       },
       en: {
         title: "Online Registration & KYC Platform",
@@ -478,10 +417,6 @@ export const projects: Project[] = [
           "Wrote unit tests with Jest and maintained Swagger/OpenAPI documentation.",
           "Organized the backend around a feature or domain-oriented structure.",
         ],
-        learning: [
-          "A migration is not simply a change of programming language.",
-          "The more important task is understanding existing business behaviour and preserving it while the implementation underneath changes. This project also became my foundation for learning authentication, authorization, API security, documentation, and application structure.",
-        ],
       },
     },
   },
@@ -489,7 +424,7 @@ export const projects: Project[] = [
 
 export const projectPageContent: Record<Locale, {
   meta: { title: string; description: string };
-  hero: { label: string; emphasis: string; title: string; intro: string; count: string };
+  hero: { emphasis: string; title: string; intro: string; count: string };
   featured: { label: string; title: string; intro: string };
   archive: { label: string; title: string; intro: string };
   labels: {
@@ -499,10 +434,7 @@ export const projectPageContent: Record<Locale, {
     contribution: string;
     technologies: string;
     tools: string;
-    context: string;
     contributions: string;
-    learning: string;
-    viewProject: string;
     back: string;
     next: string;
     gallery: string;
@@ -515,7 +447,6 @@ export const projectPageContent: Record<Locale, {
       description: "Pilihan sistem dan produk yang pernah dibangun, dikembangkan, dipelihara, atau dianalisis oleh Salman Thoriq.",
     },
     hero: {
-      label: "Arsip proyek",
       emphasis: "Dibangun",
       title: "dan diperbaiki.",
       intro: "Kumpulan produk dan sistem yang pernah saya bangun, kembangkan, pelihara, atau analisis—baik dari awal maupun sebagai bagian dari existing system.",
@@ -538,10 +469,7 @@ export const projectPageContent: Record<Locale, {
       contribution: "Kontribusi",
       technologies: "Teknologi",
       tools: "Peralatan",
-      context: "Konteks proyek",
       contributions: "Kontribusi saya",
-      learning: "Yang saya pelajari",
-      viewProject: "Buka studi proyek",
       back: "Kembali ke semua proyek",
       next: "Proyek berikutnya",
       gallery: "Galeri proyek",
@@ -554,7 +482,6 @@ export const projectPageContent: Record<Locale, {
       description: "Selected systems and products built, developed, maintained, or analysed by Salman Thoriq.",
     },
     hero: {
-      label: "Project archive",
       emphasis: "Built",
       title: "and improved.",
       intro: "A collection of products and systems I have built, developed, maintained, or analysed—both from scratch and as part of an existing system.",
@@ -577,10 +504,7 @@ export const projectPageContent: Record<Locale, {
       contribution: "Contribution",
       technologies: "Technologies",
       tools: "Tools",
-      context: "Project context",
       contributions: "My contributions",
-      learning: "What I learned",
-      viewProject: "Open project study",
       back: "Back to all projects",
       next: "Next project",
       gallery: "Project gallery",
@@ -588,7 +512,3 @@ export const projectPageContent: Record<Locale, {
     },
   },
 };
-
-export function getProjectBySlug(slug: string) {
-  return projects.find((project) => project.slug === slug);
-}

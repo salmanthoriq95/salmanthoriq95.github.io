@@ -1,0 +1,60 @@
+---
+interface Props {
+  label: string;
+  title: string;
+  intro: string;
+  titleId: string;
+  inverse?: boolean;
+}
+
+const { label, title, intro, titleId, inverse = false } = Astro.props;
+---
+
+<header class:list={["section-heading", { inverse }]}>
+  <div>
+    <p class:list={["eyebrow", { "eyebrow--inverse": inverse }]}>
+      <span></span>{label}
+    </p>
+    <h2 id={titleId}>{title}</h2>
+  </div>
+  <p>{intro}</p>
+</header>
+
+<style>
+  .section-heading {
+    display: grid;
+    width: 100%;
+    max-width: var(--content-width);
+    gap: 1.5rem;
+    margin: 0 auto 2.75rem;
+  }
+
+  h2 {
+    max-width: 39rem;
+    margin: 0.75rem 0 0;
+    font-size: clamp(2.55rem, 12vw, 5.6rem);
+    line-height: 0.9;
+    letter-spacing: -0.07em;
+  }
+
+  .section-heading > p {
+    max-width: 28rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.6;
+  }
+
+  .section-heading.inverse > p {
+    color: #bdbdbd;
+  }
+
+  @media (min-width: 48rem) {
+    .section-heading {
+      align-items: end;
+      margin-bottom: 3.5rem;
+      grid-template-columns: minmax(0, 1.35fr) minmax(14rem, 0.65fr);
+      gap: 3rem;
+    }
+  }
+</style>

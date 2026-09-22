@@ -38,16 +38,18 @@ src/
 │   └── private/         Personal notes excluded from the Astro collection
 ├── data/
 │   ├── experience.ts    Localized experience timeline
-│   └── projects.ts      Localized project archive and project media
+│   ├── projects.ts      Localized project archive and project media
+│   └── site.ts          Shared identity, contact, greeting, and social data
 ├── i18n/                Locale helpers and translated interface copy
-├── layouts/             Shared document metadata and page shell
-├── lib/writing.ts       Writing paths, topics, dates, and translations
-├── pages/               Indonesian routes plus `/en` route counterparts
+├── layouts/             Shared document metadata and standard site shell
+├── lib/                 Writing helpers and shared static-path generators
+├── pages/               English routes plus `/id` route counterparts
+├── scripts/             Shared, framework-free browser interactions
 └── styles/global.css    Design tokens and global foundations
 ```
 
-The default locale is Indonesian and does not use a URL prefix. English pages
-use `/en/...`.
+The default locale is English and does not use a URL prefix. Indonesian pages
+use `/id/...`.
 
 ## Local development
 
@@ -86,6 +88,13 @@ Other useful commands:
 
 ## Managing content
 
+All visible copy is version-controlled rather than embedded in page components.
+Shared interface text lives in `src/i18n/ui.ts`; section-specific Experience
+and Project text stays beside its typed data; folder labels live in
+`src/lib/writing.ts`; and identity, contact, greeting, location, and social data
+live in `src/data/site.ts`. Keep both `en` and `id` values in sync whenever
+localized copy changes.
+
 ### Experience
 
 Edit [`src/data/experience.ts`](src/data/experience.ts). Add the corresponding
@@ -97,7 +106,7 @@ the Experience page read from this same source.
 Edit [`src/data/projects.ts`](src/data/projects.ts). Every project needs a unique
 `slug`, localized `content.id` and `content.en`, its stack, and a `featured`
 value. Project detail routes are generated automatically at
-`/projects/<slug>` and `/en/projects/<slug>`.
+`/projects/<slug>` and `/id/projects/<slug>`.
 
 Optional project images are declared through the `media` field. Store the
 actual assets in a publicly available location and use localized alternative

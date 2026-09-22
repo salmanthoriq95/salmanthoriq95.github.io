@@ -1,0 +1,96 @@
+---
+import { type Locale } from "../i18n";
+import { ui } from "../i18n/ui";
+import { type WritingEntry } from "../lib/writing";
+import WritingCard from "./WritingCard.astro";
+
+interface Props {
+  entries: WritingEntry[];
+  locale: Locale;
+}
+
+const { entries, locale } = Astro.props;
+const copy = ui[locale].writing.filters;
+---
+
+<div class="writing-list-shell" data-writing-archive>
+  <div class="filters" aria-label={copy.label}>
+    <button class="is-active" type="button" data-language-filter="all">
+      {copy.all}
+    </button>
+    <button type="button" data-language-filter="id">{copy.id}</button>
+    <button type="button" data-language-filter="en">{copy.en}</button>
+  </div>
+
+  <div class="writing-list">
+    {entries.map((entry) => <WritingCard entry={entry} locale={locale} />)}
+  </div>
+
+  <p class="filter-empty" data-filter-empty hidden>{copy.empty}</p>
+</div>
+
+<style>
+  .writing-list-shell {
+    width: 100%;
+    max-width: var(--content-width);
+    margin-inline: auto;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 2rem;
+  }
+
+  button {
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.63rem;
+    font-weight: 800;
+    transition:
+      background-color var(--motion-duration) var(--motion-ease),
+      color var(--motion-duration) var(--motion-ease);
+  }
+
+  button:hover,
+  button:focus-visible,
+  button.is-active {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .filter-empty {
+    margin: 1.5rem 0 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-writing-archive]").forEach((archive) => {
+    const buttons = archive.querySelectorAll<HTMLButtonElement>("[data-language-filter]");
+    const entries = archive.querySelectorAll<HTMLElement>("[data-writing-entry]");
+    const empty = archive.querySelector<HTMLElement>("[data-filter-empty]");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const language = button.dataset.languageFilter ?? "all";
+        let visibleCount = 0;
+
+        buttons.forEach((item) => item.classList.toggle("is-active", item === button));
+        entries.forEach((entry) => {
+          const visible = language === "all" || entry.dataset.language === language;
+          entry.hidden = !visible;
+          if (visible) visibleCount += 1;
+        });
+
+        if (empty) empty.hidden = visibleCount > 0;
+      });
+    });
+  });
+</script>

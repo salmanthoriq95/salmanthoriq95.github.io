@@ -1,15 +1,8 @@
 ---
 import WritingTopicPage from "../../../components/WritingTopicPage.astro";
-import { getAllTopicPaths, getPublishedWriting } from "../../../lib/writing";
+import { getTopicStaticPaths } from "../../../lib/staticPaths";
 
-export async function getStaticPaths() {
-  const entries = await getPublishedWriting();
-
-  return getAllTopicPaths(entries).map((segments) => ({
-    params: { topic: segments.join("/") },
-    props: { topic: segments.join("/") },
-  }));
-}
+export const getStaticPaths = getTopicStaticPaths;
 
 interface Props {
   topic: string;
@@ -18,4 +11,4 @@ interface Props {
 const { topic } = Astro.props;
 ---
 
-<WritingTopicPage locale="id" topic={topic} />
+<WritingTopicPage locale="en" topic={topic} />

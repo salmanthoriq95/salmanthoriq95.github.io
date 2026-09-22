@@ -5,6 +5,7 @@ import {
   type Locale,
 } from "../i18n";
 import { ui } from "../i18n/ui";
+import { site } from "../data/site";
 
 interface Props {
   locale?: Locale;
@@ -30,7 +31,7 @@ const isCurrentPage = (href: string) => {
     href={getLocalizedPath(locale)}
     aria-label={copy.navigation.homeLabel}
   >
-    <span class="brand-name">Salman </span><span class="brand-accent">.T</span>
+    <span class="brand-name">{site.brand.name} </span><span class="brand-accent">{site.brand.accent}</span>
   </a>
 
   <nav aria-label={copy.navigation.label}>
@@ -71,8 +72,7 @@ const isCurrentPage = (href: string) => {
   }
 
   .brand-accent {
-    /* color: #ff4c2e; */
-    color: var(--accent);;
+    color: var(--accent);
   }
 
   ul {
@@ -121,9 +121,9 @@ const isCurrentPage = (href: string) => {
     .site-header {
       align-items: center;
       padding-top: 1.4rem;
-      padding-right: max(var(--page-pad), calc((100vw - 52rem) / 2));
+      padding-right: max(var(--page-pad), calc((100vw - var(--content-width)) / 2));
       padding-bottom: 1.4rem;
-      padding-left: max(var(--page-pad), calc((100vw - 52rem) / 2));
+      padding-left: max(var(--page-pad), calc((100vw - var(--content-width)) / 2));
       grid-template-columns: auto 1fr;
     }
 

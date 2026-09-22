@@ -1,0 +1,14 @@
+---
+import WritingTopicPage from "../../../../components/WritingTopicPage.astro";
+import { getTopicStaticPaths } from "../../../../lib/staticPaths";
+
+export const getStaticPaths = getTopicStaticPaths;
+
+interface Props {
+  topic: string;
+}
+
+const { topic } = Astro.props;
+---
+
+<WritingTopicPage locale="id" topic={topic} />

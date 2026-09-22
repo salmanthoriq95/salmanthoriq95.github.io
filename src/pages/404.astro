@@ -1,47 +1,57 @@
 ---
-import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
-import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site";
+import {
+  defaultLocale,
+  getLocalizedPath,
+  supportedLocales,
+} from "../i18n";
+import { ui } from "../i18n/ui";
+import SiteLayout from "../layouts/SiteLayout.astro";
+
+const copy = ui[defaultLocale].notFound;
+const year = new Date().getFullYear();
+const localeConfig = Object.fromEntries(
+  supportedLocales.map((locale) => [
+    locale,
+    {
+      page: ui[locale].notFound,
+      navigation: {
+        ...ui[locale].navigation,
+        homePath: getLocalizedPath(locale),
+        links: ui[locale].navigation.links.map((link) => ({
+          ...link,
+          href: getLocalizedPath(locale, link.path),
+        })),
+      },
+      footer: {
+        ...ui[locale].footer,
+        languagePickerLabel: ui[locale].language.label,
+        copyright: `© ${year} ${site.author.shortName} · ${ui[locale].footer.archive}`,
+      },
+    },
+  ]),
+);
 ---
 
-<BaseLayout
-  locale="id"
-  title="Halaman tidak ditemukan — Salman Thoriq"
-  description="Halaman yang kamu cari tidak tersedia."
+<SiteLayout
+  locale={defaultLocale}
+  title={copy.meta.title}
+  description={copy.meta.description}
   noindex
 >
-  <Header locale="id" />
-
-  <main class="not-found">
+  <main class="not-found" data-locale-config={JSON.stringify(localeConfig)}>
     <section class="error-content" aria-labelledby="error-title">
-      <div class="error-number" aria-label="404">
-        <span data-error-number aria-hidden="true">404</span><em aria-hidden="true">.</em>
+      <div class="error-number" aria-label={copy.code}>
+        <span data-error-number data-final-number={copy.code} aria-hidden="true">{copy.code}</span><em aria-hidden="true">.</em>
       </div>
 
       <div class="message-grid">
-        <h1
-          id="error-title"
-          data-copy
-          data-id="Halaman ini tidak ditemukan."
-          data-en="This page could not be found."
-        >
-          Halaman ini tidak ditemukan.
-        </h1>
+        <h1 id="error-title" data-page-copy="title">{copy.title}</h1>
 
         <div class="message-copy">
-          <p
-            data-copy
-            data-id="Mungkin alamatnya berubah, tautannya sudah tidak berlaku, atau halaman ini memang belum saya buat."
-            data-en="The address may have changed, the link may be outdated, or I may not have built this page yet."
-          >
-            Mungkin alamatnya berubah, tautannya sudah tidak berlaku, atau halaman ini memang belum saya buat.
-          </p>
-          <a class="home-button" href="/" data-home-link>
-            <span
-              data-copy
-              data-id="Kembali ke halaman utama"
-              data-en="Return to the homepage"
-            >Kembali ke halaman utama</span>
+          <p data-page-copy="description">{copy.description}</p>
+          <a class="home-button" href={getLocalizedPath(defaultLocale)} data-home-link>
+            <span data-page-copy="homeCta">{copy.homeCta}</span>
             <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -49,8 +59,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </section>
   </main>
 
-  <Footer locale="id" />
-</BaseLayout>
+</SiteLayout>
 
 <style>
   .not-found {
@@ -60,7 +69,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .error-content {
     display: grid;
     width: 100%;
-    max-width: 52rem;
+    max-width: var(--content-width);
     min-height: min(44rem, calc(100svh - 4.25rem));
     margin-inline: auto;
     padding: 4rem var(--page-pad);
@@ -162,105 +171,113 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 </style>
 
 <script>
-  const isEnglish = window.location.pathname === "/en" || window.location.pathname.startsWith("/en/");
-  const locale = isEnglish ? "en" : "id";
-  const homePath = isEnglish ? "/en/" : "/";
+  type PageCopyKey = "code" | "title" | "description" | "homeCta";
 
-  document.documentElement.lang = locale;
-  document.title = isEnglish
-    ? "Page not found — Salman Thoriq"
-    : "Halaman tidak ditemukan — Salman Thoriq";
-
-  document.querySelectorAll<HTMLElement>("[data-copy]").forEach((element) => {
-    element.textContent = locale === "en"
-      ? element.dataset.en ?? ""
-      : element.dataset.id ?? "";
-  });
-
-  document.querySelectorAll<HTMLAnchorElement>("[data-home-link]").forEach((link) => {
-    link.href = homePath;
-  });
-
-  const headerBrand = document.querySelector<HTMLAnchorElement>(".site-header .brand");
-  if (headerBrand) {
-    headerBrand.href = homePath;
-    headerBrand.ariaLabel = isEnglish
-      ? "Salman Thoriq, homepage"
-      : "Salman Thoriq, halaman utama";
-  }
-
-  const navigation = isEnglish
-    ? [
-        ["Experience", "/en/experience"],
-        ["Projects", "/en/projects"],
-        ["Writing", "/en/writing"],
-      ]
-    : [
-        ["Pengalaman", "/experience"],
-        ["Proyek", "/projects"],
-        ["Tulisan", "/writing"],
-      ];
-
-  document.querySelectorAll<HTMLAnchorElement>(".site-header nav a").forEach((link, index) => {
-    const item = navigation[index];
-    if (!item) return;
-    link.textContent = item[0];
-    link.href = item[1];
-  });
-
-  const footerLabels = document.querySelectorAll<HTMLElement>(".site-footer .label");
-  const localizedFooterLabels = isEnglish
-    ? ["Based in", "Contact", "Elsewhere", "Language"]
-    : ["Berdomisili di", "Kontak", "Temukan saya", "Bahasa"];
-
-  footerLabels.forEach((label, index) => {
-    label.textContent = localizedFooterLabels[index] ?? label.textContent;
-  });
-
-  const languageName = document.querySelector<HTMLElement>(".language-picker summary span:first-child");
-  if (languageName) languageName.textContent = isEnglish ? "English" : "Indonesia";
-
-  const contactWord = document.querySelector<HTMLAnchorElement>(".site-footer .contact-word");
-  if (contactWord) {
-    contactWord.textContent = isEnglish ? "Contact" : "Hubungi";
-    contactWord.ariaLabel = isEnglish
-      ? "Email Salman Thoriq"
-      : "Kirim email kepada Salman Thoriq";
-  }
-
-  const copyright = document.querySelector<HTMLElement>(".site-footer .copyright");
-  if (copyright) {
-    copyright.textContent = `© ${new Date().getFullYear()} Salman Thoriq · ${
-      isEnglish ? "Personal archive" : "Arsip pribadi"
-    }`;
-  }
-
-  const currentPath = window.location.pathname.replace(/^\/en(?=\/|$)/, "") || "/";
-  const languageLinks = document.querySelectorAll<HTMLAnchorElement>(".language-options a");
-  const localizedPaths = [
-    currentPath,
-    currentPath === "/" ? "/en/" : `/en${currentPath}`,
-  ];
-  const languageNames = ["Indonesia", "English"];
-
-  languageLinks.forEach((link, index) => {
-    link.href = localizedPaths[index] ?? link.href;
-    link.textContent = languageNames[index] ?? link.textContent;
-    link.toggleAttribute("aria-current", index === (isEnglish ? 1 : 0));
-  });
-
-  const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-  if (description) {
-    description.content = isEnglish
-      ? "The page you are looking for is not available."
-      : "Halaman yang kamu cari tidak tersedia.";
-  }
-
+  const page = document.querySelector<HTMLElement>("[data-locale-config]");
+  const configs = JSON.parse(page?.dataset.localeConfig ?? "{}") as Record<string, {
+    page: {
+      meta: { title: string; description: string };
+      code: string;
+      title: string;
+      description: string;
+      homeCta: string;
+    };
+    navigation: {
+      label: string;
+      homeLabel: string;
+      homePath: string;
+      links: Array<{ label: string; href: string }>;
+    };
+    footer: Record<string, string>;
+  }>;
+  const locale = /^\/id(?:\/|$)/.test(window.location.pathname) ? "id" : "en";
+  const config = configs[locale];
   const number = document.querySelector<HTMLElement>("[data-error-number]");
+
+  if (config) {
+    document.documentElement.lang = locale;
+    document.title = config.page.meta.title;
+
+    document.querySelectorAll<HTMLElement>("[data-page-copy]").forEach((element) => {
+      const key = element.dataset.pageCopy as PageCopyKey;
+      element.textContent = config.page[key] ?? element.textContent;
+    });
+
+    if (number) {
+      number.textContent = config.page.code;
+      number.dataset.finalNumber = config.page.code;
+      number.parentElement?.setAttribute("aria-label", config.page.code);
+    }
+
+    document.querySelectorAll<HTMLAnchorElement>("[data-home-link]").forEach((link) => {
+      link.href = config.navigation.homePath;
+    });
+
+    const headerBrand = document.querySelector<HTMLAnchorElement>(".site-header .brand");
+    if (headerBrand) {
+      headerBrand.href = config.navigation.homePath;
+      headerBrand.ariaLabel = config.navigation.homeLabel;
+    }
+
+    const navigation = document.querySelector<HTMLElement>(".site-header nav");
+    if (navigation) navigation.ariaLabel = config.navigation.label;
+
+    document.querySelectorAll<HTMLAnchorElement>(".site-header nav a").forEach((link, index) => {
+      const item = config.navigation.links[index];
+      if (!item) return;
+      link.textContent = item.label;
+      link.href = item.href;
+    });
+
+    document.querySelectorAll<HTMLElement>("[data-footer-copy]").forEach((element) => {
+      const key = element.dataset.footerCopy ?? "";
+      element.textContent = config.footer[key] ?? element.textContent;
+    });
+
+    const languageName = document.querySelector<HTMLElement>("[data-footer-language-name]");
+    if (languageName) languageName.textContent = config.footer.languageName;
+
+    const languageOptions = document.querySelector<HTMLElement>(".language-options");
+    if (languageOptions) languageOptions.ariaLabel = config.footer.languagePickerLabel;
+
+    const contactWord = document.querySelector<HTMLAnchorElement>("[data-footer-contact-word]");
+    if (contactWord) {
+      contactWord.textContent = config.footer.contactWord;
+      contactWord.ariaLabel = config.footer.emailLabel;
+    }
+
+    const copyright = document.querySelector<HTMLElement>("[data-footer-copyright]");
+    if (copyright) copyright.textContent = config.footer.copyright;
+
+    const pathWithoutLocale = window.location.pathname.replace(/^\/id(?=\/|$)/, "") || "/";
+    document.querySelectorAll<HTMLAnchorElement>(".language-options a[data-locale]").forEach((link) => {
+      const targetLocale = link.dataset.locale ?? "en";
+      link.href = targetLocale === "en"
+        ? pathWithoutLocale
+        : pathWithoutLocale === "/"
+          ? "/id/"
+          : `/id${pathWithoutLocale}`;
+      if (targetLocale === locale) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+
+    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (description) description.content = config.page.meta.description;
+
+    const openGraphTitle = document.querySelector<HTMLMetaElement>('meta[property="og:title"]');
+    if (openGraphTitle) openGraphTitle.content = config.page.meta.title;
+
+    const openGraphDescription = document.querySelector<HTMLMetaElement>('meta[property="og:description"]');
+    if (openGraphDescription) openGraphDescription.content = config.page.meta.description;
+  }
+
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (number && !reduceMotion) {
-    const finalNumber = "404";
+    const finalNumber = number.dataset.finalNumber ?? "";
     const duration = 1000;
     const interval = 70;
     const startedAt = performance.now();

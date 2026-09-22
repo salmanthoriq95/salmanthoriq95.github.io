@@ -1,10 +1,9 @@
 ---
 import { experienceContent, getExperienceId } from "../data/experience";
 import { defaultLocale, type Locale } from "../i18n";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Footer from "./Footer.astro";
-import Header from "./Header.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 import HeroScrollCue from "./HeroScrollCue.astro";
+import SectionHeading from "./SectionHeading.astro";
 
 interface Props {
   locale?: Locale;
@@ -14,13 +13,11 @@ const { locale = defaultLocale } = Astro.props;
 const copy = experienceContent[locale];
 ---
 
-<BaseLayout
+<SiteLayout
   locale={locale}
   title={copy.meta.title}
   description={copy.meta.description}
 >
-  <Header locale={locale} />
-
   <main>
     <section class="experience-hero" aria-labelledby="experience-title">
       <div class="hero-copy">
@@ -34,13 +31,12 @@ const copy = experienceContent[locale];
     </section>
 
     <section id="experience-timeline" class="timeline-section" aria-labelledby="timeline-title">
-      <header class="section-heading">
-        <div>
-          <p class="eyebrow"><span></span>{copy.section.label}</p>
-          <h2 id="timeline-title">{copy.section.title}</h2>
-        </div>
-        <p>{copy.section.intro}</p>
-      </header>
+      <SectionHeading
+        label={copy.section.label}
+        title={copy.section.title}
+        intro={copy.section.intro}
+        titleId="timeline-title"
+      />
 
       <div class="timeline">
         {copy.entries.map((entry, index) => (
@@ -95,6 +91,7 @@ const copy = experienceContent[locale];
                 <h3>{copy.labels.selectedWork}</h3>
                 <div
                   class="project-carousel"
+                  data-horizontal-drag
                   role="region"
                   aria-label={`${entry.company}: ${copy.labels.selectedWork}`}
                   tabindex="0"
@@ -128,16 +125,14 @@ const copy = experienceContent[locale];
     </section>
   </main>
 
-  <Footer locale={locale} />
-</BaseLayout>
+</SiteLayout>
 
 <style>
   .experience-hero,
-  .section-heading,
   .timeline,
   .closing-inner {
     width: 100%;
-    max-width: 52rem;
+    max-width: var(--content-width);
     margin-inline: auto;
   }
 
@@ -146,25 +141,6 @@ const copy = experienceContent[locale];
     min-height: min(42rem, calc(100svh - 4.25rem));
     padding: 3.5rem var(--page-pad) 2rem;
     grid-template-rows: 1fr auto;
-  }
-
-  .eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .eyebrow > span {
-    width: 1rem;
-    height: 2px;
-    flex: 0 0 auto;
-    background: var(--accent);
   }
 
   .hero-copy {
@@ -194,27 +170,6 @@ const copy = experienceContent[locale];
   .timeline-section {
     padding: 5rem var(--page-pad);
     background: #fff;
-  }
-
-  .section-heading {
-    display: grid;
-    gap: 1.5rem;
-    margin-bottom: 2.75rem;
-  }
-
-  h2 {
-    margin: 0.75rem 0 0;
-    font-size: clamp(2.6rem, 12vw, 5.75rem);
-    line-height: 0.9;
-    letter-spacing: -0.07em;
-  }
-
-  .section-heading > p {
-    max-width: 28rem;
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.8rem;
-    line-height: 1.55;
   }
 
   .timeline {
@@ -530,6 +485,8 @@ const copy = experienceContent[locale];
   .closing h2 {
     margin: 0;
     font-size: clamp(2.8rem, 13vw, 6rem);
+    line-height: 0.9;
+    letter-spacing: -0.07em;
   }
 
   .closing-copy {
@@ -564,13 +521,6 @@ const copy = experienceContent[locale];
     .closing {
       padding-top: 7rem;
       padding-bottom: 7rem;
-    }
-
-    .section-heading {
-      align-items: end;
-      margin-bottom: 3.5rem;
-      grid-template-columns: 1.35fr 0.65fr;
-      gap: 3rem;
     }
 
     summary {
@@ -612,51 +562,14 @@ const copy = experienceContent[locale];
   @media (min-width: 56rem) {
     .timeline-section,
     .closing {
-      padding-right: max(var(--page-pad), calc((100vw - 52rem) / 2));
-      padding-left: max(var(--page-pad), calc((100vw - 52rem) / 2));
+      padding-right: max(var(--page-pad), calc((100vw - var(--content-width)) / 2));
+      padding-left: max(var(--page-pad), calc((100vw - var(--content-width)) / 2));
     }
   }
 </style>
 
 <script>
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-  document.querySelectorAll<HTMLElement>(".project-carousel").forEach((carousel) => {
-    let isDragging = false;
-    let dragStartX = 0;
-    let dragStartScroll = 0;
-
-    carousel.addEventListener("pointerdown", (event) => {
-      if (event.pointerType === "touch" || event.button !== 0) return;
-
-      isDragging = true;
-      dragStartX = event.clientX;
-      dragStartScroll = carousel.scrollLeft;
-      carousel.classList.add("is-dragging");
-      carousel.setPointerCapture(event.pointerId);
-      event.preventDefault();
-    });
-
-    carousel.addEventListener("pointermove", (event) => {
-      if (!isDragging) return;
-
-      const offset = event.clientX - dragStartX;
-      carousel.scrollLeft = dragStartScroll - offset;
-    });
-
-    const stopDragging = (event: PointerEvent) => {
-      if (!isDragging) return;
-
-      isDragging = false;
-      carousel.classList.remove("is-dragging");
-      if (carousel.hasPointerCapture(event.pointerId)) {
-        carousel.releasePointerCapture(event.pointerId);
-      }
-    };
-
-    carousel.addEventListener("pointerup", stopDragging);
-    carousel.addEventListener("pointercancel", stopDragging);
-  });
 
   const openTargetExperience = () => {
     const targetId = decodeURIComponent(window.location.hash.slice(1));

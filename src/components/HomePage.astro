@@ -3,14 +3,13 @@ import { defaultLocale, getLocalizedPath, type Locale } from "../i18n";
 import { ui } from "../i18n/ui";
 import { experienceContent, getExperienceId } from "../data/experience";
 import { projects } from "../data/projects";
+import { site } from "../data/site";
 import {
   formatWritingDate,
   getPublishedWriting,
   getWritingPath,
 } from "../lib/writing";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Footer from "./Footer.astro";
-import Header from "./Header.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 import HeroScrollCue from "./HeroScrollCue.astro";
 
 interface Props {
@@ -24,29 +23,26 @@ const experienceHref = getLocalizedPath(locale, "/experience");
 const projectsHref = getLocalizedPath(locale, "/projects");
 const writingHref = getLocalizedPath(locale, "/writing");
 const writingEntries = (await getPublishedWriting()).slice(0, 8);
-const sections = copy.home.sections.map((section) => ({
-  ...section,
-  href: getLocalizedPath(locale, section.path),
-}));
+const sections = copy.home.sections;
+const defaultGreeting = site.greetings[0];
 ---
 
-<BaseLayout
+<SiteLayout
   locale={locale}
   title={copy.meta.title}
   description={copy.meta.description}
 >
-  <Header locale={locale} />
-
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-heading">
-        <h1 id="hero-title" aria-label="Hello.">
+        <h1 id="hero-title" aria-label={`${defaultGreeting}.`}>
           <span
             class="greeting"
             data-greeting
-            data-greetings='["Hello","Halo","Ciao","Bonjour","Hola","Hallo","Olá", "Hej"]'
+            data-greetings={JSON.stringify(site.greetings)}
+            data-default-greeting={defaultGreeting}
             aria-hidden="true"
-          >Hello</span><span class="greeting-dot" aria-hidden="true">.</span>
+          >{defaultGreeting}</span><span class="greeting-dot" aria-hidden="true">.</span>
         </h1>
         <p class="hero-mark"><span class="greeting-dot">{copy.home.praIdentity}</span> {copy.home.identity}</p>
       </div>
@@ -73,7 +69,7 @@ const sections = copy.home.sections.map((section) => ({
         {sections.map((section, index) => (
           <details open={index === 0} data-smooth-details>
             <summary>
-              <span class="title">{section.title}</span>
+              <span class="title">{section}</span>
               <span class="toggle" aria-hidden="true"></span>
             </summary>
             <div class="panel">
@@ -199,7 +195,7 @@ const sections = copy.home.sections.map((section) => ({
                     </div>
                   ) : (
                     <div class="panel-art panel-art--empty">
-                      <span aria-hidden="true">03</span>
+                      <span aria-hidden="true">{copy.home.writingPreview.emptyMark}</span>
                       <p>{copy.home.writingPreview.empty}</p>
                     </div>
                   )}
@@ -212,12 +208,10 @@ const sections = copy.home.sections.map((section) => ({
     </section>
   </main>
 
-  <Footer locale={locale} />
-</BaseLayout>
+</SiteLayout>
 
 <style>
   .hero {
-    --content-width: 52rem;
     position: relative;
     display: grid;
     min-height: calc(100svh - 2rem);
@@ -268,7 +262,7 @@ const sections = copy.home.sections.map((section) => ({
   .section-heading {
     display: grid;
     gap: 1.5rem;
-    max-width: 52rem;
+    max-width: var(--content-width);
     margin: 0 auto 2.5rem;
   }
 
@@ -311,7 +305,7 @@ const sections = copy.home.sections.map((section) => ({
   .accordion {
     display: grid;
     gap: 0.65rem;
-    max-width: 52rem;
+    max-width: var(--content-width);
     margin: 0 auto;
   }
 
@@ -694,12 +688,13 @@ const sections = copy.home.sections.map((section) => ({
     greeting.dataset.typingReady = "true";
 
     const greetings = JSON.parse(greeting.dataset.greetings ?? "[]") as string[];
+    const defaultGreeting = greeting.dataset.defaultGreeting ?? "";
     let greetingIndex = 0;
-    let characterIndex = Array.from(greetings[0] ?? "Hello").length;
+    let characterIndex = Array.from(greetings[0] ?? defaultGreeting).length;
     let isDeleting = true;
 
     const tick = () => {
-      const word = Array.from(greetings[greetingIndex] ?? "Hello");
+      const word = Array.from(greetings[greetingIndex] ?? defaultGreeting);
 
       if (isDeleting) {
         characterIndex = Math.max(0, characterIndex - 1);
@@ -817,15 +812,19 @@ const sections = copy.home.sections.map((section) => ({
       didDrag = false;
       dragStartX = event.clientX;
       dragStartScroll = carousel.scrollLeft;
-      carousel.classList.add("is-dragging");
-      carousel.setPointerCapture(event.pointerId);
       pauseTemporarily();
     });
 
     carousel.addEventListener("pointermove", (event) => {
       if (!isDragging) return;
       const distance = event.clientX - dragStartX;
-      if (Math.abs(distance) > 4) didDrag = true;
+      if (!didDrag && Math.abs(distance) > 4) {
+        didDrag = true;
+        carousel.classList.add("is-dragging");
+        carousel.setPointerCapture(event.pointerId);
+      }
+      if (!didDrag) return;
+      event.preventDefault();
       carousel.scrollLeft = dragStartScroll - distance;
     });
 
@@ -841,6 +840,7 @@ const sections = copy.home.sections.map((section) => ({
 
     carousel.addEventListener("pointerup", endDrag);
     carousel.addEventListener("pointercancel", endDrag);
+    carousel.addEventListener("dragstart", (event) => event.preventDefault());
     carousel.addEventListener("click", (event) => {
       if (!didDrag) return;
       event.preventDefault();

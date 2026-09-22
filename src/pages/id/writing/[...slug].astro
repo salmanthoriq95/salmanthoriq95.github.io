@@ -1,0 +1,15 @@
+---
+import WritingArticlePage from "../../../components/WritingArticlePage.astro";
+import { getWritingStaticPaths } from "../../../lib/staticPaths";
+import { type WritingEntry } from "../../../lib/writing";
+
+export const getStaticPaths = getWritingStaticPaths;
+
+interface Props {
+  entry: WritingEntry;
+}
+
+const { entry } = Astro.props;
+---
+
+<WritingArticlePage locale="id" entry={entry} />

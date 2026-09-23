@@ -14,7 +14,7 @@ export const site = {
     country: "Indonesia",
     timezone: "UTC +7",
   },
-  greeting: "Hello",
+  greetings: ["Hello", "Halo", "Ciao", "Bonjour", "Hola", "Hallo", "Olá", "Hej"],
   socialLinks: [
     {
       id: "github",
@@ -43,13 +43,13 @@ export const site = {
     {
       id: "threads",
       label: "Threads",
-      href: "https://www.threads.net/@salmanthoriq95",
+      href: "https://www.threads.net/@salmant___",
       external: true,
     },
     {
       id: "instagram",
       label: "Instagram",
-      href: "https://www.instagram.com/salmanthoriq95",
+      href: "https://www.instagram.com/salmant___",
       external: true,
     },
   ],

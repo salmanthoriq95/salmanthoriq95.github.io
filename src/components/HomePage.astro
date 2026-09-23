@@ -18,7 +18,7 @@ const projectsHref = "/projects";
 const writingHref = "/writing";
 const writingEntries = (await getPublishedWriting()).slice(0, 8);
 const sections = copy.home.sections;
-const greeting = site.greeting;
+const defaultGreeting = site.greetings[0];
 ---
 
 <SiteLayout
@@ -28,8 +28,14 @@ const greeting = site.greeting;
   <main>
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-heading">
-        <h1 id="hero-title">
-          <span class="greeting">{greeting}</span><span class="greeting-dot" aria-hidden="true">.</span>
+        <h1 id="hero-title" aria-label={`${defaultGreeting}.`}>
+          <span
+            class="greeting"
+            data-greeting
+            data-greetings={JSON.stringify(site.greetings)}
+            data-default-greeting={defaultGreeting}
+            aria-hidden="true"
+          >{defaultGreeting}</span><span class="greeting-dot" aria-hidden="true">.</span>
         </h1>
         <p class="hero-mark"><span class="greeting-dot">{copy.home.praIdentity}</span> {copy.home.identity}</p>
       </div>
@@ -668,6 +674,41 @@ const greeting = site.greeting;
 
 <script>
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const greeting = document.querySelector<HTMLElement>("[data-greeting]");
+
+  if (greeting && !reduceMotion.matches && greeting.dataset.typingReady !== "true") {
+    greeting.dataset.typingReady = "true";
+
+    const greetings = JSON.parse(greeting.dataset.greetings ?? "[]") as string[];
+    const defaultGreeting = greeting.dataset.defaultGreeting ?? "Hello";
+    let greetingIndex = 0;
+    let characterIndex = Array.from(greetings[0] ?? defaultGreeting).length;
+    let isDeleting = true;
+
+    const tick = () => {
+      const word = Array.from(greetings[greetingIndex] ?? defaultGreeting);
+
+      characterIndex = isDeleting
+        ? Math.max(0, characterIndex - 1)
+        : Math.min(word.length, characterIndex + 1);
+      greeting.textContent = word.slice(0, characterIndex).join("");
+
+      let delay = isDeleting ? 55 : 105;
+
+      if (isDeleting && characterIndex === 0) {
+        isDeleting = false;
+        greetingIndex = (greetingIndex + 1) % greetings.length;
+        delay = 360;
+      } else if (!isDeleting && characterIndex === word.length) {
+        isDeleting = true;
+        delay = 1600;
+      }
+
+      window.setTimeout(tick, delay);
+    };
+
+    window.setTimeout(tick, 1800);
+  }
 
   document.querySelectorAll<HTMLElement>("[data-auto-carousel]").forEach((carousel) => {
     if (carousel.dataset.carouselReady === "true") return;

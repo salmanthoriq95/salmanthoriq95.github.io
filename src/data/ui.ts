@@ -1,15 +1,15 @@
 export const ui = {
   meta: {
     title: "Salman Thoriq — Software Engineer",
-    description: "What I learn, think about, and believe.",
+    description: "What I learn, what I think, and what I believe.",
   },
   navigation: {
-    label: "Main navigation",
-    homeLabel: "Salman Thoriq, homepage",
+    label: "Navigation",
+    homeLabel: "Homepage",
     links: [
-      { label: "Journey", path: "/experience" },
+      { label: "Experience", path: "/experience" },
       { label: "Projects", path: "/projects" },
-      { label: "Thoughts", path: "/writing" },
+      { label: "Notes", path: "/writing" },
     ],
   },
   actions: {
@@ -18,108 +18,109 @@ export const ui = {
   home: {
     praIdentity: "I'm",
     identity: "Salman Thoriq Al Farisyi",
-    intro: "A little box for thoughts that keep growing along the way.",
-    scroll: "Walk With Me",
+    intro:
+      "A quiet little corner for thoughts, stories, and reflections — where I can pause, look back, and keep growing slowly.",
+    scroll: "Come in",
     kicker: "It all start here",
-    headingEmphasis: "Where",
-    headingRest: "I Grow",
+    headingEmphasis: "Things I’ve done,",
+    headingRest: "built, and learned",
     sectionIntro:
-      "Nothing is ever wasted. Every part of the story has shaped who I am today: the places where I learned and grew, the things I built, and the notes I kept along the way.",
+      "A record of the places I’ve worked, things I’ve built, and notes I’ve kept along the way.",
     experiencePreview: {
-      title: "Places that shaped me",
+      title: "Where I’ve worked",
       intro:
-        "This timeline comes directly from my experience archive and will keep growing with each chapter ahead.",
-      cta: "Read the full experience",
+        "A timeline of the roles, teams, and work I’ve been part of.",
+      cta: "View experience",
       ariaLabel: "Salman Thoriq's work journey",
     },
     projectPreview: {
       title: "What I built and improved",
       intro:
-        "Products and systems I have built from scratch, developed, maintained, or helped understand as part of an existing system.",
-      cta: "Explore all projects",
+        "Some of the things I’ve built, both for work and out of curiosity.",
+      cta: "View projects",
       ariaLabel: "Projects by Salman Thoriq",
     },
     writingPreview: {
       title: "What I am thinking about",
       intro:
-        "The latest writing comes directly from the publish archive and is organized automatically by its folder topics.",
-      cta: "Explore all writing",
+        "Notes on things I’ve learned, noticed, questioned, or simply wanted to remember. ",
+      cta: "Read my notes",
       ariaLabel: "Latest writing by Salman Thoriq",
-      empty: "The first article is being prepared.",
-      emptyMark: "03",
+      empty: "The first note is being prepared.",
+      emptyMark: "00",
     },
-    sections: ["Experience", "Projects", "Writing"],
+    sections: ["Experience", "Projects", "Notes"],
   },
   writing: {
     meta: {
-      title: "Writing — Salman Thoriq",
+      title: "Notes — Salman Thoriq",
       description:
-        "Notes by Salman Thoriq on programming, problem-solving, and things learned along the way.",
+        "Things I’ve learned, noticed, questioned, and written down along the way.",
     },
     hero: {
-      emphasis: "Notes",
-      title: "from the journey",
+      emphasis: "Things",
+      title: "I write down",
       intro:
-        "Things I want to understand for longer: written down, organized by topic, and shared so they can be found again.",
-      count: "published articles",
+        "Some are thoughts. Some are stories, poems, questions, or things I believe in. Some may change with time.",
+      count: "All notes",
     },
     topics: {
-      label: "Explore topics",
-      title: "Start with a topic",
+      label: "Topics",
+      title: "Find something to read",
       intro:
-        "Every folder becomes a reading path. Choose a topic to see everything inside it, including all of its subtopics.",
+        "Everything here is loosely organized, just enough to make things easier to find again.",
       empty:
-        "Topics will appear automatically when the first article is published.",
-      article: "articles",
-      childLabel: "Subtopics",
+        "Topics will appear here as I add more notes.",
+      article: "notes",
+      childLabel: "More topics",
     },
     featured: {
-      label: "Selected writing",
-      title: "Featured articles",
+      label: "A Few I Keep Close",
+      title: "Notes I keep coming back to",
       intro:
-        "A few notes that best represent what I am currently learning, thinking about, or working on.",
+        "Some because they still feel true. Some because they remind me of who I was when I wrote",
     },
     latest: {
-      label: "All writing",
-      title: "Latest from the archive",
+      label: "ALL NOTES",
+      title: "Recently written",
       intro:
-        "This list updates automatically whenever a new Markdown or MDX file is added to the publish folder.",
-      emptyTitle: "The archive is still empty.",
+        "The latest things I’ve left here—thoughts, stories, poems, questions, and whatever else needed a place to stay.",
+      emptyTitle: "Nothing here yet.",
       emptyBody:
-        "The first article will appear here after a file is released from the publish folder.",
+        "The first note will appear here when I have something to share.",
     },
     article: {
-      back: "Back to writing",
+      back: "Back to notes",
       published: "Published",
       updated: "Updated",
       topics: "Topics",
       contents: "On this page",
-      relatedLabel: "Read next",
+      relatedLabel: "More to read",
       relatedTitle: "From the same topic",
     },
     topic: {
-      back: "All writing",
+      back: "All notes",
       intro:
-        "Every article in this topic, including those stored in any subtopics below it.",
+        "Everything I’ve put under this topic, including notes from the topics inside it.",
     },
   },
   footer: {
     basedIn: "Based in",
     contact: "Contact",
     elsewhere: "Elsewhere",
-    archive: "Personal archive",
+    archive: "Built and written by Salman Thoriq",
     contactWord: "Contact",
-    emailLabel: "Email Salman Thoriq",
+    emailLabel: "Send me an email",
   },
   notFound: {
     meta: {
       title: "Page not found — Salman Thoriq",
-      description: "The page you are looking for is not available.",
+      description: "This page couldn’t be found.",
     },
     code: "404",
-    title: "Sorry, the page doesn't exist.",
+    title: "Looks like this page isn’t here.",
     description:
-      "The address may have changed, the link may be outdated, or I may not have built this page yet.",
-    homeCta: "Return to the homepage",
+      "The link may be outdated, the address may have changed, or there may simply be nothing here yet.",
+    homeCta: "Back to home",
   },
 } as const;

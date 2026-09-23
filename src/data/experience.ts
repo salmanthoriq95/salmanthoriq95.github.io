@@ -58,25 +58,25 @@ export const experienceContent: ExperienceContent = {
   meta: {
     title: "Experience — Salman Thoriq",
     description:
-      "Salman Thoriq's professional journey in software engineering since 2021.",
+      "Places I’ve worked, things I’ve worked on, and what I learned along the way.",
   },
   hero: {
-    title: "Experience",
+    title: "Where I’ve worked ",
     intro:
-      "A record of the work, decisions, problems, and lessons that have shaped how I think as a software engineer.",
+      "A record of the places, people, problems, and work that have shaped how I build software today.",
     range: "2021 — Present",
   },
   section: {
-    label: "Timeline",
-    title: "Where I have grown",
+    label: "Along the way",
+    title: "Places that became part of the journey",
     intro:
-      "I include not only what worked, but also constraints, explorations that never reached production, and experiences that changed how I work.",
+      "Not everything here was perfect or made it to production. Some things worked, some changed direction, and some simply taught me a better way to approach the next problem.",
   },
   labels: {
     industry: "Industry",
     location: "Location",
-    contributions: "Key contributions",
-    selectedWork: "Selected work",
+    contributions: "What I worked on",
+    selectedWork: "A few things I did",
   },
   entries: [
     {
@@ -296,11 +296,11 @@ export const experienceContent: ExperienceContent = {
     },
   ],
   closing: {
-    label: "What I learned",
+    label: "Looking back",
     title: "Software is larger than source code.",
     paragraphs: [
-      "My thinking evolved from making features work, to writing understandable code, to maintainable architecture, and finally to understanding the business problem being solved.",
-      "To me, software is a combination of business rules, data, people, infrastructure, operational processes, documentation, communication, and constraints.",
+      "I started by trying to make things work. Over time, I began caring more about how the code was understood, maintained, and changed by the people around it.",
+      "Eventually, I learned that software is also about business rules, data, infrastructure, documentation, communication, people, and all the constraints that connect them.",
     ],
   },
 };

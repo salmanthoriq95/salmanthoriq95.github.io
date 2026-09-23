@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "private/self reflection/Arsip Perjalanan - Monumen Pertempuran dan Kedaulatan Waktumu.md",
+                "file": "publish/first-blog.mdx",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Arsip Perjalanan - Monumen Pertempuran dan Kedaulatan Waktumu"
+              "title": "first-blog"
             }
           }
         ]
@@ -189,5 +189,7 @@
     }
   },
   "active": "597633bef80e379e",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "private/self reflection/Arsip Perjalanan - Monumen Pertempuran dan Kedaulatan Waktumu.md"
+  ]
 }

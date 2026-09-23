@@ -62,37 +62,59 @@ const media = project.media ?? [];
       </dl>
     </section>
 
-    <article class="project-body">
-      <section class="project-gallery" aria-label={copy.labels.gallery}>
-        <div
-          class="gallery-scroller"
-          data-horizontal-drag
-          role="region"
-          aria-label={`${copy.labels.gallery}: ${content.title}`}
-          tabindex="0"
+    <article class:list={["project-body", { "project-body--without-media": media.length === 0 }]}>
+      {media.length > 0 && (
+        <section
+          class="project-gallery"
+          aria-label={copy.labels.gallery}
+          data-project-gallery
         >
-          <div class="gallery-track">
-            {media.length > 0 ? (
-              media.map((visual) => (
-                <figure class="project-visual">
+          <div
+            class="gallery-scroller"
+            data-gallery-scroller
+            role="region"
+            aria-label={`${copy.labels.gallery}: ${content.title}`}
+            tabindex="0"
+          >
+            <div class="gallery-track" data-gallery-track>
+              {media.map((visual, index) => (
+                <figure
+                  class="project-visual"
+                  data-gallery-slide
+                  aria-hidden={index === 0 ? "false" : "true"}
+                >
                   <img
                     src={visual.src}
                     alt={visual.alt}
-                    loading="lazy"
+                    loading="eager"
                     decoding="async"
+                    referrerpolicy="no-referrer"
                     draggable="false"
                   />
                   {visual.caption && <figcaption>{visual.caption}</figcaption>}
                 </figure>
-              ))
-            ) : (
-              <div class="project-mark" aria-hidden="true">
-                <span></span>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+
+          {media.length > 1 && (
+            <div class="gallery-pagination" role="group" aria-label={copy.labels.gallery}>
+              {media.map((visual, index) => (
+                <button
+                  class:list={["gallery-dot", { "is-active": index === 0 }]}
+                  type="button"
+                  aria-label={visual.caption ?? visual.alt}
+                  aria-current={index === 0 ? "true" : undefined}
+                  data-gallery-dot
+                  data-gallery-index={index}
+                >
+                  <span aria-hidden="true"></span>
+                </button>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
       <section class="project-narrative" aria-labelledby="contributions-title">
         {contextParagraphs.length > 0 && (
@@ -246,15 +268,9 @@ const media = project.media ?? [];
 
   .gallery-scroller {
     width: 100%;
-    overflow-x: auto;
+    overflow: hidden;
     cursor: grab;
-    overscroll-behavior-inline: contain;
-    scrollbar-width: none;
-    touch-action: pan-x pan-y;
-  }
-
-  .gallery-scroller::-webkit-scrollbar {
-    display: none;
+    touch-action: pan-y;
   }
 
   .gallery-scroller:focus-visible {
@@ -269,19 +285,22 @@ const media = project.media ?? [];
 
   .gallery-track {
     display: flex;
-    width: max-content;
-    gap: 0.75rem;
-    padding-right: 0.75rem;
+    width: 100%;
+    gap: 0;
+    will-change: transform;
+    transition: transform 480ms var(--motion-ease);
   }
 
-  .project-visual,
-  .project-mark {
-    width: min(calc(100vw - (2 * var(--page-pad))), var(--content-width));
+  .gallery-track.is-dragging {
+    transition: none;
+  }
+
+  .project-visual {
+    width: 100%;
     min-height: 18rem;
     flex: 0 0 auto;
     overflow: hidden;
     border-radius: var(--radius);
-    scroll-snap-align: start;
   }
 
   .project-visual {
@@ -312,24 +331,58 @@ const media = project.media ?? [];
     font-size: 0.6rem;
   }
 
-  .project-mark {
-    position: relative;
-    background:
-      linear-gradient(135deg, transparent 49.6%, rgba(255, 255, 255, 0.22) 50%, transparent 50.4%),
-      var(--electric);
+  .gallery-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    margin-top: 1.25rem;
   }
 
-  .project-mark span {
-    position: absolute;
-    right: 2rem;
-    bottom: 2rem;
-    width: clamp(2.5rem, 9vw, 4.5rem);
-    aspect-ratio: 1;
+  .gallery-dot {
+    display: grid;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .gallery-dot span {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--line);
+    transition:
+      background-color var(--motion-duration) var(--motion-ease),
+      transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .gallery-dot:hover span,
+  .gallery-dot:focus-visible span {
+    background: var(--muted);
+    transform: scale(1.2);
+  }
+
+  .gallery-dot.is-active span {
     background: var(--accent);
+    transform: scale(1.2);
+  }
+
+  .gallery-dot:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 0.1rem;
+    border-radius: 50%;
   }
 
   .project-narrative {
-    margin-top: 5rem;
+    margin-top: 1rem;
+  }
+
+  .project-body--without-media .project-narrative {
+    margin-top: 0;
   }
 
   .context-copy,
@@ -454,8 +507,7 @@ const media = project.media ?? [];
       padding-bottom: 7rem;
     }
 
-    .project-visual,
-    .project-mark {
+    .project-visual {
       min-height: 28rem;
     }
 
@@ -484,3 +536,111 @@ const media = project.media ?? [];
     }
   }
 </style>
+
+<script>
+  const reduceGalleryMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  document.querySelectorAll<HTMLElement>("[data-project-gallery]").forEach((gallery) => {
+    if (gallery.dataset.galleryReady === "true") return;
+    gallery.dataset.galleryReady = "true";
+
+    const scroller = gallery.querySelector<HTMLElement>("[data-gallery-scroller]");
+    const track = gallery.querySelector<HTMLElement>("[data-gallery-track]");
+    const slides = Array.from(
+      gallery.querySelectorAll<HTMLElement>("[data-gallery-slide]"),
+    );
+    const dots = Array.from(
+      gallery.querySelectorAll<HTMLButtonElement>("[data-gallery-dot]"),
+    );
+
+    if (!scroller || !track || slides.length < 2 || dots.length !== slides.length) return;
+
+    let activeIndex = 0;
+    let pointerId: number | undefined;
+    let pointerStart = 0;
+    let pointerOffset = 0;
+
+    const showSlide = (nextIndex: number, animate = true) => {
+      activeIndex = Math.max(0, Math.min(nextIndex, slides.length - 1));
+      track.classList.toggle("is-dragging", !animate);
+      track.style.transform = `translate3d(${-activeIndex * 100}%, 0, 0)`;
+
+      dots.forEach((dot, index) => {
+        const isActive = index === activeIndex;
+        dot.classList.toggle("is-active", isActive);
+
+        if (isActive) {
+          dot.setAttribute("aria-current", "true");
+        } else {
+          dot.removeAttribute("aria-current");
+        }
+      });
+      slides.forEach((slide, index) => {
+        slide.setAttribute("aria-hidden", index === activeIndex ? "false" : "true");
+      });
+
+      if (!animate) {
+        window.requestAnimationFrame(() => track.classList.remove("is-dragging"));
+      }
+    };
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener("click", () => {
+        showSlide(index, !reduceGalleryMotion.matches);
+      });
+    });
+
+    scroller.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+
+      pointerId = event.pointerId;
+      pointerStart = event.clientX;
+      pointerOffset = 0;
+      scroller.classList.add("is-dragging");
+      track.classList.add("is-dragging");
+      scroller.setPointerCapture(event.pointerId);
+    });
+
+    scroller.addEventListener("pointermove", (event) => {
+      if (pointerId !== event.pointerId) return;
+
+      pointerOffset = event.clientX - pointerStart;
+      const dragPercent = (pointerOffset / scroller.clientWidth) * 100;
+      track.style.transform = `translate3d(${(-activeIndex * 100) + dragPercent}%, 0, 0)`;
+    });
+
+    const finishDrag = (event: PointerEvent, navigate: boolean) => {
+      if (pointerId !== event.pointerId) return;
+
+      const threshold = Math.min(80, scroller.clientWidth * 0.14);
+      let nextIndex = activeIndex;
+
+      if (navigate && Math.abs(pointerOffset) >= threshold) {
+        nextIndex += pointerOffset < 0 ? 1 : -1;
+      }
+
+      if (scroller.hasPointerCapture(event.pointerId)) {
+        scroller.releasePointerCapture(event.pointerId);
+      }
+
+      pointerId = undefined;
+      pointerOffset = 0;
+      scroller.classList.remove("is-dragging");
+      track.classList.remove("is-dragging");
+      showSlide(nextIndex, !reduceGalleryMotion.matches);
+    };
+
+    scroller.addEventListener("pointerup", (event) => finishDrag(event, true));
+    scroller.addEventListener("pointercancel", (event) => finishDrag(event, false));
+
+    scroller.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+
+      event.preventDefault();
+      const direction = event.key === "ArrowRight" ? 1 : -1;
+      showSlide(activeIndex + direction, !reduceGalleryMotion.matches);
+    });
+
+    showSlide(0, false);
+  });
+</script>

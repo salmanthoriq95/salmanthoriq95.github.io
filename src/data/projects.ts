@@ -34,6 +34,23 @@ export const projects: Project[] = [
     featured: true,
     stackKind: "technologies",
     stack: ["TypeScript", "Node.js", "NestJS", "MySQL", "PostgreSQL", "Docker"],
+    media: [
+      {
+        src: "https://drive.google.com/thumbnail?id=1PodZioFklC73IMtY0ggjklCXwTo_LG-R&sz=w2000",
+        alt: "Susi Air operational dashboard - Login Page",
+        caption: "Login page for the Susi Air operational dashboard.",
+      },
+      {
+        src: "https://drive.google.com/thumbnail?id=1ZbUF26xBDT1S0jTNO4T_QxZtnmxhNjKi&sz=w2000",
+        alt: "Susi Air operational dashboard - Dashboard",
+        caption: "1st page of the dashboard.",
+      },
+      {
+        src: "https://drive.google.com/thumbnail?id=19daB-sEi2a2Mqbt5ClqcbXwby7G2p4dY&sz=w2000",
+        alt: "Susi Air operational dashboard - Dashboard",
+        caption: "Dashboard view for the Susi Air operational dashboard.",
+      },
+    ],
     content: {
       title: "Susi Air Internal Operational System",
       role: "Backend Developer",
@@ -62,6 +79,18 @@ export const projects: Project[] = [
     featured: true,
     stackKind: "technologies",
     stack: ["Nuxt", "Nitro", "PostgreSQL", "Drizzle ORM", "MinIO", "Docker"],
+    media: [
+      {
+        src: "https://drive.google.com/thumbnail?id=1Uf-H8ekKzbShw_t_YZTrWPfHiLs9aCL_&sz=w2000",
+        alt: "Susi Environmental School - Public View",
+        caption: "1st view of the Susi Environmental School website.",
+      },
+      {
+        src: "https://drive.google.com/thumbnail?id=1Od7rw7X2In8bFezSJwYNOBXF6TxAERVF&sz=w2000",
+        alt: "Susi Environmental School - Admin View",
+        caption: "Admin panel view of the Susi Environmental School website.",
+      }
+    ],
     content: {
       title: "Susi Environmental School Web",
       role: "Backend Developer / Full-Stack Contributor",
@@ -89,12 +118,34 @@ export const projects: Project[] = [
     featured: false,
     stackKind: "technologies",
     stack: ["Next.js", "Python", "Symfony 2", "MySQL", "PostgreSQL"],
+    media: [
+      {
+        src: "https://drive.google.com/thumbnail?id=18SWDU_r4ho0RKvaPyEaIJucytSMaHFqA&sz=w2000",
+        alt: "Laku6 Web View",
+        caption: "Laku6 Web View.",
+      },
+      {
+        src: "https://drive.google.com/thumbnail?id=1g0SibCOgJh53LNdrWXP_AhRSgx6H81Bo&sz=w2000",
+        alt: "Laku6 (maujual) select product",
+        caption: "Laku6 (maujual) select product view.",
+      },
+      {
+        src: "https://drive.google.com/thumbnail?id=1ft5ReE1S4UEEQIrvqKBYApZJh-3ECpzZ&sz=w2000",
+        alt: "Laku6 (maujual) select product type",
+        caption: "Laku6 (maujual) select product type view.",
+      },
+      {
+        src: "https://drive.google.com/thumbnail?id=1emxJKBSvCmpw_qd8g5sIC8jfZWqCowQ6&sz=w2000",
+        alt: "Laku6 (maujual) calculate damage view",
+        caption: "Laku6 (maujual) calculate damage view.",
+      },
+    ],
     content: {
       title: "Laku6 Web Application",
       role: "Full-Stack Developer",
       type: "Electronics recommerce platform",
       contribution:
-        "Frontend implementation, backend maintenance, data processing",
+      "Frontend implementation, backend maintenance, data processing",
       summary: [
         "I joined an existing application and contributed across selected frontend and backend areas.",
         "This was not a system I built from scratch, so the work centred on understanding the workflow and conventions already used by the team.",
@@ -112,6 +163,13 @@ export const projects: Project[] = [
     slug: "rhapsodie-platform-revamp",
     company: "Rhapsodie.co",
     featured: false,
+    media: [
+      {
+        src: "https://drive.google.com/thumbnail?id=1875Zchw7VtAUy_jQQgPHMrSh6mtkdwmN&sz=w2000",
+        alt: "Rhapsodie.co Web View",
+        caption: "Rhapsodie.co Web View.",
+      }
+    ],
     stackKind: "tools",
     stack: ["Figma", "GitHub", "Trello", "Miro", "Google Docs"],
     content: {
@@ -140,6 +198,18 @@ export const projects: Project[] = [
     company: "Kelola Teknologi Digital",
     featured: false,
     stackKind: "technologies",
+    media: [
+      {
+        src: "https://drive.google.com/thumbnail?id=1sLNe-RNcGDBi44JPtHASu_Vy_85k9IYW&sz=w2000",
+        alt: "Qonnectic Web View",
+        caption: "Qonnectic Web View.",
+      },
+      {
+        src: "https://drive.google.com/thumbnail?id=12hN0OuyCWgivCt6qW_DQrs-BZ2pNAedA&sz=w2000",
+        alt: "Qonnectic Dashboard Web View",
+        caption: "Qonnectic Dashboard Web View.",
+      },
+    ],
     stack: [
       "TypeScript",
       "Node.js",
@@ -208,6 +278,18 @@ export const projects: Project[] = [
     featured: false,
     stackKind: "technologies",
     stack: ["Python", "Flask", "PostgreSQL", "Docker", "Git"],
+    media: [
+      {
+        src: "https://drive.google.com/thumbnail?id=1O5o5PR-A1ZUtHcCjoECZQWBHNLOttQXE&sz=w2000",
+        alt: "T3 Bakti Web View",
+        caption: "T3 Bakti Web View.",
+      },
+      {
+        src: "https://drive.google.com/thumbnail?id=1A1RkuKmUHUVWTE7XmIhI6eewGK4dAvz7&sz=w2000",
+        alt: "T3 Bakti Login Page",
+        caption: "T3 Bakti Login Page.",
+      },
+    ],
     content: {
       title: "T3 BAKTI KOMINFO",
       role: "Backend Developer",
@@ -240,6 +322,18 @@ export const projects: Project[] = [
     company: "PT Inovasi Solusi Internasional",
     featured: true,
     stackKind: "technologies",
+    media: [
+      {
+        src: "https://drive.google.com/thumbnail?id=1QWkWp95cmJ264_u7QY7zIWLyUY75scI0&sz=w2000",
+        alt: "SG Berjangka Login Page",
+        caption: "SG Berjangka Login Page.",
+      },
+      {
+        src: "https://drive.google.com/thumbnail?id=1dt5Y3HrJa9yL5YW2JZg88PgdJzTkDAmN&sz=w2000",
+        alt: "Register to SG Berjangka",
+        caption: "Register to SG Berjangka.",
+      },
+    ],
     stack: [
       "TypeScript",
       "JavaScript",
@@ -295,39 +389,39 @@ export const projectPageContent: {
   meta: {
     title: "Projects — Salman Thoriq",
     description:
-      "Selected systems and products built, developed, maintained, or analysed by Salman Thoriq.",
+      "Things I’ve built, improved, explored, and learned from along the way.",
   },
   hero: {
-    emphasis: "Built",
-    title: "and improved.",
+    emphasis: "Things",
+    title: "I’ve worked on.",
     intro:
-      "A collection of products and systems I have built, developed, maintained, or analysed—both from scratch and as part of an existing system.",
+      "Some started from an empty folder. Some were already running long before I arrived. Each one came with its own problems, constraints, and things to figure out.",
     count: "documented projects",
   },
   featured: {
-    label: "Selected work",
+    label: "A few with more to tell",
     title: "Work with a deeper story",
     intro:
-      "Three projects representing how I approach legacy systems, application infrastructure, and business-critical migration.",
+      "A closer look at a few projects where the decisions, trade-offs, and lessons were just as important as what was eventually built.",
   },
   archive: {
-    label: "Project archive",
-    title: "Other systems that shaped how I work",
+    label: "Along the way",
+    title: "Other things I’ve worked on",
     intro:
-      "Every project carries a different context, constraint, and form of contribution.",
+      "Different projects, different contexts, and different kinds of work—some built from scratch, some improved over time, and some simply taught me something worth keeping.",
   },
   labels: {
     company: "Company",
     role: "Role",
     type: "Type",
-    contribution: "Contribution",
+    contribution: "What I worked on",
     technologies: "Technologies",
     tools: "Tools",
-    contributions: "My contributions",
-    back: "Back to all projects",
+    contributions: "What I did",
+    back: "Back to projects",
     next: "Next project",
-    gallery: "Project gallery",
+    gallery: "A closer look",
     privacy:
-      "For internal projects, details are presented at a level that preserves the work context without exposing confidential data or processes.",
+      "For internal projects, I keep the details broad enough to explain the work without exposing private data, internal processes, or anything that should stay inside the company.",
   },
 };

@@ -21,6 +21,18 @@ const canonicalURL = Astro.site
 const sitemapURL = Astro.site
   ? new URL("sitemap-index.xml", Astro.site)
   : "/sitemap-index.xml";
+const homepageURL = new URL("/", Astro.site ?? Astro.url);
+const isHomepage = Astro.url.pathname === "/";
+const websiteStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: site.author.shortName,
+  alternateName: [
+    `${site.brand.name}${site.brand.accent}`,
+    homepageURL.hostname,
+  ],
+  url: homepageURL.href,
+};
 ---
 
 <!doctype html>
@@ -36,11 +48,18 @@ const sitemapURL = Astro.site
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content={site.author.shortName} />
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="sitemap" href={sitemapURL} />
-    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=4" />
+    <link rel="icon" type="image/jpeg" sizes="96x96" href="/favicon.jpg" />
+    {isHomepage && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(websiteStructuredData)}
+      />
+    )}
     <title>{title}</title>
   </head>
   <body>

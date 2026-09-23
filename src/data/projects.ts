@@ -34,6 +34,7 @@ export const projects: Project[] = [
     featured: true,
     stackKind: "technologies",
     stack: ["TypeScript", "Node.js", "NestJS", "MySQL", "PostgreSQL", "Docker"],
+
     media: [
       {
         src: "https://drive.google.com/thumbnail?id=1PodZioFklC73IMtY0ggjklCXwTo_LG-R&sz=w2000",
@@ -43,33 +44,32 @@ export const projects: Project[] = [
       {
         src: "https://drive.google.com/thumbnail?id=1ZbUF26xBDT1S0jTNO4T_QxZtnmxhNjKi&sz=w2000",
         alt: "Susi Air operational dashboard - Dashboard",
-        caption: "1st page of the dashboard.",
+        caption: "A view of the internal operational dashboard.",
       },
       {
         src: "https://drive.google.com/thumbnail?id=19daB-sEi2a2Mqbt5ClqcbXwby7G2p4dY&sz=w2000",
         alt: "Susi Air operational dashboard - Dashboard",
-        caption: "Dashboard view for the Susi Air operational dashboard.",
+        caption: "Another view of the internal operational dashboard.",
       },
     ],
+
     content: {
       title: "Susi Air Internal Operational System",
       role: "Backend Developer",
       type: "Internal operational system",
+
       contribution:
-        "Backend development, legacy modernization, automation, database",
+        "Keeping a running system understandable, safer to change, and a little easier to maintain",
+
       summary: [
-        "An internal platform supporting a range of operational activities at Susi Air.",
-        "I joined while the system was already running with substantial legacy code and technical debt. The goal was not a rewrite, but gradual improvement without disrupting live operations.",
+        "An internal platform supporting several parts of Susi Air's day-to-day operations.",
+        "The system had already been running for years before I joined. Rather than trying to replace everything at once, most of my work happened in smaller steps — understanding what was already there, changing what needed to change, and trying not to disturb the parts people still depended on every day.",
       ],
+
       contributions: [
-        "Developed and maintained REST APIs for operational needs.",
-        "Implemented business rules, request validation, and data normalization.",
-        "Built email automation and scheduled processes.",
-        "Clarified validation, service, and repository boundaries to separate application logic from persistence concerns.",
-        "Introduced ORM-based database migrations so schema changes could be tracked in the codebase.",
-        "Built an automated production database backup scheduler.",
-        "Added an index to a slow retrieval path, reducing response time by approximately 0.5 seconds.",
-        "Helped establish API, Git, and development conventions for a more consistent backend workflow.",
+        "Most of my time went into keeping an existing operational system moving: maintaining APIs, adding business rules, validating and normalizing data, building automation, and slowly untangling places where application logic and database access had grown too close together. I also started using ORM-based migrations so database changes could be tracked with the rest of the code.",
+
+        "I spent just as much attention on the quieter parts around the system — automated backups, a small indexing improvement, API documentation, Git conventions, ADRs, MkDocs, an engineering handbook, and onboarding notes. None of these changed the whole system overnight, but together they made it a little easier to understand, change, and keep running.",
       ],
     },
   },
@@ -79,83 +79,88 @@ export const projects: Project[] = [
     featured: true,
     stackKind: "technologies",
     stack: ["Nuxt", "Nitro", "PostgreSQL", "Drizzle ORM", "MinIO", "Docker"],
+
     media: [
       {
         src: "https://drive.google.com/thumbnail?id=1Uf-H8ekKzbShw_t_YZTrWPfHiLs9aCL_&sz=w2000",
         alt: "Susi Environmental School - Public View",
-        caption: "1st view of the Susi Environmental School website.",
+        caption: "A public view of the Susi Environmental School website.",
       },
       {
         src: "https://drive.google.com/thumbnail?id=1Od7rw7X2In8bFezSJwYNOBXF6TxAERVF&sz=w2000",
         alt: "Susi Environmental School - Admin View",
-        caption: "Admin panel view of the Susi Environmental School website.",
-      }
+        caption: "The admin side used to manage the site's content.",
+      },
     ],
+
     content: {
-      title: "Susi Environmental School Web",
+      title: "Susi Environmental School",
       role: "Backend Developer / Full-Stack Contributor",
       type: "Dynamic school website",
-      contribution: "Backend, data layer, web application, infrastructure",
+
+      contribution:
+        "Turning a mostly static website into something the school could update and grow on its own",
+
       summary: [
-        "A website for Susi Environmental School that turns previously static content into a dynamically managed experience.",
-        "The application supports school information, galleries, news or blog publishing, multilingual content, and media management.",
+        "The site needed to become more than a set of pages that changed only when someone touched the code.",
+        "The idea was to let school information, galleries, news, blog posts, media, and multilingual content be managed through the application itself.",
       ],
+
       contributions: [
-        "Designed and developed the application backend and data layer.",
-        "Built server APIs with Nuxt and Nitro.",
-        "Used PostgreSQL and Drizzle ORM as the persistence layer.",
-        "Integrated MinIO as application-managed object storage for media and images.",
-        "Developed configurable content, galleries, and news or blog publishing.",
-        "Implemented multilingual content handling.",
-        "Added basic technical SEO through metadata and search-friendly URLs or slugs.",
-        "Ran the application, PostgreSQL, and MinIO as separate containers on a shared Docker network.",
+        "I worked mostly across the backend and data layer, building server APIs with Nuxt and Nitro, shaping the PostgreSQL data model with Drizzle ORM, and using MinIO for application-managed media storage. I also worked on parts of the frontend where they connected closely to the content and data flowing through the system.",
+
+        "The application was split into separate services for the app, database, and object storage, all running through Docker on a shared network. Along the way, I also added multilingual content handling and basic technical SEO through metadata and search-friendly URLs so the site could stay flexible without turning every content change into a development task.",
       ],
     },
   },
   {
-    slug: "laku6-web-application",
+    slug: "maujual-device-valuation",
     company: "Laku6",
     featured: false,
     stackKind: "technologies",
-    stack: ["Next.js", "Python", "Symfony 2", "MySQL", "PostgreSQL"],
+    stack: ["Next.js", "Symfony 2", "python", "MySQL", "PostgreSQL"],
+
     media: [
       {
         src: "https://drive.google.com/thumbnail?id=18SWDU_r4ho0RKvaPyEaIJucytSMaHFqA&sz=w2000",
-        alt: "Laku6 Web View",
-        caption: "Laku6 Web View.",
+        alt: "Maujual by Laku6",
+        caption: "A view of the Maujual device-valuation experience.",
       },
       {
         src: "https://drive.google.com/thumbnail?id=1g0SibCOgJh53LNdrWXP_AhRSgx6H81Bo&sz=w2000",
-        alt: "Laku6 (maujual) select product",
-        caption: "Laku6 (maujual) select product view.",
+        alt: "Maujual product selection",
+        caption: "Choosing the device to be evaluated.",
       },
       {
         src: "https://drive.google.com/thumbnail?id=1ft5ReE1S4UEEQIrvqKBYApZJh-3ECpzZ&sz=w2000",
-        alt: "Laku6 (maujual) select product type",
-        caption: "Laku6 (maujual) select product type view.",
+        alt: "Maujual product type selection",
+        caption: "Narrowing the device down by model and type.",
       },
       {
         src: "https://drive.google.com/thumbnail?id=1emxJKBSvCmpw_qd8g5sIC8jfZWqCowQ6&sz=w2000",
-        alt: "Laku6 (maujual) calculate damage view",
-        caption: "Laku6 (maujual) calculate damage view.",
+        alt: "Maujual device condition assessment",
+        caption:
+          "Part of the condition-assessment flow used before a valuation is calculated.",
       },
     ],
+
     content: {
-      title: "Laku6 Web Application",
+      title: "Maujual — Device Valuation Flow",
       role: "Full-Stack Developer",
-      type: "Electronics recommerce platform",
+      type: "Electronics recommerce application",
+
       contribution:
-      "Frontend implementation, backend maintenance, data processing",
+        "Working on the user-facing side of a valuation flow that was shared across a much larger product ecosystem",
+
       summary: [
-        "I joined an existing application and contributed across selected frontend and backend areas.",
-        "This was not a system I built from scratch, so the work centred on understanding the workflow and conventions already used by the team.",
+        "Maujual was one of the user-facing applications around Laku6's device-valuation platform. The same underlying systems supported different kinds of users and channels, from end customers and retail staff to integrations used by larger commerce platforms.",
+        "My part was mostly on the interface. I worked from UX designs and turned them into Next.js pages while fitting into an application and backend ecosystem that had already been running long before I arrived.",
       ],
+
       contributions: [
-        "Implemented Next.js pages from designs prepared by the UX team.",
-        "Integrated new pages with existing application workflows.",
-        "Maintained and debugged existing Symfony 2 services.",
-        "Implemented small backend changes.",
-        "Built Python scheduled jobs for reporting and application dataset processing.",
+        "I worked on parts of the flow where users choose a device, narrow down its type, and describe its condition before a valuation is returned. The calculation itself lived elsewhere in a gRPC and Go service, so my job was less about the pricing logic and more about making the steps around it clear, consistent, and connected to the existing application.",
+
+        "The product also had to work across different markets, which meant dealing with English, Indonesian, Malay, and Vietnamese content rather than assuming one language or one audience. Around the same ecosystem, I also spent time maintaining shared Symfony 2 services that had grown into part of the foundation used by several applications.",
       ],
     },
   },
@@ -163,33 +168,35 @@ export const projects: Project[] = [
     slug: "rhapsodie-platform-revamp",
     company: "Rhapsodie.co",
     featured: false,
+
     media: [
       {
         src: "https://drive.google.com/thumbnail?id=1875Zchw7VtAUy_jQQgPHMrSh6mtkdwmN&sz=w2000",
-        alt: "Rhapsodie.co Web View",
-        caption: "Rhapsodie.co Web View.",
-      }
+        alt: "Rhapsodie.co platform",
+        caption: "A view of the Rhapsodie.co platform.",
+      },
     ],
+
     stackKind: "tools",
     stack: ["Figma", "GitHub", "Trello", "Miro", "Google Docs"],
+
     content: {
       title: "Rhapsodie.co Platform Revamp",
       role: "Project Manager",
       type: "Music education platform",
-      contribution: "System analysis, requirement discovery, product planning",
+
+      contribution:
+        "Turning a loosely defined redevelopment idea into something the owner and development team could actually reason about together",
+
       summary: [
-        "A redevelopment initiative for a platform connecting music teachers and students.",
-        "The existing Laravel application had very limited documentation and knowledge transfer. My role focused more on requirements, system analysis, planning, and coordination than direct coding.",
+        "Rhapsodie.co was a platform connecting music teachers and students, and the project started with an existing Laravel application rather than a blank slate.",
+        "There was very little documentation or source-code handover, so before planning what came next, part of the work was simply understanding what was already there and what could realistically be carried forward.",
       ],
+
       contributions: [
-        "Assessed an existing Laravel application recovered from the hosting environment.",
-        "Ran requirement discovery with the business owner and translated needs into technical requirements.",
-        "Created a Software Requirements Document, user-role flows, and feature flows.",
-        "Defined success criteria, a Definition of Done, MVP scope, and delivery stages.",
-        "Evaluated the trade-offs between continuing the legacy system and rebuilding it.",
-        "Created an initial web structure and interface framework in Figma.",
-        "Helped source a third-party development partner.",
-        "Monitored implementation through GitHub activity, local builds, and technical progress reviews.",
+        "I worked closely with the owner to turn conversations into something more concrete: software requirements, user-role and feature flows, MVP scope, success criteria, and a Definition of Done. I also mapped out the trade-offs between continuing with the existing application and rebuilding it, so the decision was not just about which option sounded cleaner technically.",
+
+        "From there, I put together an initial product structure in Figma, helped look for a third-party development partner, and followed the implementation through GitHub activity, local builds, and technical reviews. My role was less about writing the code myself and more about reducing ambiguity around what the team was trying to build and how far the current system could reasonably take us.",
       ],
     },
   },
@@ -198,18 +205,20 @@ export const projects: Project[] = [
     company: "Kelola Teknologi Digital",
     featured: false,
     stackKind: "technologies",
+
     media: [
       {
         src: "https://drive.google.com/thumbnail?id=1sLNe-RNcGDBi44JPtHASu_Vy_85k9IYW&sz=w2000",
-        alt: "Qonnectic Web View",
-        caption: "Qonnectic Web View.",
+        alt: "Qonnectic web application",
+        caption: "A view of the Qonnectic web application.",
       },
       {
         src: "https://drive.google.com/thumbnail?id=12hN0OuyCWgivCt6qW_DQrs-BZ2pNAedA&sz=w2000",
-        alt: "Qonnectic Dashboard Web View",
-        caption: "Qonnectic Dashboard Web View.",
+        alt: "Qonnectic dashboard",
+        caption: "A dashboard view from Qonnectic.",
       },
     ],
+
     stack: [
       "TypeScript",
       "Node.js",
@@ -219,22 +228,24 @@ export const projects: Project[] = [
       "MySQL",
       "Docker",
     ],
+
     content: {
       title: "Qonnectic",
       role: "Full-Stack Developer",
       type: "Enterprise web application",
+
       contribution:
-        "Full-stack development, document management, data modeling",
+        "Working on the part of the system that made files and folders behave the way people naturally expected them to",
+
       summary: [
-        "Qonnectic is an existing enterprise application made up of several modules.",
-        "Most of my work focused on document-management functionality for files and folders.",
+        "Qonnectic was an existing enterprise application with several modules already in place.",
+        "Most of my time there was spent around document management — files, folders, nested structures, and the small rules that make something familiar on the surface behave consistently underneath.",
       ],
+
       contributions: [
-        "Maintained and developed the document-management module.",
-        "Built functionality for organizing files and folders.",
-        "Modelled hierarchical file-folder relationships in MySQL.",
-        "Handled the parent-child relationships required by nested folders.",
-        "Contributed to frontend and backend functionality within the existing application.",
+        "I worked across both frontend and backend parts of the document-management flow, but the piece I remember most was modeling the hierarchy behind it. In the interface, putting one folder inside another feels obvious. In the database, that simplicity depends on keeping parent-child relationships, moves, deletion, traversal, and nested structures consistent.",
+
+        "It was one of those features that looked ordinary until I had to think through what made it feel ordinary to the user. Most of the work was not about inventing something new, but about making sure the structure underneath behaved in the quiet, predictable way people already expected.",
       ],
     },
   },
@@ -243,6 +254,7 @@ export const projects: Project[] = [
     company: "Kelola Teknologi Digital",
     featured: false,
     stackKind: "technologies",
+
     stack: [
       "TypeScript",
       "Node.js",
@@ -252,23 +264,24 @@ export const projects: Project[] = [
       "MySQL",
       "Docker",
     ],
+
     content: {
       title: "Prima Health Tracking System",
       role: "Full-Stack Developer",
       type: "Livestock health and operations application",
-      contribution: "Full-stack development, backend architecture",
+
+      contribution:
+        "Turning an existing spreadsheet-based way of working into an application that could grow beyond the spreadsheet itself",
+
       summary: [
-        "A web application that turned spreadsheet-based processes and operational calculations into software.",
-        "The formulas and domain calculations came from the client. My role was to help translate that operational logic into an application.",
+        "Prima started from operational calculations that already lived in the client's spreadsheets. The formulas and domain knowledge were not ours to invent — the work was understanding how they were being used and giving that existing logic a place inside an application.",
+        "It began as a fairly compact prototype, but as the project became more real, the structure around it had to grow too.",
       ],
+
       contributions: [
-        "Developed the application frontend and backend.",
-        "Translated spreadsheet-based operational calculations into application workflows.",
-        "Built the initial prototype with Next.js and a database.",
-        "Moved the backend out of the Next.js prototype into a dedicated Express.js service as the project evolved.",
-        "Proposed and applied an N-layered architecture with feature-based vertical slicing.",
-        "Created a backend boilerplate for the development team.",
-        "Shared the architecture approach through internal technical sessions.",
+        "I worked across the frontend and backend, translating spreadsheet-driven processes into application flows and building the early version with Next.js and a database. As the prototype grew into a fuller application, I helped move the backend into its own Express.js service so the responsibilities were easier to separate and continue developing.",
+
+        "This was also where I started experimenting more deliberately with code organization. I proposed an N-layered structure with feature-based vertical slicing, turned it into a reusable backend boilerplate, and walked the team through the approach. The goal was not to make the architecture look more sophisticated, but to make the code easier to follow when someone needed to change one part of the system.",
       ],
     },
   },
@@ -277,42 +290,46 @@ export const projects: Project[] = [
     company: "Bangunindo Teknusa Jaya",
     featured: false,
     stackKind: "technologies",
+
     stack: ["Python", "Flask", "PostgreSQL", "Docker", "Git"],
+
     media: [
       {
         src: "https://drive.google.com/thumbnail?id=1O5o5PR-A1ZUtHcCjoECZQWBHNLOttQXE&sz=w2000",
-        alt: "T3 Bakti Web View",
-        caption: "T3 Bakti Web View.",
+        alt: "T3 BAKTI KOMINFO dashboard",
+        caption: "A view of the T3 BAKTI KOMINFO monitoring system.",
       },
       {
         src: "https://drive.google.com/thumbnail?id=1A1RkuKmUHUVWTE7XmIhI6eewGK4dAvz7&sz=w2000",
-        alt: "T3 Bakti Login Page",
-        caption: "T3 Bakti Login Page.",
+        alt: "T3 BAKTI KOMINFO login page",
+        caption: "The login page for the T3 BAKTI KOMINFO system.",
       },
     ],
+
     content: {
       title: "T3 BAKTI KOMINFO",
       role: "Backend Developer",
       type: "Telecommunications infrastructure monitoring system",
-      contribution: "Backend development, integration, automation",
+
+      contribution:
+        "Helping monitoring events turn into notifications, escalations, and actions people could actually follow up on",
+
       summary: [
-        "A system used in the monitoring of telecommunications infrastructure.",
-        "I did not develop the core billing system. My contribution focused on backend APIs, integrations, automation, and operational workflows.",
+        "T3 was an existing system used around the monitoring of telecommunications infrastructure across different locations.",
+        "My part was mostly on the backend side — APIs, integrations, data processing, automation, and the operational workflows around what happened when the system noticed something was wrong.",
       ],
+
       contributions: [
-        "Developed and maintained Flask APIs.",
-        "Built backend integrations for operational monitoring.",
-        "Implemented data-processing requirements from the data analytics team.",
-        "Created incident automation for prolonged packet-loss events.",
-        "Integrated incident workflows with Slack notifications.",
-        "Created an escalation workflow that generated support tickets for the relevant ISP or vendor.",
-        "Supported maintenance and delivery of backend functionality in an existing production system.",
+        "I worked on Flask APIs and backend integrations that supported the monitoring flow, including data-processing requirements from the data analytics team. One part I remember clearly was prolonged packet loss: instead of stopping at detection, the system could send a Slack notification and, when the issue needed outside attention, create a support ticket for the relevant ISP or vendor.",
+
+        "A lot of the work happened inside a production system that was already running, so the job was often less about introducing something completely new and more about connecting existing pieces in a way that made the next step clearer. It was one of the projects that made me notice how often backend systems sit quietly between events, people, and other systems.",
       ],
+
       additional: {
-        title: "Additional engineering contribution",
+        title: "A small security detour",
         paragraphs: [
-          "On another early-stage project, I identified a potential SQL injection issue in a raw SQL implementation.",
-          "I raised the risk with the technical lead, helped apply interim query-safety measures, and recommended a safer database-access approach.",
+          "On a separate early-stage project, I came across raw SQL that depended too much on validation happening before the request reached the backend. It made me wonder what would happen if someone simply bypassed the frontend.",
+          "I raised the concern with the technical lead, helped put temporary query-safety measures in place, and suggested moving toward a safer database-access approach as the project matured.",
         ],
       },
     },
@@ -322,18 +339,21 @@ export const projects: Project[] = [
     company: "PT Inovasi Solusi Internasional",
     featured: true,
     stackKind: "technologies",
+
     media: [
       {
         src: "https://drive.google.com/thumbnail?id=1QWkWp95cmJ264_u7QY7zIWLyUY75scI0&sz=w2000",
-        alt: "SG Berjangka Login Page",
-        caption: "SG Berjangka Login Page.",
+        alt: "Solid Gold Berjangka login page",
+        caption:
+          "The login page for the Solid Gold Berjangka registration platform.",
       },
       {
         src: "https://drive.google.com/thumbnail?id=1dt5Y3HrJa9yL5YW2JZg88PgdJzTkDAmN&sz=w2000",
-        alt: "Register to SG Berjangka",
-        caption: "Register to SG Berjangka.",
+        alt: "Solid Gold Berjangka registration page",
+        caption: "Part of the customer registration flow.",
       },
     ],
+
     stack: [
       "TypeScript",
       "JavaScript",
@@ -343,25 +363,24 @@ export const projects: Project[] = [
       "Docker",
       "OpenAPI",
     ],
+
     content: {
       title: "Online Registration & KYC Platform",
       role: "Backend Developer",
       type: "Futures trading registration and KYC platform",
+
       contribution:
-        "Backend development, legacy migration, authentication, security",
+        "Moving an existing onboarding system forward without losing the business rules people already relied on",
+
       summary: [
-        "A registration and KYC platform for prospective customers during the Solid Gold Berjangka futures-trading onboarding process.",
-        "The original backend used Laravel. One of my largest contributions was helping migrate existing functionality to TypeScript and Express.js services.",
+        "The platform handled registration and KYC for prospective customers during the Solid Gold Berjangka onboarding process.",
+        "Its backend originally lived in Laravel, and much of my work was helping move existing functionality into TypeScript and Express.js while first understanding how the old system was expected to behave.",
       ],
+
       contributions: [
-        "Studied existing Laravel behaviour and business rules before migration.",
-        "Migrated registration and onboarding functionality to TypeScript and Express.js while preserving existing behaviour.",
-        "Developed registration, login, logout, password recovery, profiles, and account-management functionality.",
-        "Implemented role-based authorization alongside KYC and risk-validation workflows.",
-        "Integrated an external screening process.",
-        "Applied server-side validation with Joi, rate limiting, and input sanitization.",
-        "Wrote unit tests with Jest and maintained Swagger/OpenAPI documentation.",
-        "Organized the backend around a feature or domain-oriented structure.",
+        "The migration started with reading the existing flows rather than rewriting them immediately. Registration, account management, profiles, authentication, roles, KYC, and risk rules already had expectations attached to them, so the work was as much about preserving behavior as it was about changing the technology underneath.",
+
+        "As I spent more time on the backend, I also became more careful about where trust should stop. I worked on server-side validation, authorization, rate limiting, sanitization, external screening, and unit tests, while keeping the API documented with Swagger/OpenAPI. It was one of the projects that taught me that a backend is not only responsible for returning the right data, but also for being clear about what it accepts, what it allows, and how other parts of the system are supposed to use it.",
       ],
     },
   },

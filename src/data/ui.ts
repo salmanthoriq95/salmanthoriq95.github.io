@@ -1,6 +1,6 @@
 export const ui = {
   meta: {
-    title: "Salman Thoriq — Software Engineer",
+    title: "Salman Thoriq Al Farisyi — Software Engineer",
     description: "What I learn, what I think, and what I believe.",
   },
   navigation: {
@@ -107,9 +107,11 @@ export const ui = {
   footer: {
     basedIn: "Based in",
     contact: "Contact",
+    resume: "Résumé",
+    downloadResume: "Download résumé",
     elsewhere: "Elsewhere",
-    archive: "Built and written by Salman Thoriq",
-    contactWord: "Contact",
+    archive: "Built and written by Salman Thoriq Al Farisyi",
+    contactWord: "Connect",
     emailLabel: "Send me an email",
   },
   notFound: {

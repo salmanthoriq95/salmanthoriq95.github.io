@@ -10,6 +10,10 @@ export const site = {
   contact: {
     email: "salmanthoriq95@gmail.com",
   },
+  resume: {
+    href: "/Software%20Engineer%20-%20Salman%20Thoriq%20Al%20Farisyi.pdf",
+    downloadName: "Salman-Thoriq-Al-Farisyi-Resume.pdf",
+  },
   location: {
     country: "Indonesia",
     timezone: "UTC +7",
@@ -50,6 +54,12 @@ export const site = {
       id: "instagram",
       label: "Instagram",
       href: "https://www.instagram.com/salmant___",
+      external: true,
+    },
+    {
+      id: "whatsapp",
+      label: "WhatsApp",
+      href: "https://wa.me/6281380877345",
       external: true,
     },
   ],

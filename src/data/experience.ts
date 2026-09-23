@@ -133,6 +133,7 @@ export const experienceContent: ExperienceContent = {
       role: "Full-Stack Developer",
       period: "July 2024 — October 2024",
       industry: "Electronics Recommerce",
+      location: "Jakarta",
       summary: [
         "During a short probation period, I had to learn several stacks and contexts at once. I mostly worked on frontend tasks because my JavaScript and TypeScript background matched the team's immediate needs.",
       ],
@@ -160,6 +161,7 @@ export const experienceContent: ExperienceContent = {
       role: "Project Manager",
       period: "February 2024 — July 2024",
       industry: "Music Education Platform",
+      location: "BSD City, Tangerang",
       summary: [
         "I worked between the business owner and the development team to help define a platform connecting music teachers and students.",
         "The starting point was a legacy Laravel application with little source-code handover or documentation and access primarily through hosting and cPanel.",
@@ -197,6 +199,7 @@ export const experienceContent: ExperienceContent = {
       role: "Full-Stack Developer",
       period: "January 2023 — June 2023",
       industry: "Software Development / IT Services",
+      location: "BSD City, Tangerang",
       summary: [
         "I worked across projects as needs changed. The two projects I remember most clearly are Qonnectic and Prima Health Tracking System.",
       ],
@@ -234,6 +237,7 @@ export const experienceContent: ExperienceContent = {
       role: "Backend Developer",
       period: "August 2022 — January 2023",
       industry: "Technology & Infrastructure Solutions",
+      location: "Jakarta",
       summary: [
         "I worked on the backend of the T3 BAKTI KOMINFO telecommunications infrastructure monitoring system, mainly across APIs, integrations, automation, monitoring workflows, and production bug fixing.",
       ],
@@ -263,6 +267,7 @@ export const experienceContent: ExperienceContent = {
       role: "Backend Developer",
       period: "March 2021 — August 2022",
       industry: "Software Development",
+      location: "Jakarta",
       summary: [
         "This was where I truly began working as a professional programmer after learning independently.",
         "My primary project was an online registration and KYC platform for Solid Gold Berjangka, including migration of existing business behavior from Laravel to TypeScript and Express.js.",
@@ -297,7 +302,7 @@ export const experienceContent: ExperienceContent = {
   ],
   closing: {
     label: "Looking back",
-    title: "Software is larger than source code.",
+    title: "Software engineering is larger than source code.",
     paragraphs: [
       "I started by trying to make things work. Over time, I began caring more about how the code was understood, maintained, and changed by the people around it.",
       "Eventually, I learned that software is also about business rules, data, infrastructure, documentation, communication, people, and all the constraints that connect them.",

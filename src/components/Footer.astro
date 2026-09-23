@@ -21,18 +21,28 @@ const emailHref = `mailto:${site.contact.email}`;
     </div>
 
     <div>
+      <p class="label">{copy.resume}</p>
+      <a href={site.resume.href} download={site.resume.downloadName}>
+        {copy.downloadResume}
+      </a>
+    </div>
+
+    <div>
       <p class="label">{copy.elsewhere}</p>
       <SocialLinks />
     </div>
   </div>
 
   <a class="contact-word" href={emailHref} aria-label={copy.emailLabel}>
-    {copy.contactWord}
+    {copy.contactWord}<span class="brand-accent">.</span>
   </a>
-  <p class="copyright">© {year} {site.author.shortName} · {copy.archive}</p>
+  <p class="copyright">© {year} · {copy.archive}</p>
 </footer>
 
 <style>
+  .brand-accent {
+    color: var(--accent);
+  }
   .site-footer {
     overflow: hidden;
     padding: 3.5rem var(--page-pad) 1.75rem;
@@ -105,15 +115,17 @@ const emailHref = `mailto:${site.contact.email}`;
     }
   }
 
+  @media (min-width: 52rem) {
+    .footer-meta {
+      grid-template-columns: 0.8fr minmax(10rem, 1.2fr) 0.8fr minmax(18rem, 1.2fr);
+      align-items: start;
+      padding-bottom: 5.5rem;
+    }
+  }
+
   @media (min-width: 64rem) {
     .site-footer {
       padding-top: 5rem;
     }
-
-    .footer-meta {
-      grid-template-columns: 0.8fr 1.2fr 0.8fr;
-      padding-bottom: 5.5rem;
-    }
-
   }
 </style>

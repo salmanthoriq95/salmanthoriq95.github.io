@@ -1,0 +1,11 @@
+- source code bukan di akun sendiri, tapi di akun developer
+- source code open to public, bahaya! orang-orang bisa tau keyword dari secrets key
+- backend pakai raw sql, bahaya! bisa di hack pakai sql injection
+- banyak developer log aktif, bikin app jadi lemot. bikin necessary logs aja buat production
+- tidak adanya ID request, bikin idempotency. user kalau klik bayar 2x saat masih loading, otomatis user jadi harus bayar 2x
+- tidak ada migrasi database, konsistensi db dipertanyakan
+- kesalahan arsitektur, mengurangi skalabilitas. akan kesulitan kalau semisal kita mau membesarkan app.
+- kode db ada hardcode (kemungkinan dev mode), disaat reponya public. ini bahaya
+- kita gak dikasih .env file production, jadi gak tau gimana cara akses ke db nya
+- gak ada dockerfile/docker-compose.yml, padahal di server pakai docker. kita kesulitan lihat konfigurasi nya
+- coolify gak dikasih passwordnya, jadi manage docker (dashboard) nya gak bisa di akses.

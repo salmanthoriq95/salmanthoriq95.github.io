@@ -61,7 +61,7 @@ export const experienceContent: ExperienceContent = {
       "Places I’ve worked, things I’ve worked on, and what I learned along the way.",
   },
   hero: {
-    title: "Where I’ve worked ",
+    title: "Where I’ve worked",
     intro:
       "A record of the places, people, problems, and work that have shaped how I build software today.",
     range: "2021 — Present",
